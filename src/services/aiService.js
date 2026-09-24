@@ -19,7 +19,7 @@ export const aiService = {
     // Try n8n webhook first
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout for Gemini LLM
 
       const response = await fetch(N8N_AI_WEBHOOK, {
         method: 'POST',
@@ -32,10 +32,11 @@ export const aiService = {
 
       if (response.ok) {
         const data = await response.json();
+        const responseText = data.response || data.output || data.text || (typeof data === 'string' ? data : JSON.stringify(data));
         return {
-          source: 'n8n_webhook',
-          response: data.response || data.text || JSON.stringify(data),
-          timestamp: new Date().toISOString()
+          source: data.source || 'n8n_gemini_agent',
+          response: responseText,
+          timestamp: data.timestamp || new Date().toISOString()
         };
       }
     } catch {
