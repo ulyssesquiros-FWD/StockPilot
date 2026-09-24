@@ -7,14 +7,17 @@ import {
   Bell,
   Sparkles,
   Type,
-  ChevronDown
+  ChevronDown,
+  DollarSign
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import SearchBar from '../ui/SearchBar';
 import Avatar from '../ui/Avatar';
+import ExchangeRateModal from '../ui/ExchangeRateModal';
 import productService from '../../services/productService';
 import alertService from '../../services/alertService';
+import currencyService from '../../services/currencyService';
 
 export default function Header({ onMenuClick }) {
   const { user } = useAuth();
@@ -27,6 +30,8 @@ export default function Header({ onMenuClick }) {
   const [alerts, setAlerts] = useState([]);
   const [showAlertsDropdown, setShowAlertsDropdown] = useState(false);
   const [showFontSizeDropdown, setShowFontSizeDropdown] = useState(false);
+  const [showExchangeModal, setShowExchangeModal] = useState(false);
+  const [liveCrcRate, setLiveCrcRate] = useState(452.34);
 
   const searchRef = useRef(null);
   const alertsRef = useRef(null);
@@ -61,6 +66,21 @@ export default function Header({ onMenuClick }) {
       }
     }
     loadAlerts();
+  }, []);
+
+  // Fetch live exchange rate for header badge
+  useEffect(() => {
+    async function loadExchangeRate() {
+      try {
+        const data = await currencyService.getRates();
+        if (data?.rates?.CRC) {
+          setLiveCrcRate(data.rates.CRC);
+        }
+      } catch {
+        // Fallback already set
+      }
+    }
+    loadExchangeRate();
   }, []);
 
   // Live global search debounced query
@@ -191,6 +211,32 @@ export default function Header({ onMenuClick }) {
 
       {/* Right: Quick actions, notifications, theme, font size, user profile */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Live Dollar Exchange Rate Badge */}
+        <button
+          type="button"
+          onClick={() => setShowExchangeModal(true)}
+          className="btn-ghost"
+          title="Consultar Tipo de Cambio Oficial del Dólar (USD en Vivo)"
+          aria-label="Abrir cotizaciones de tipo de cambio del dólar en vivo"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '5px 10px',
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--bg-surface-alt)',
+            border: '1px solid var(--border-color)',
+            fontSize: '12px',
+            fontWeight: 600,
+            cursor: 'pointer'
+          }}
+        >
+          <DollarSign size={15} color="var(--color-primary-green)" />
+          <span style={{ color: 'var(--text-main)', fontSize: '12px', display: 'flex', gap: '4px' }}>
+            USD: <span style={{ color: 'var(--color-primary-green)', fontWeight: 700 }}>₡{liveCrcRate ? Number(liveCrcRate).toFixed(1) : '452.3'}</span>
+          </span>
+        </button>
+
         {/* Quick link to StockPilot IA */}
         <button
           type="button"
@@ -390,6 +436,12 @@ export default function Header({ onMenuClick }) {
           </div>
         </div>
       </div>
+
+      {/* Live Exchange Rate Modal */}
+      <ExchangeRateModal
+        isOpen={showExchangeModal}
+        onClose={() => setShowExchangeModal(false)}
+      />
     </header>
   );
 }

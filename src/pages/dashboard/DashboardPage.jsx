@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useInventory from '../../hooks/useInventory';
 import KpiCard from '../../components/ui/KpiCard';
@@ -8,6 +8,8 @@ import Button from '../../components/ui/Button';
 import StatusBadge from '../../components/ui/StatusBadge';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
+import ExchangeRateModal from '../../components/ui/ExchangeRateModal';
+import currencyService from '../../services/currencyService';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import {
   Package,
@@ -18,7 +20,8 @@ import {
   ArrowLeftRight,
   Sparkles,
   TrendingUp,
-  Clock
+  Clock,
+  Globe
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -36,6 +39,20 @@ import {
 export default function DashboardPage() {
   const { stats, loading, error, reload } = useInventory();
   const navigate = useNavigate();
+  const [exchangeModalOpen, setExchangeModalOpen] = useState(false);
+  const [exchangeRates, setExchangeRates] = useState(null);
+
+  useEffect(() => {
+    async function loadRates() {
+      try {
+        const data = await currencyService.getRates();
+        setExchangeRates(data);
+      } catch {
+        // Fallback
+      }
+    }
+    loadRates();
+  }, []);
 
   if (loading) {
     return <LoadingState message="Cargando métricas y análisis de inventario..." />;
@@ -121,10 +138,71 @@ export default function DashboardPage() {
           value={formatCurrency(kpis.totalInventoryValue)}
           icon={<DollarSign size={24} />}
           variant="green"
-          trend="+ Inversión total"
+          trend={
+            exchangeRates?.rates?.CRC
+              ? `≈ ₡${Math.round(currencyService.convert(kpis.totalInventoryValue, 'USD', 'CRC', exchangeRates.rates)).toLocaleString('es-CR')}`
+              : '+ Inversión total'
+          }
           trendType="positive"
-          subtitle="Costo adquisición valorizado"
+          subtitle="Costo adquisición valorizado (USD)"
         />
+      </div>
+
+      {/* Live Dollar Exchange Rate Interactive Ticker Banner */}
+      <div
+        style={{
+          backgroundColor: 'var(--bg-surface)',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-md)',
+          padding: '12px 18px',
+          marginBottom: 'var(--space-lg)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px',
+          boxShadow: 'var(--shadow-sm)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              color: 'var(--color-primary-green)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <DollarSign size={20} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <strong style={{ fontSize: '13px', color: 'var(--text-main)' }}>Tipo de Cambio Oficial (USD)</strong>
+              <span className="badge badge-success" style={{ fontSize: '10px', padding: '1px 6px' }}>
+                API En Vivo
+              </span>
+            </div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px', display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              <span>🇨🇷 <strong>₡{exchangeRates?.rates?.CRC ? exchangeRates.rates.CRC.toFixed(2) : '452.34'}</strong> CRC</span>
+              <span>🇪🇺 <strong>€{exchangeRates?.rates?.EUR ? exchangeRates.rates.EUR.toFixed(4) : '0.8800'}</strong> EUR</span>
+              <span>🇲🇽 <strong>${exchangeRates?.rates?.MXN ? exchangeRates.rates.MXN.toFixed(2) : '17.47'}</strong> MXN</span>
+              <span>🇨🇴 <strong>${exchangeRates?.rates?.COP ? Math.round(exchangeRates.rates.COP).toLocaleString('es-CR') : '4,150'}</strong> COP</span>
+            </div>
+          </div>
+        </div>
+
+        <Button
+          variant="outline"
+          size="sm"
+          icon={<Globe size={14} />}
+          onClick={() => setExchangeModalOpen(true)}
+        >
+          Consultar / Conversor de Monedas
+        </Button>
       </div>
 
       {/* StockPilot IA Assistant Highlight Card */}
@@ -404,6 +482,12 @@ export default function DashboardPage() {
           </div>
         </Card>
       </div>
+
+      {/* Exchange Rate Modal */}
+      <ExchangeRateModal
+        isOpen={exchangeModalOpen}
+        onClose={() => setExchangeModalOpen(false)}
+      />
     </div>
   );
 }

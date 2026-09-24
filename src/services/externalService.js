@@ -1,9 +1,14 @@
+import currencyService from './currencyService';
+
 /**
- * External Service - Integrates real external Open Food Facts public API
- * Used for barcode lookups and automatic product metadata population.
+ * External Service - Integrates real external public APIs
+ * 1. Open Food Facts API (Barcode scanner & metadata lookup)
+ * 2. Open Exchange Rates API (Live USD exchange rates & currency conversion)
  */
 
 export const externalService = {
+  currency: currencyService,
+
   /**
    * Look up product details by barcode in Open Food Facts database
    * @param {string} barcode
@@ -68,4 +73,5 @@ export const externalService = {
   }
 };
 
+export { currencyService };
 export default externalService;
