@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSettings } from '../../context/SettingsContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useNotification } from '../../context/NotificationContext';
@@ -7,6 +7,7 @@ import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import LoadingState from '../../components/ui/LoadingState';
+import Avatar from '../../components/ui/Avatar';
 import {
   User,
   Building,
@@ -17,18 +18,27 @@ import {
   Sun,
   Moon,
   Sparkles,
-  Download
+  Download,
+  Image,
+  Eye,
+  Type,
+  Upload,
+  Trash2,
+  Camera
 } from 'lucide-react';
 import LogoFull from '../../assets/brand/LogoFull';
 import LogoIsotype from '../../assets/brand/LogoIsotype';
+import { useAuth } from '../../context/AuthContext';
 
 export default function SettingsPage() {
+  const { user, updateProfile } = useAuth();
   const { settings, updateSection, loading } = useSettings();
-  const { theme, setTheme, fontSize, setFontSize } = useTheme();
+  const { theme, setTheme, fontSize, setFontSize, a11yPrefs, setA11yPrefs } = useTheme();
   const { notifySuccess, notifyError } = useNotification();
 
   const [activeTab, setActiveTab] = useState('profile');
   const [saving, setSaving] = useState(false);
+  const fileInputRef = useRef(null);
 
   // Local form states
   const [profileData, setProfileData] = useState(settings.profile);
@@ -48,10 +58,41 @@ export default function SettingsPage() {
 
   if (loading) return <LoadingState message="Cargando configuración..." />;
 
+  const handleAvatarFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      notifyError('Por favor selecciona un archivo de imagen válido (PNG, JPG, WEBP, GIF).');
+      return;
+    }
+
+    if (file.size > 3 * 1024 * 1024) {
+      notifyError('La imagen no debe superar los 3 MB de tamaño.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result;
+      setProfileData(prev => ({ ...prev, avatar: base64 }));
+      notifySuccess('Imagen cargada en la vista previa. Haz clic en "Guardar Perfil" para aplicar los cambios.');
+    };
+    reader.onerror = () => {
+      notifyError('Error al procesar el archivo de imagen.');
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSave = async (section, data) => {
     setSaving(true);
     try {
       await updateSection(section, data);
+      
+      if (section === 'profile' && updateProfile) {
+        await updateProfile({ name: data.name, avatar: data.avatar });
+      }
+
       notifySuccess('Configuración guardada exitosamente.');
     } catch {
       notifyError('No se pudo guardar la configuración.');
@@ -84,8 +125,77 @@ export default function SettingsPage() {
 
       {/* Perfil Personal */}
       {activeTab === 'profile' && (
-        <Card title="Perfil de Usuario" subtitle="Información de contacto personal">
+        <Card title="Perfil de Usuario" subtitle="Información de contacto y personalización de cuenta">
           <form onSubmit={(e) => { e.preventDefault(); handleSave('profile', profileData); }}>
+            {/* Avatar Upload Banner */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: '20px',
+                padding: '18px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-color)',
+                marginBottom: '24px'
+              }}
+            >
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <Avatar
+                  src={profileData?.avatar || user?.avatar || ''}
+                  name={profileData?.name || user?.name || 'Usuario'}
+                  size={84}
+                />
+              </div>
+
+              <div style={{ flex: 1, minWidth: '240px' }}>
+                <h4 style={{ margin: '0 0 6px 0', fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  Foto de Perfil
+                </h4>
+                <p className="text-secondary" style={{ fontSize: '13px', margin: '0 0 12px 0', lineHeight: '1.4' }}>
+                  Sube una foto desde tu computadora o dispositivo (PNG, JPG, WEBP hasta 3 MB) o pega una URL directa.
+                </p>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png, image/jpeg, image/webp, image/gif"
+                    onChange={handleAvatarFileChange}
+                    style={{ display: 'none' }}
+                    id="avatar-file-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="primary"
+                    size="sm"
+                    icon={<Upload size={15} />}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Subir Imagen del Equipo
+                  </Button>
+
+                  {(profileData?.avatar || user?.avatar) && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      icon={<Trash2 size={15} />}
+                      onClick={() => {
+                        setProfileData(prev => ({ ...prev, avatar: '' }));
+                        if (fileInputRef.current) fileInputRef.current.value = '';
+                        notifySuccess('Foto de perfil eliminada. Haz clic en "Guardar Perfil" para aplicar.');
+                      }}
+                      style={{ color: 'var(--color-danger-red)' }}
+                    >
+                      Quitar Foto
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div className="form-grid-2">
               <Input
                 label="Nombre Completo"
@@ -119,7 +229,17 @@ export default function SettingsPage() {
                 </select>
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+            <div className="form-grid-1" style={{ marginTop: '8px' }}>
+              <Input
+                label="O ingresar enlace directo (URL de imagen)"
+                type="url"
+                placeholder="https://ejemplo.com/avatar.jpg"
+                value={profileData?.avatar || ''}
+                onChange={(e) => setProfileData(prev => ({ ...prev, avatar: e.target.value }))}
+                helperText="Si prefieres usar una imagen alojada en la web, escribe o pega aquí el enlace."
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
               <Button type="submit" variant="primary" loading={saving} icon={<Save size={16} />}>
                 Guardar Perfil
               </Button>
@@ -367,6 +487,64 @@ export default function SettingsPage() {
               <li><strong>Soporte para lectores de pantalla:</strong> Etiquetas accesibles (`aria-label`, `aria-describedby`, `aria-live`).</li>
               <li><strong>Adaptabilidad visual:</strong> Escalado tipográfico global sin romper la grilla de layouts ni tablas.</li>
             </ul>
+          </Card>
+
+          <Card title="Opciones Avanzadas de Inclusión" subtitle="Herramientas cognitivas y visuales">
+            <div className="form-grid-2">
+              <div
+                onClick={() => setA11yPrefs({ dyslexiaFont: !a11yPrefs?.dyslexiaFont })}
+                style={{
+                  padding: '16px',
+                  borderRadius: 'var(--radius-md)',
+                  border: a11yPrefs?.dyslexiaFont ? '2px solid var(--color-primary-blue)' : '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-surface-alt)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  gap: '12px',
+                  alignItems: 'center'
+                }}
+              >
+                <Type size={24} color={a11yPrefs?.dyslexiaFont ? 'var(--color-primary-blue)' : 'var(--text-muted)'} />
+                <div>
+                  <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>Fuente para Dislexia</div>
+                  <div className="text-secondary" style={{ fontSize: '11px' }}>Aumenta el espaciado y usa fuente de alta legibilidad</div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setA11yPrefs({ reducedMotion: !a11yPrefs?.reducedMotion })}
+                style={{
+                  padding: '16px',
+                  borderRadius: 'var(--radius-md)',
+                  border: a11yPrefs?.reducedMotion ? '2px solid var(--color-primary-blue)' : '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-surface-alt)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  gap: '12px',
+                  alignItems: 'center'
+                }}
+              >
+                <Eye size={24} color={a11yPrefs?.reducedMotion ? 'var(--color-primary-blue)' : 'var(--text-muted)'} />
+                <div>
+                  <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>Reducir Movimiento</div>
+                  <div className="text-secondary" style={{ fontSize: '11px' }}>Desactiva animaciones y transiciones decorativas</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '16px' }}>
+              <label className="form-label">Filtros para Daltonismo</label>
+              <select
+                className="form-select"
+                value={a11yPrefs?.colorFilter || 'none'}
+                onChange={(e) => setA11yPrefs({ colorFilter: e.target.value })}
+              >
+                <option value="none">Sin Filtro (Visión Estándar)</option>
+                <option value="protanopia">Protanopía (Ceguera al color rojo)</option>
+                <option value="deuteranopia">Deuteranopía (Ceguera al color verde)</option>
+                <option value="tritanopia">Tritanopía (Ceguera al color azul)</option>
+              </select>
+            </div>
           </Card>
         </div>
       )}

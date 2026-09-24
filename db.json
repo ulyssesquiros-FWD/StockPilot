@@ -2,13 +2,13 @@
   "users": [
     {
       "id": "1",
-      "name": "Carlos Mendoza",
+      "name": "Ulysses Quiros",
       "email": "admin@stockpilot.com",
       "password": "Admin123!",
       "role": "admin",
       "status": "active",
       "businessName": "StockPilot Corp",
-      "lastLogin": "2026-09-24T15:24:49.527Z",
+      "lastLogin": "2026-09-24T16:37:42.177Z",
       "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&auto=format&fit=crop&q=80"
     },
     {
@@ -1232,6 +1232,38 @@
       "userName": "Carlos Mendoza",
       "timestamp": "2026-09-24T15:24:49.536Z",
       "id": "ipsKJv6li8o"
+    },
+    {
+      "type": "UPDATE_USER",
+      "description": "Usuario modificado: Ulysses Quiros (Rol: admin, Estado: active)",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T16:25:00.685Z",
+      "id": "6y4Pepw9o-E"
+    },
+    {
+      "type": "LOGOUT",
+      "description": "Cierre de sesión de Carlos Mendoza",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T16:25:20.171Z",
+      "id": "Q_grpTOubFQ"
+    },
+    {
+      "type": "LOGOUT",
+      "description": "Cierre de sesión de Ulysses Quiros",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T16:25:30.341Z",
+      "id": "RxjeAE24tnk"
+    },
+    {
+      "type": "LOGIN",
+      "description": "Inicio de sesión exitoso de Ulysses Quiros (admin)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T16:37:42.187Z",
+      "id": "my-WX-db6fQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

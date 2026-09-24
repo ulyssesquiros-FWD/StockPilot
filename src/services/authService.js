@@ -135,6 +135,22 @@ export const authService = {
       }
     }
     localStorage.removeItem(SESSION_KEY);
+  },
+
+  /**
+   * Update current user profile
+   */
+  async updateProfile(userId, updates) {
+    const updatedUser = await apiClient.patch(`/users/${userId}`, updates);
+    
+    // Update local session
+    const currentSession = this.getCurrentSession();
+    if (currentSession && currentSession.id === userId) {
+      const newSession = { ...currentSession, ...updates, name: updatedUser.name, avatar: updatedUser.avatar };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(newSession));
+      return newSession;
+    }
+    return updatedUser;
   }
 };
 

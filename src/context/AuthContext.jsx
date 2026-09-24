@@ -37,6 +37,13 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const updateProfile = async (updates) => {
+    if (!user) return;
+    const newSession = await authService.updateProfile(user.id, updates);
+    setUser(newSession);
+    return newSession;
+  };
+
   const value = {
     user,
     role: user?.role || null,
@@ -44,7 +51,8 @@ export function AuthProvider({ children }) {
     loading,
     login,
     register,
-    logout
+    logout,
+    updateProfile
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

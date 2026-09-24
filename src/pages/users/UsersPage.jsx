@@ -14,7 +14,7 @@ import StatusBadge from '../../components/ui/StatusBadge';
 import Avatar from '../../components/ui/Avatar';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import { Plus, Edit2, Trash2, Shield, UserCheck, UserX } from 'lucide-react';
+import { Plus, Edit2, Trash2, Shield, UserCheck, UserX, Upload, Camera } from 'lucide-react';
 
 export default function UsersPage() {
   const { user: currentUser } = useAuth();
@@ -28,12 +28,14 @@ export default function UsersPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [modalSaving, setModalSaving] = useState(false);
+  const modalFileInputRef = React.useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     role: 'employee',
     status: 'active',
+    avatar: '',
     businessName: 'StockPilot Corp'
   });
 
@@ -65,6 +67,7 @@ export default function UsersPage() {
       password: '',
       role: 'employee',
       status: 'active',
+      avatar: '',
       businessName: currentUser?.businessName || 'StockPilot Corp'
     });
     setModalOpen(true);
@@ -78,9 +81,32 @@ export default function UsersPage() {
       password: u.password || '',
       role: u.role || 'employee',
       status: u.status || 'active',
+      avatar: u.avatar || '',
       businessName: u.businessName || 'StockPilot Corp'
     });
     setModalOpen(true);
+  };
+
+  const handleModalAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      notifyError('Por favor selecciona un archivo de imagen válido.');
+      return;
+    }
+
+    if (file.size > 3 * 1024 * 1024) {
+      notifyError('La imagen no debe superar los 3 MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setFormData(prev => ({ ...prev, avatar: reader.result }));
+      notifySuccess('Foto de usuario cargada en vista previa.');
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleToggleStatus = async (u) => {
@@ -311,6 +337,64 @@ export default function UsersPage() {
         }
       >
         <form onSubmit={handleSave} noValidate>
+          {/* Avatar Upload Area */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              padding: '12px 16px',
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-color)',
+              marginBottom: '16px'
+            }}
+          >
+            <Avatar
+              src={formData.avatar}
+              name={formData.name || 'Usuario'}
+              size={56}
+            />
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                Foto de Perfil del Usuario
+              </div>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <input
+                  ref={modalFileInputRef}
+                  type="file"
+                  accept="image/png, image/jpeg, image/webp, image/gif"
+                  onChange={handleModalAvatarChange}
+                  style={{ display: 'none' }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  icon={<Upload size={14} />}
+                  onClick={() => modalFileInputRef.current?.click()}
+                >
+                  Subir Foto
+                </Button>
+                {formData.avatar && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    icon={<Trash2 size={14} />}
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, avatar: '' }));
+                      if (modalFileInputRef.current) modalFileInputRef.current.value = '';
+                    }}
+                    style={{ color: 'var(--color-danger-red)' }}
+                  >
+                    Quitar
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+
           <Input
             label="Nombre Completo"
             name="name"

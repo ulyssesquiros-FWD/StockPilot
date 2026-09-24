@@ -22,6 +22,28 @@ export function applyFontSize(size) {
   }
 }
 
+export function applyAccessibilityPreferences(prefs = {}) {
+  const root = document.documentElement;
+  
+  if (prefs.dyslexiaFont) {
+    root.setAttribute('data-dyslexia', 'true');
+  } else {
+    root.removeAttribute('data-dyslexia');
+  }
+
+  if (prefs.reducedMotion) {
+    root.setAttribute('data-reduced-motion', 'true');
+  } else {
+    root.removeAttribute('data-reduced-motion');
+  }
+
+  if (prefs.colorFilter && prefs.colorFilter !== 'none') {
+    root.setAttribute('data-color-filter', prefs.colorFilter);
+  } else {
+    root.removeAttribute('data-color-filter');
+  }
+}
+
 export function announceToScreenReader(message) {
   const region = document.getElementById('sr-announcements');
   if (region) {
