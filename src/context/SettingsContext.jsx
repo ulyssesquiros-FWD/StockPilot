@@ -4,12 +4,6 @@ import apiClient from '../services/api';
 export const SettingsContext = createContext(null);
 
 const DEFAULT_SETTINGS = {
-  profile: {
-    name: 'Carlos Mendoza',
-    email: 'admin@stockpilot.com',
-    phone: '+506 8888-9999',
-    language: 'es'
-  },
   company: {
     companyName: 'StockPilot Solutions',
     commercialName: 'StockPilot Distribuciones',

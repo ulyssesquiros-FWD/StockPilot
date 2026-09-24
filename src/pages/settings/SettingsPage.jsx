@@ -41,18 +41,36 @@ export default function SettingsPage() {
   const fileInputRef = useRef(null);
 
   // Local form states
-  const [profileData, setProfileData] = useState(settings.profile);
-  const [companyData, setCompanyData] = useState(settings.company);
-  const [inventoryData, setInventoryData] = useState(settings.inventory);
-  const [notificationData, setNotificationData] = useState(settings.notifications);
+  const [profileData, setProfileData] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    avatar: user?.avatar || '',
+    language: user?.language || 'es'
+  });
+  const [companyData, setCompanyData] = useState(settings?.company || {});
+  const [inventoryData, setInventoryData] = useState(settings?.inventory || {});
+  const [notificationData, setNotificationData] = useState(settings?.notifications || {});
 
-  // Sync if settings load later
+  // Sync profile when logged-in user changes or loads
+  React.useEffect(() => {
+    if (user) {
+      setProfileData({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        avatar: user.avatar || '',
+        language: user.language || 'es'
+      });
+    }
+  }, [user]);
+
+  // Sync company, inventory and notifications when system settings load
   React.useEffect(() => {
     if (settings) {
-      setProfileData(settings.profile);
-      setCompanyData(settings.company);
-      setInventoryData(settings.inventory);
-      setNotificationData(settings.notifications);
+      setCompanyData(settings.company || {});
+      setInventoryData(settings.inventory || {});
+      setNotificationData(settings.notifications || {});
     }
   }, [settings]);
 
@@ -87,10 +105,18 @@ export default function SettingsPage() {
   const handleSave = async (section, data) => {
     setSaving(true);
     try {
-      await updateSection(section, data);
-      
-      if (section === 'profile' && updateProfile) {
-        await updateProfile({ name: data.name, avatar: data.avatar });
+      if (section === 'profile') {
+        if (updateProfile) {
+          await updateProfile({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            avatar: data.avatar,
+            language: data.language
+          });
+        }
+      } else {
+        await updateSection(section, data);
       }
 
       notifySuccess('Configuración guardada exitosamente.');
@@ -125,7 +151,10 @@ export default function SettingsPage() {
 
       {/* Perfil Personal */}
       {activeTab === 'profile' && (
-        <Card title="Perfil de Usuario" subtitle="Información de contacto y personalización de cuenta">
+        <Card
+          title={`Perfil de Usuario: ${user?.name || 'Usuario Activo'}`}
+          subtitle={`Sesión iniciada como ${user?.role === 'admin' ? 'Administrador' : user?.role === 'manager' ? 'Encargado de Inventario' : 'Empleado'} (${user?.email || ''})`}
+        >
           <form onSubmit={(e) => { e.preventDefault(); handleSave('profile', profileData); }}>
             {/* Avatar Upload Banner */}
             <div

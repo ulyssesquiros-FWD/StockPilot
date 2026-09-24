@@ -30,7 +30,9 @@ export const authService = {
       email: user.email,
       role: user.role,
       businessName: user.businessName || 'StockPilot Corp',
-      avatar: user.avatar,
+      avatar: user.avatar || '',
+      phone: user.phone || '',
+      language: user.language || 'es',
       token: `demo-token-${user.id}-${Date.now()}`
     };
 
@@ -89,7 +91,9 @@ export const authService = {
       email: created.email,
       role: created.role,
       businessName: created.businessName,
-      avatar: created.avatar,
+      avatar: created.avatar || '',
+      phone: created.phone || '',
+      language: created.language || 'es',
       token: `demo-token-${created.id}-${Date.now()}`
     };
 
@@ -145,8 +149,8 @@ export const authService = {
     
     // Update local session
     const currentSession = this.getCurrentSession();
-    if (currentSession && currentSession.id === userId) {
-      const newSession = { ...currentSession, ...updates, name: updatedUser.name, avatar: updatedUser.avatar };
+    if (currentSession && String(currentSession.id) === String(userId)) {
+      const newSession = { ...currentSession, ...updatedUser };
       localStorage.setItem(SESSION_KEY, JSON.stringify(newSession));
       return newSession;
     }

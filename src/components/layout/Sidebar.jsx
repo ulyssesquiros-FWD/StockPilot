@@ -19,6 +19,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { canAccessRoute } from '../../utils/permissions';
+import Avatar from '../ui/Avatar';
 
 export default function Sidebar({ isOpen, onClose, alertCount = 0 }) {
   const { user, logout } = useAuth();
@@ -186,24 +187,12 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0 }) {
             gap: '10px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden' }}>
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-primary-green)',
-                color: '#0A2E5B',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                fontSize: '14px',
-                flexShrink: 0
-              }}
-            >
-              {user?.name?.[0]?.toUpperCase() || 'U'}
-            </div>
+          <div
+            onClick={() => navigate('/configuracion')}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', cursor: 'pointer' }}
+            title="Ver perfil y configuración"
+          >
+            <Avatar src={user?.avatar} name={user?.name || 'Usuario'} size={36} role={user?.role} />
             <div style={{ overflow: 'hidden' }}>
               <div style={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                 {user?.name || 'Usuario'}
