@@ -1,0 +1,99 @@
+{
+  "name": "StockPilot - 02 Alerta de Stock Bajo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stockpilot/stock-alert",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook Stock Alert",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ Number($json.body.stock) }}",
+              "operation": "smallerEqual",
+              "value2": "={{ Number($json.body.minimumStock) }}"
+            }
+          ]
+        }
+      },
+      "name": "¿Requiere Alerta?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $('Webhook Stock Alert').item.json.body;\nconst isZero = Number(item.stock) <= 0;\nreturn {\n  productId: item.id,\n  type: isZero ? 'out_of_stock' : 'low_stock',\n  priority: isZero ? 'critical' : 'warning',\n  date: new Date().toISOString(),\n  status: isZero ? 'critical' : 'warning',\n  recommendedAction: isZero \n    ? `Stock agotado (0 unidades) para ${item.name}. Ordenar reposición urgente al proveedor.`\n    : `Stock bajo (${item.stock} unidades de un mínimo de ${item.minimumStock}) para ${item.name}. Planificar reabastecimiento.`\n};"
+      },
+      "name": "Preparar Datos Alerta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 220]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/alerts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "productId", "value": "={{ $json.productId }}" },
+            { "name": "type", "value": "={{ $json.type }}" },
+            { "name": "priority", "value": "={{ $json.priority }}" },
+            { "name": "date", "value": "={{ $json.date }}" },
+            { "name": "status", "value": "={{ $json.status }}" },
+            { "name": "recommendedAction", "value": "={{ $json.recommendedAction }}" }
+          ]
+        }
+      },
+      "name": "Crear Alerta en JSON Server",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [900, 220]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, alertCreated: true, alert: $json }) }}",
+        "options": { "responseCode": 201 }
+      },
+      "name": "Respuesta Alerta Generada",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 220]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, alertCreated: false, message: 'Stock en niveles óptimos, no se requiere emitir alerta.' }) }}",
+        "options": { "responseCode": 200 }
+      },
+      "name": "Respuesta Stock Saludable",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [680, 400]
+    }
+  ],
+  "connections": {
+    "Webhook Stock Alert": { "main": [[{ "node": "¿Requiere Alerta?", "type": "main", "index": 0 }]] },
+    "¿Requiere Alerta?": {
+      "main": [
+        [{ "node": "Preparar Datos Alerta", "type": "main", "index": 0 }],
+        [{ "node": "Respuesta Stock Saludable", "type": "main", "index": 0 }]
+      ]
+    },
+    "Preparar Datos Alerta": { "main": [[{ "node": "Crear Alerta en JSON Server", "type": "main", "index": 0 }]] },
+    "Crear Alerta en JSON Server": { "main": [[{ "node": "Respuesta Alerta Generada", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

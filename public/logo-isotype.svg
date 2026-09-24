@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" fill="none">
+  <defs>
+    <linearGradient id="isoTop" x1="28" y1="14" x2="68" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#1E6FD9" />
+      <stop offset="1" stopColor="#0B56B8" />
+    </linearGradient>
+    <linearGradient id="isoLeft" x1="22" y1="26" x2="52" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#09387A" />
+      <stop offset="1" stopColor="#052452" />
+    </linearGradient>
+    <linearGradient id="isoRight" x1="52" y1="34" x2="78" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#0F60C9" />
+      <stop offset="1" stopColor="#08479E" />
+    </linearGradient>
+    <linearGradient id="isoTape" x1="36" y1="17" x2="60" y2="31" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#257CEB" />
+      <stop offset="1" stopColor="#185FB8" />
+    </linearGradient>
+    <linearGradient id="isoGreen" x1="60" y1="65" x2="105" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#00D287" />
+      <stop offset="1" stopColor="#00A86B" />
+    </linearGradient>
+    <linearGradient id="isoSwoosh" x1="8" y1="50" x2="55" y2="78" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#00DCA0" />
+      <stop offset="0.6" stopColor="#00BF80" />
+      <stop offset="1" stopColor="#009960" />
+    </linearGradient>
+  </defs>
+
+  <!-- Swoosh Ring -->
+  <path d="M 12 56 C 8 68 18 78 34 81 C 48 83 60 76 68 67 C 69 65 67 63 65 64 C 57 71 46 76 34 74 C 22 72 16 64 18 56 C 19 53 13 52 12 56 Z" fill="url(#isoSwoosh)" />
+  <path d="M 14 52 C 11 60 16 69 28 74 C 29.5 74.6 30 72.8 28.5 72.2 C 18 68 14 60 16.5 53.5 C 17.5 50.8 15 49.5 14 52 Z" fill="#4EEDB6" opacity="0.8" />
+
+  <!-- Box Left Face -->
+  <path d="M 24 30 L 52 44 L 52 74 L 24 60 Z" fill="url(#isoLeft)" />
+  <path d="M 36 36 L 42 39 L 42 49 L 36 46 Z" fill="#051C3F" />
+
+  <!-- Box Right Face -->
+  <path d="M 52 44 L 78 33 L 78 61 L 52 74 Z" fill="url(#isoRight)" />
+
+  <!-- Box Top Face -->
+  <path d="M 48 14 L 76 25 L 52 38 L 24 26 Z" fill="url(#isoTop)" />
+  <path d="M 43 16 L 51 19.5 L 43 33.5 L 35 30 Z" fill="url(#isoTape)" opacity="0.9" />
+
+  <!-- Growth Bars -->
+  <rect x="63" y="50" width="7.5" height="22" rx="3.75" fill="url(#isoGreen)" />
+  <rect x="74.5" y="39" width="7.5" height="33" rx="3.75" fill="url(#isoGreen)" />
+  <rect x="86" y="27" width="7.5" height="45" rx="3.75" fill="url(#isoGreen)" />
+
+  <!-- Arrow -->
+  <path d="M 97 45 L 97 19.5 C 97 18 98.8 17.2 99.8 18.2 L 109 27.4 C 110.2 28.6 109.4 30.6 107.7 30.6 L 103 30.6 L 103 45 C 103 46.5 101.5 47.5 100 47.5 C 98.5 47.5 97 46.5 97 45 Z" fill="#00C87E" />
+</svg>

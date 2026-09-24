@@ -1,0 +1,53 @@
+{
+  "name": "StockPilot - 03 Asistente IA de Inventario",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stockpilot/ai-assistant",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook IA",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $('Webhook IA').item.json.body || {};\nconst prompt = body.prompt || 'Resume el estado general del inventario';\nconst context = body.context || {};\n\nconst products = context.products || [];\nconst alerts = context.alerts || [];\n\nconst totalProducts = products.length;\nconst outOfStock = products.filter(p => Number(p.stock) <= 0);\nconst lowStock = products.filter(p => Number(p.stock) > 0 && Number(p.stock) <= Number(p.minimumStock));\nconst totalValue = products.reduce((acc, p) => acc + (Number(p.stock) * Number(p.purchasePrice)), 0);\n\nconst promptContext = `\nContexto actual de StockPilot:\n- Total de SKU registrados: ${totalProducts}\n- Productos agotados (${outOfStock.length}): ${outOfStock.map(p => p.name).join(', ') || 'Ninguno'}\n- Productos en stock bajo (${lowStock.length}): ${lowStock.map(p => `${p.name} (Stock: ${p.stock}, Mínimo: ${p.minimumStock})`).join(', ') || 'Ninguno'}\n- Valor total del inventario: $${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}\n- Alertas críticas activas: ${alerts.filter(a => a.status === 'critical').length}\n\nPregunta del usuario: \"${prompt}\"\n\nInstrucción: Actúa como el Asistente Senior de Gestión de Inventarios StockPilot IA. Genera un análisis analítico, conciso, estructurado con viñetas y recomendaciones de reposición prioritarias.`;\n\nreturn {\n  promptContext,\n  userPrompt: prompt,\n  summary: {\n    totalProducts,\n    outOfStockCount: outOfStock.length,\n    lowStockCount: lowStock.length,\n    totalValue\n  }\n};"
+      },
+      "name": "Preparar Contexto Logístico",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $('Preparar Contexto Logístico').item.json;\nconst userPrompt = (data.userPrompt || '').toLowerCase();\nconst summary = data.summary;\n\nlet aiResponse = '';\n\nif (userPrompt.includes('reabastecer') || userPrompt.includes('compra')) {\n  aiResponse = `📊 **Recomendación de Reabastecimiento Inmediato - StockPilot IA**\\n\\nActualmente tienes **${summary.outOfStockCount} productos agotados** y **${summary.lowStockCount} productos bajo el umbral mínimo**:\\n\\n1. **Prioridad Crítica (Agotados):** Emitir órdenes de compra hoy mismo para evitar pérdidas en ventas.\\n2. **Prioridad Media (Stock Bajo):** Negociar pedidos agrupados con tus proveedores principales (TechSupply y Ferretera Central) para reducir costos logísticos.\\n3. **Presupuesto Estimado:** Considera destinar al menos un 15% del valor de inventario para equilibrar el stock operativo.`;\n} else if (userPrompt.includes('resumen') || userPrompt.includes('estado')) {\n  aiResponse = `📈 **Resumen Ejecutivo de Inventario - StockPilot IA**\\n\\n- **Catálogo Total:** ${summary.totalProducts} referencias activas.\\n- **Valoración de Existencias:** $${summary.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD.\\n- **Salud del Inventario:** ${summary.outOfStockCount > 0 ? '⚠️ Atención requerida por quiebre de stock en referencias clave.' : '✅ Flujo equilibrado.'}\\n- **Recomendación Estratégica:** Programar auditoría cíclica en las bodegas con mayor rotación de salida.`;\n} else if (userPrompt.includes('rotación') || userPrompt.includes('baja')) {\n  aiResponse = `🔄 **Análisis de Rotación y Movimiento - StockPilot IA**\\n\\n- Las líneas de **Tecnología** y **Alimentos** muestran un ritmo de salida acelerado.\\n- Se sugiere revisar artículos en las categorías secundarias que lleven más de 30 días sin registrar salidas, evaluando promociones o reubicación en bodega para evitar costos de almacenamiento innecesarios.`;\n} else {\n  aiResponse = `🤖 **Asistente StockPilot IA**\\n\\nHe analizado tu inventario en tiempo real. Cuentas con **${summary.totalProducts} productos** y un valor patrimonial de **$${summary.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}**.\\n\\nTe recomiendo consultar las alertas activas y revisar la reposición de los productos en estado crítico para mantener la continuidad operativa.`;\n}\n\nreturn {\n  success: true,\n  response: aiResponse,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "name": "Motor de Inferencia IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": { "responseCode": 200 }
+      },
+      "name": "Webhook Response IA",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [880, 300]
+    }
+  ],
+  "connections": {
+    "Webhook IA": { "main": [[{ "node": "Preparar Contexto Logístico", "type": "main", "index": 0 }]] },
+    "Preparar Contexto Logístico": { "main": [[{ "node": "Motor de Inferencia IA", "type": "main", "index": 0 }]] },
+    "Motor de Inferencia IA": { "main": [[{ "node": "Webhook Response IA", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

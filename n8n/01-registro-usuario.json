@@ -1,0 +1,151 @@
+{
+  "name": "StockPilot - 01 Registro de Usuario",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stockpilot/register",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook Register",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.email }}",
+              "operation": "isNotEmpty"
+            },
+            {
+              "value1": "={{ $json.body.name }}",
+              "operation": "isNotEmpty"
+            },
+            {
+              "value1": "={{ $json.body.password }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "name": "Validar Campos",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/users",
+        "options": {
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "email",
+                "value": "={{ $json.body.email }}"
+              }
+            ]
+          }
+        }
+      },
+      "name": "Consultar Usuario Existente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 240]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.length }}",
+              "operation": "equal",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "name": "¿Email Disponible?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [880, 240]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/users",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "name", "value": "={{ $('Webhook Register').item.json.body.name }}" },
+            { "name": "email", "value": "={{ $('Webhook Register').item.json.body.email }}" },
+            { "name": "password", "value": "={{ $('Webhook Register').item.json.body.password }}" },
+            { "name": "role", "value": "={{ $('Webhook Register').item.json.body.role || 'employee' }}" },
+            { "name": "status", "value": "active" },
+            { "name": "businessName", "value": "={{ $('Webhook Register').item.json.body.businessName || 'Empresa' }}" },
+            { "name": "createdAt", "value": "={{ $now.toISO() }}" }
+          ]
+        }
+      },
+      "name": "Crear Usuario en DB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1100, 180]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, message: 'Usuario registrado satisfactoriamente en StockPilot', user: $json }) }}",
+        "options": { "responseCode": 201 }
+      },
+      "name": "Respuesta Exitosa",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1320, 180]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, error: 'El correo electrónico ya se encuentra registrado en el sistema.' }) }}",
+        "options": { "responseCode": 409 }
+      },
+      "name": "Respuesta Email Duplicado",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1100, 320]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, error: 'Faltan campos obligatorios para el registro (nombre, email y contraseña).' }) }}",
+        "options": { "responseCode": 400 }
+      },
+      "name": "Respuesta Faltan Datos",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [680, 420]
+    }
+  ],
+  "connections": {
+    "Webhook Register": { "main": [[{ "node": "Validar Campos", "type": "main", "index": 0 }]] },
+    "Validar Campos": {
+      "main": [
+        [{ "node": "Consultar Usuario Existente", "type": "main", "index": 0 }],
+        [{ "node": "Respuesta Faltan Datos", "type": "main", "index": 0 }]
+      ]
+    },
+    "Consultar Usuario Existente": { "main": [[{ "node": "¿Email Disponible?", "type": "main", "index": 0 }]] },
+    "¿Email Disponible?": {
+      "main": [
+        [{ "node": "Crear Usuario en DB", "type": "main", "index": 0 }],
+        [{ "node": "Respuesta Email Duplicado", "type": "main", "index": 0 }]
+      ]
+    },
+    "Crear Usuario en DB": { "main": [[{ "node": "Respuesta Exitosa", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" }
+}

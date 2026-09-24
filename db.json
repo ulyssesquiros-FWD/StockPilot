@@ -1,0 +1,1238 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Carlos Mendoza",
+      "email": "admin@stockpilot.com",
+      "password": "Admin123!",
+      "role": "admin",
+      "status": "active",
+      "businessName": "StockPilot Corp",
+      "lastLogin": "2026-09-24T15:24:49.527Z",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "2",
+      "name": "Valeria Ramos",
+      "email": "manager@stockpilot.com",
+      "password": "Manager123!",
+      "role": "manager",
+      "status": "active",
+      "businessName": "StockPilot Corp",
+      "lastLogin": "2026-09-23T16:40:00Z",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "3",
+      "name": "Alejandro Gómez",
+      "email": "employee@stockpilot.com",
+      "password": "Employee123!",
+      "role": "employee",
+      "status": "active",
+      "businessName": "StockPilot Corp",
+      "lastLogin": "2026-09-24T07:50:00Z",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "4",
+      "name": "Lucía Morales",
+      "email": "lucia.m@stockpilot.com",
+      "password": "LuciaPass1!",
+      "role": "employee",
+      "status": "inactive",
+      "businessName": "StockPilot Corp",
+      "lastLogin": "2026-09-10T11:20:00Z",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Tecnología y Electrónica",
+      "description": "Equipos de cómputo, periféricos, cables y accesorios digitales.",
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "name": "Ferretería y Construcción",
+      "description": "Herramientas de mano, tornillería, materiales y protección laboral.",
+      "status": "active"
+    },
+    {
+      "id": "3",
+      "name": "Alimentos y Bebidas",
+      "description": "Productos empacados, despensa, bebidas e insumos de cafetería.",
+      "status": "active"
+    },
+    {
+      "id": "4",
+      "name": "Farmacia y Salud",
+      "description": "Medicamentos básicos, botiquín, insumos médicos y sanitización.",
+      "status": "active"
+    },
+    {
+      "id": "5",
+      "name": "Oficina y Papelería",
+      "description": "Papelería, tóneres, archivos y consumibles de oficina.",
+      "status": "active"
+    },
+    {
+      "id": "6",
+      "name": "Textil y Uniformes",
+      "description": "Indumentaria laboral, playeras corporativas y equipo de protección textil.",
+      "status": "active"
+    },
+    {
+      "id": "7",
+      "name": "Repuestos Automotrices",
+      "description": "Filtros, lubricantes, bujías y accesorios mecánicos de taller.",
+      "status": "inactive"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "1",
+      "name": "TechSupply Global",
+      "company": "TechSupply Solutions S.A.",
+      "email": "ventas@techsupply.com",
+      "phone": "+506 2200-1122",
+      "address": "Parque Industrial Norte, Bodega 4B, San José",
+      "associatedProducts": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "name": "Ferretera Central",
+      "company": "Distribuidora Ferretera del Valle S.A.",
+      "email": "pedidos@ferreteriacentral.com",
+      "phone": "+506 2440-8899",
+      "address": "Av. Central 52, Alajuela",
+      "associatedProducts": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "status": "active"
+    },
+    {
+      "id": "3",
+      "name": "Alimentos del Sol",
+      "company": "Agroindustrias Sol S.R.L.",
+      "email": "contacto@alimentosdelsol.com",
+      "phone": "+506 2550-3344",
+      "address": "Zona Franca Cartago, Nave 12",
+      "associatedProducts": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "status": "active"
+    },
+    {
+      "id": "4",
+      "name": "FarmaMedica Express",
+      "company": "Laboratorios Farmacéuticos Unidos",
+      "email": "institucional@farmamedica.com",
+      "phone": "+506 2299-4455",
+      "address": "Centro Logístico Lindora, Santa Ana",
+      "associatedProducts": [
+        15,
+        16
+      ],
+      "status": "active"
+    },
+    {
+      "id": "5",
+      "name": "OfiPapel Mayorista",
+      "company": "Suministros Corporativos OfiPapel S.A.",
+      "email": "cuentas@ofipapel.com",
+      "phone": "+506 2233-7711",
+      "address": "Calle Blancos, Diagonal al Parque",
+      "associatedProducts": [
+        17,
+        18
+      ],
+      "status": "active"
+    },
+    {
+      "id": "6",
+      "name": "Confecciones Andinas",
+      "company": "Textiles Andinos de Exportación",
+      "email": "ventas@andinastextil.com",
+      "phone": "+506 2771-8822",
+      "address": "Pérez Zeledón, Sector 2",
+      "associatedProducts": [
+        19,
+        20
+      ],
+      "status": "active"
+    },
+    {
+      "id": "7",
+      "name": "ElectroParts América",
+      "company": "Componentes Electrónicos Continental",
+      "email": "ordenes@electroparts.com",
+      "phone": "+506 2212-9900",
+      "address": "Heredia, UltraPark 1",
+      "associatedProducts": [
+        21,
+        22
+      ],
+      "status": "active"
+    },
+    {
+      "id": "8",
+      "name": "Mecánica & Repuestos Pro",
+      "company": "Importadora Mecapro Limitada",
+      "email": "info@mecapro.com",
+      "phone": "+506 2433-2211",
+      "address": "Radial El Coyol, Alajuela",
+      "associatedProducts": [
+        23
+      ],
+      "status": "active"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Laptop HP ProBook 450 G9",
+      "sku": "TEC-HP-450",
+      "barcode": "196548123456",
+      "description": "Portátil empresarial con Intel Core i7, 16GB RAM, SSD 512GB NVMe y pantalla FHD de 15.6 pulgadas.",
+      "categoryId": 1,
+      "brand": "HP",
+      "supplierId": 1,
+      "purchasePrice": 620,
+      "salePrice": 850,
+      "stock": 14,
+      "minimumStock": 5,
+      "location": "Bodega Central - Pasillo A3",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-01T10:00:00Z",
+      "updatedAt": "2026-09-20T14:30:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Mouse Inalámbrico Logitech MX Master 3S",
+      "sku": "TEC-LOG-MX3S",
+      "barcode": "097855172345",
+      "description": "Mouse ergonómico de alta precisión con sensor 8000 DPI, scroll electromagnético y conexión Bluetooth.",
+      "categoryId": 1,
+      "brand": "Logitech",
+      "supplierId": 1,
+      "purchasePrice": 65,
+      "salePrice": 99,
+      "stock": 3,
+      "minimumStock": 8,
+      "location": "Bodega Central - Pasillo A1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-02T11:00:00Z",
+      "updatedAt": "2026-09-22T09:15:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Teclado Mecánico Keychron K2 RGB",
+      "sku": "TEC-KEY-K2",
+      "barcode": "764017239012",
+      "description": "Teclado mecánico inalámbrico 75%, switches Gateron Brown, retroiluminación RGB compatible con Mac y Windows.",
+      "categoryId": 1,
+      "brand": "Keychron",
+      "supplierId": 1,
+      "purchasePrice": 55,
+      "salePrice": 89,
+      "stock": 0,
+      "minimumStock": 6,
+      "location": "Bodega Central - Pasillo A1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-03T14:00:00Z",
+      "updatedAt": "2026-09-21T18:00:00Z"
+    },
+    {
+      "id": "4",
+      "name": "Monitor Dell UltraSharp 24\" IPS",
+      "sku": "TEC-DEL-U24",
+      "barcode": "884116345678",
+      "description": "Monitor profesional Full HD con panel IPS antirreflejo, 99% sRGB y soporte ergonómico ajustable.",
+      "categoryId": 1,
+      "brand": "Dell",
+      "supplierId": 1,
+      "purchasePrice": 140,
+      "salePrice": 210,
+      "stock": 18,
+      "minimumStock": 4,
+      "location": "Bodega Central - Pasillo B2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-05T09:30:00Z",
+      "updatedAt": "2026-09-18T11:20:00Z"
+    },
+    {
+      "id": "5",
+      "name": "Audífonos Inalámbricos Sony WH-1000XM5",
+      "sku": "TEC-SNY-XM5",
+      "barcode": "027242923456",
+      "description": "Audífonos premium over-ear con cancelación de ruido activa líder en la industria y 30 horas de batería.",
+      "categoryId": 1,
+      "brand": "Sony",
+      "supplierId": 1,
+      "purchasePrice": 240,
+      "salePrice": 360,
+      "stock": 5,
+      "minimumStock": 5,
+      "location": "Bodega Seguridad - Estante S1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-06T15:20:00Z",
+      "updatedAt": "2026-09-23T10:10:00Z"
+    },
+    {
+      "id": "6",
+      "name": "Cable HDMI 2.1 Ultra High Speed 2m",
+      "sku": "TEC-CBL-HD21",
+      "barcode": "843556789012",
+      "description": "Cable trenzado 8K@60Hz y 4K@120Hz con conectores chapados en oro y soporte eARC.",
+      "categoryId": 1,
+      "brand": "Ugreen",
+      "supplierId": 1,
+      "purchasePrice": 6.5,
+      "salePrice": 14.5,
+      "stock": 42,
+      "minimumStock": 15,
+      "location": "Bodega Central - Pasillo A4",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-08T12:00:00Z",
+      "updatedAt": "2026-09-15T16:00:00Z"
+    },
+    {
+      "id": "7",
+      "name": "Taladro Percutor Inalámbrico DeWalt 20V",
+      "sku": "FER-DEW-DCD777",
+      "barcode": "885911456789",
+      "description": "Taladro atornillador sin carbones compacto con mandril de 1/2 pulgada, 2 velocidades y luz LED.",
+      "categoryId": 2,
+      "brand": "DeWalt",
+      "supplierId": 2,
+      "purchasePrice": 95,
+      "salePrice": 149,
+      "stock": 8,
+      "minimumStock": 3,
+      "location": "Bodega Herramientas - Estante H1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-10T08:30:00Z",
+      "updatedAt": "2026-09-19T13:40:00Z"
+    },
+    {
+      "id": "8",
+      "name": "Juego de Destornilladores Stanley 6 Piezas",
+      "sku": "FER-STA-6PC",
+      "barcode": "076174600609",
+      "description": "Set de destornilladores ergonómicos Cushion Grip punta magnética en cromo vanadio.",
+      "categoryId": 2,
+      "brand": "Stanley",
+      "supplierId": 2,
+      "purchasePrice": 11,
+      "salePrice": 19.5,
+      "stock": 2,
+      "minimumStock": 10,
+      "location": "Bodega Herramientas - Estante H2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-11T14:15:00Z",
+      "updatedAt": "2026-09-24T06:00:00Z"
+    },
+    {
+      "id": "9",
+      "name": "Cinta Métrica Profesional 8m / 26ft",
+      "sku": "FER-STA-TAPE8",
+      "barcode": "076174334283",
+      "description": "Flexómetro con cinta recubierta de nylon resistente y gancho magnético de sujeción.",
+      "categoryId": 2,
+      "brand": "Stanley",
+      "supplierId": 2,
+      "purchasePrice": 7,
+      "salePrice": 13,
+      "stock": 0,
+      "minimumStock": 8,
+      "location": "Bodega Herramientas - Estante H2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-12T16:00:00Z",
+      "updatedAt": "2026-09-23T11:00:00Z"
+    },
+    {
+      "id": "10",
+      "name": "Guantes de Trabajo Reforzados Nivel 4",
+      "sku": "FER-PRO-GLOVES",
+      "barcode": "750123456789",
+      "description": "Par de guantes anticorte con recubrimiento de nitrilo espumado para agarre en seco y húmedo.",
+      "categoryId": 2,
+      "brand": "Truper",
+      "supplierId": 2,
+      "purchasePrice": 3.2,
+      "salePrice": 6.5,
+      "stock": 65,
+      "minimumStock": 20,
+      "location": "Bodega Seguridad - Pasillo C1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-14T09:00:00Z",
+      "updatedAt": "2026-09-17T15:20:00Z"
+    },
+    {
+      "id": "11",
+      "name": "Café Gourmet en Grano 1kg",
+      "sku": "ALI-CAF-1KG",
+      "barcode": "744100123456",
+      "description": "Café arábica de altura 100% puro tueste medio con notas a chocolate y avellana.",
+      "categoryId": 3,
+      "brand": "Café Britt",
+      "supplierId": 3,
+      "purchasePrice": 12,
+      "salePrice": 19,
+      "stock": 25,
+      "minimumStock": 10,
+      "location": "Almacén Alimentos - Estante A1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-15T10:00:00Z",
+      "updatedAt": "2026-09-20T12:00:00Z"
+    },
+    {
+      "id": "12",
+      "name": "Galletas de Avena y Miel 300g",
+      "sku": "ALI-GAL-300G",
+      "barcode": "7622210449283",
+      "description": "Paquete de galletas crujientes horneadas con avena integral y miel de abeja natural.",
+      "categoryId": 3,
+      "brand": "Pozuelo",
+      "supplierId": 3,
+      "purchasePrice": 1.8,
+      "salePrice": 3.2,
+      "stock": 4,
+      "minimumStock": 15,
+      "location": "Almacén Alimentos - Estante A2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-16T11:30:00Z",
+      "updatedAt": "2026-09-22T17:10:00Z"
+    },
+    {
+      "id": "13",
+      "name": "Té Verde Orgánico Caja 25 Sobres",
+      "sku": "ALI-TEV-25S",
+      "barcode": "070177156789",
+      "description": "Infusión de hojas de té verde cosechadas artesanalmente ricas en antioxidantes.",
+      "categoryId": 3,
+      "brand": "Twinings",
+      "supplierId": 3,
+      "purchasePrice": 3.5,
+      "salePrice": 5.9,
+      "stock": 30,
+      "minimumStock": 10,
+      "location": "Almacén Alimentos - Estante A1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-18T13:00:00Z",
+      "updatedAt": "2026-09-14T08:00:00Z"
+    },
+    {
+      "id": "14",
+      "name": "Agua Mineral Natural 500ml Pack 12",
+      "sku": "ALI-AGU-12PK",
+      "barcode": "744101987654",
+      "description": "Agua mineralizada de manantial embotellada en origen sin gas añadido.",
+      "categoryId": 3,
+      "brand": "Cristal",
+      "supplierId": 3,
+      "purchasePrice": 4.5,
+      "salePrice": 8,
+      "stock": 0,
+      "minimumStock": 12,
+      "location": "Almacén Alimentos - Tarima B1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-19T09:00:00Z",
+      "updatedAt": "2026-09-24T05:30:00Z"
+    },
+    {
+      "id": "15",
+      "name": "Alcohol en Gel Antibacterial 1L con Dosificador",
+      "sku": "FAR-GEL-1L",
+      "barcode": "750221345678",
+      "description": "Solución hidroalcohólica al 70% con glicerina hidratante para desinfección de manos.",
+      "categoryId": 4,
+      "brand": "GermiClean",
+      "supplierId": 4,
+      "purchasePrice": 3.2,
+      "salePrice": 6,
+      "stock": 22,
+      "minimumStock": 8,
+      "location": "Farmacia Interna - Estante F1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1584744982491-665216d95f8b?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-20T11:00:00Z",
+      "updatedAt": "2026-09-16T14:00:00Z"
+    },
+    {
+      "id": "16",
+      "name": "Botiquín Industrial Primeros Auxilios 45 Elementos",
+      "sku": "FAR-BOT-IND45",
+      "barcode": "750998877665",
+      "description": "Gabinete metálico portátil equipado según norma laboral con gasas, apósitos, vendas y antiséptico.",
+      "categoryId": 4,
+      "brand": "SafetyFirst",
+      "supplierId": 4,
+      "purchasePrice": 28,
+      "salePrice": 45,
+      "stock": 5,
+      "minimumStock": 4,
+      "location": "Farmacia Interna - Estante F2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-22T15:00:00Z",
+      "updatedAt": "2026-09-23T16:00:00Z"
+    },
+    {
+      "id": "17",
+      "name": "Tóner Láser HP 85A Negro Original",
+      "sku": "OFI-HP-85A",
+      "barcode": "884420456123",
+      "description": "Cartucho de tóner de rendimiento estándar hasta 1600 páginas nítidas de texto e imagen.",
+      "categoryId": 5,
+      "brand": "HP",
+      "supplierId": 5,
+      "purchasePrice": 42,
+      "salePrice": 68,
+      "stock": 2,
+      "minimumStock": 6,
+      "location": "Bodega Oficina - Pasillo O1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-25T14:30:00Z",
+      "updatedAt": "2026-09-23T08:00:00Z"
+    },
+    {
+      "id": "18",
+      "name": "Impresora Multifunción Epson EcoTank L3250",
+      "sku": "OFI-EPS-L3250",
+      "barcode": "010343962456",
+      "description": "Impresora de tanque de tinta continuo con Wi-Fi Direct, escáner y bajo costo por copia.",
+      "categoryId": 5,
+      "brand": "Epson",
+      "supplierId": 5,
+      "purchasePrice": 160,
+      "salePrice": 225,
+      "stock": 7,
+      "minimumStock": 3,
+      "location": "Bodega Oficina - Pasillo O2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-26T16:00:00Z",
+      "updatedAt": "2026-09-18T10:00:00Z"
+    },
+    {
+      "id": "19",
+      "name": "Chaleco Reflectivo de Seguridad Industrial",
+      "sku": "TEX-CHAL-REF",
+      "barcode": "744223344556",
+      "description": "Chaleco de alta visibilidad fluorescente naranja con bandas reflectivas 3M y cierre de velcro.",
+      "categoryId": 6,
+      "brand": "SafeWear",
+      "supplierId": 6,
+      "purchasePrice": 4.5,
+      "salePrice": 9.5,
+      "stock": 35,
+      "minimumStock": 10,
+      "location": "Bodega Textil - Estante T1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-28T09:00:00Z",
+      "updatedAt": "2026-09-15T11:00:00Z"
+    },
+    {
+      "id": "20",
+      "name": "Camiseta Polo Corporativa Azul Marino Talla M",
+      "sku": "TEX-POLO-NAV-M",
+      "barcode": "744998811223",
+      "description": "Polo 100% algodón piqué reforzado en cuello y mangas para uso operativo diario.",
+      "categoryId": 6,
+      "brand": "ProUniform",
+      "supplierId": 6,
+      "purchasePrice": 8,
+      "salePrice": 16,
+      "stock": 19,
+      "minimumStock": 8,
+      "location": "Bodega Textil - Estante T2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-08-30T10:30:00Z",
+      "updatedAt": "2026-09-20T17:00:00Z"
+    },
+    {
+      "id": "21",
+      "name": "Regulador de Voltaje Forza 1200VA 8 Tomas",
+      "sku": "TEC-FOR-1200",
+      "barcode": "798302034567",
+      "description": "Protector de línea con estabilizador de tensión integrado, protección coaxial y RJ45.",
+      "categoryId": 1,
+      "brand": "Forza",
+      "supplierId": 7,
+      "purchasePrice": 22,
+      "salePrice": 38,
+      "stock": 11,
+      "minimumStock": 5,
+      "location": "Bodega Central - Pasillo B1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-09-01T14:00:00Z",
+      "updatedAt": "2026-09-21T09:00:00Z"
+    },
+    {
+      "id": "22",
+      "name": "Memoria USB 64GB Kingston DataTraveler 3.2",
+      "sku": "TEC-KNG-64G",
+      "barcode": "740617304561",
+      "description": "Unidad flash USB 3.2 Gen 1 ultracompacta con tapa protectora móvil y carcasa resistente.",
+      "categoryId": 1,
+      "brand": "Kingston",
+      "supplierId": 7,
+      "purchasePrice": 4.8,
+      "salePrice": 9.9,
+      "stock": 28,
+      "minimumStock": 10,
+      "location": "Bodega Central - Pasillo A2",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-09-02T16:00:00Z",
+      "updatedAt": "2026-09-22T13:00:00Z"
+    },
+    {
+      "id": "23",
+      "name": "Aceite Sintético para Motor 5W-30 Galón",
+      "sku": "REP-MOT-5W30",
+      "barcode": "071924145678",
+      "description": "Lubricante de tecnología sintética avanzada para motores a gasolina con protección térmica extrema.",
+      "categoryId": 2,
+      "brand": "Mobil 1",
+      "supplierId": 8,
+      "purchasePrice": 27.5,
+      "salePrice": 42,
+      "stock": 9,
+      "minimumStock": 4,
+      "location": "Bodega Taller - Estante M1",
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=500&auto=format&fit=crop&q=80",
+      "createdAt": "2026-09-04T11:00:00Z",
+      "updatedAt": "2026-09-23T15:00:00Z"
+    }
+  ],
+  "movements": [
+    {
+      "id": "1",
+      "productId": 1,
+      "type": "ENTRY",
+      "quantity": 10,
+      "reason": "Compra de stock inicial",
+      "userId": 1,
+      "date": "2026-08-01T10:30:00Z",
+      "notes": "Factura proveedor #TS-998"
+    },
+    {
+      "id": "2",
+      "productId": 2,
+      "type": "ENTRY",
+      "quantity": 15,
+      "reason": "Reabastecimiento regular",
+      "userId": 2,
+      "date": "2026-08-02T11:15:00Z",
+      "notes": "Recepción conforme en bodega"
+    },
+    {
+      "id": "3",
+      "productId": 3,
+      "type": "ENTRY",
+      "quantity": 8,
+      "reason": "Compra promocional",
+      "userId": 1,
+      "date": "2026-08-03T14:30:00Z",
+      "notes": "Pedido por catálogo"
+    },
+    {
+      "id": "4",
+      "productId": 4,
+      "type": "ENTRY",
+      "quantity": 20,
+      "reason": "Reposición de monitores",
+      "userId": 2,
+      "date": "2026-08-05T10:00:00Z",
+      "notes": "Pallet verificado"
+    },
+    {
+      "id": "5",
+      "productId": 5,
+      "type": "ENTRY",
+      "quantity": 10,
+      "reason": "Llegada de equipo de audio",
+      "userId": 1,
+      "date": "2026-08-06T15:45:00Z",
+      "notes": "Ingreso a estante seguro"
+    },
+    {
+      "id": "6",
+      "productId": 6,
+      "type": "ENTRY",
+      "quantity": 50,
+      "reason": "Lote de cables accesorios",
+      "userId": 3,
+      "date": "2026-08-08T12:30:00Z",
+      "notes": "Cajas selladas"
+    },
+    {
+      "id": "7",
+      "productId": 1,
+      "type": "EXIT",
+      "quantity": 2,
+      "reason": "Venta corporativa a despacho legal",
+      "userId": 3,
+      "date": "2026-08-15T14:00:00Z",
+      "notes": "Orden de venta #OV-101"
+    },
+    {
+      "id": "8",
+      "productId": 2,
+      "type": "EXIT",
+      "quantity": 5,
+      "reason": "Venta al por mayor",
+      "userId": 3,
+      "date": "2026-08-16T16:20:00Z",
+      "notes": "Cliente regular Alajuela"
+    },
+    {
+      "id": "9",
+      "productId": 3,
+      "type": "EXIT",
+      "quantity": 4,
+      "reason": "Entrega a departamento de diseño",
+      "userId": 2,
+      "date": "2026-08-18T09:10:00Z",
+      "notes": "Transferencia interna autorizada"
+    },
+    {
+      "id": "10",
+      "productId": 4,
+      "type": "EXIT",
+      "quantity": 2,
+      "reason": "Instalación en sala de juntas",
+      "userId": 3,
+      "date": "2026-08-20T11:00:00Z",
+      "notes": "Orden de trabajo #OT-204"
+    },
+    {
+      "id": "11",
+      "productId": 7,
+      "type": "ENTRY",
+      "quantity": 12,
+      "reason": "Compra de herramientas DeWalt",
+      "userId": 1,
+      "date": "2026-08-21T09:00:00Z",
+      "notes": "Factura ferretera #FC-443"
+    },
+    {
+      "id": "12",
+      "productId": 8,
+      "type": "ENTRY",
+      "quantity": 15,
+      "reason": "Ingreso de herramienta manual",
+      "userId": 2,
+      "date": "2026-08-22T10:30:00Z",
+      "notes": "Bandejas organizadas"
+    },
+    {
+      "id": "13",
+      "productId": 9,
+      "type": "ENTRY",
+      "quantity": 10,
+      "reason": "Stock inicial cintas métricas",
+      "userId": 3,
+      "date": "2026-08-23T15:00:00Z",
+      "notes": "Revisadas con sello"
+    },
+    {
+      "id": "14",
+      "productId": 10,
+      "type": "ENTRY",
+      "quantity": 80,
+      "reason": "Lote EPP de seguridad",
+      "userId": 1,
+      "date": "2026-08-24T16:00:00Z",
+      "notes": "Contenedor verificado"
+    },
+    {
+      "id": "15",
+      "productId": 11,
+      "type": "ENTRY",
+      "quantity": 40,
+      "reason": "Cosecha fresca café",
+      "userId": 2,
+      "date": "2026-08-25T11:00:00Z",
+      "notes": "Lote con vencimiento 2027"
+    },
+    {
+      "id": "16",
+      "productId": 12,
+      "type": "ENTRY",
+      "quantity": 25,
+      "reason": "Reposición cafetería",
+      "userId": 3,
+      "date": "2026-08-26T14:00:00Z",
+      "notes": "Almacenamiento en seco"
+    },
+    {
+      "id": "17",
+      "productId": 13,
+      "type": "ENTRY",
+      "quantity": 35,
+      "reason": "Cajas de té orgánico",
+      "userId": 2,
+      "date": "2026-08-27T08:45:00Z",
+      "notes": "Todo en perfecto estado"
+    },
+    {
+      "id": "18",
+      "productId": 14,
+      "type": "ENTRY",
+      "quantity": 24,
+      "reason": "Carga de aguas embotelladas",
+      "userId": 3,
+      "date": "2026-08-28T13:20:00Z",
+      "notes": "Tarima estibada"
+    },
+    {
+      "id": "19",
+      "productId": 10,
+      "type": "EXIT",
+      "quantity": 15,
+      "reason": "Suministro a personal de planta",
+      "userId": 3,
+      "date": "2026-08-29T10:15:00Z",
+      "notes": "Firma de recepción por supervisor"
+    },
+    {
+      "id": "20",
+      "productId": 11,
+      "type": "EXIT",
+      "quantity": 15,
+      "reason": "Consumo operativo mensual",
+      "userId": 3,
+      "date": "2026-09-01T08:00:00Z",
+      "notes": "Despacho a sucursales"
+    },
+    {
+      "id": "21",
+      "productId": 12,
+      "type": "EXIT",
+      "quantity": 21,
+      "reason": "Venta al personal y eventos",
+      "userId": 3,
+      "date": "2026-09-02T16:45:00Z",
+      "notes": "Casi agotado el lote"
+    },
+    {
+      "id": "22",
+      "productId": 14,
+      "type": "EXIT",
+      "quantity": 24,
+      "reason": "Consumo en seminario empresarial",
+      "userId": 2,
+      "date": "2026-09-03T17:00:00Z",
+      "notes": "Stock agotado por completo"
+    },
+    {
+      "id": "23",
+      "productId": 3,
+      "type": "EXIT",
+      "quantity": 4,
+      "reason": "Venta a cliente gamer",
+      "userId": 3,
+      "date": "2026-09-05T12:00:00Z",
+      "notes": "Agotado en mostrador"
+    },
+    {
+      "id": "24",
+      "productId": 2,
+      "type": "EXIT",
+      "quantity": 7,
+      "reason": "Venta fin de semana",
+      "userId": 3,
+      "date": "2026-09-08T18:00:00Z",
+      "notes": "Quedan solo 3 unidades"
+    },
+    {
+      "id": "25",
+      "productId": 8,
+      "type": "EXIT",
+      "quantity": 13,
+      "reason": "Equipamiento para brigada de mantenimiento",
+      "userId": 2,
+      "date": "2026-09-10T14:00:00Z",
+      "notes": "Quedan solo 2 unidades"
+    },
+    {
+      "id": "26",
+      "productId": 9,
+      "type": "EXIT",
+      "quantity": 10,
+      "reason": "Venta completa de lote a contratista",
+      "userId": 3,
+      "date": "2026-09-12T15:30:00Z",
+      "notes": "Stock en cero"
+    },
+    {
+      "id": "27",
+      "productId": 17,
+      "type": "ENTRY",
+      "quantity": 5,
+      "reason": "Ingreso de tóner para impresoras",
+      "userId": 1,
+      "date": "2026-09-14T09:00:00Z",
+      "notes": "Factura #OF-112"
+    },
+    {
+      "id": "28",
+      "productId": 17,
+      "type": "EXIT",
+      "quantity": 3,
+      "reason": "Cambio de tóner en área administrativa",
+      "userId": 3,
+      "date": "2026-09-16T11:30:00Z",
+      "notes": "Quedan 2 cartuchos"
+    },
+    {
+      "id": "29",
+      "productId": 1,
+      "type": "ENTRY",
+      "quantity": 6,
+      "reason": "Nuevo pedido de reposición HP",
+      "userId": 1,
+      "date": "2026-09-18T10:00:00Z",
+      "notes": "Recibido sin incidencias"
+    },
+    {
+      "id": "30",
+      "productId": 5,
+      "type": "EXIT",
+      "quantity": 5,
+      "reason": "Venta ejecutiva",
+      "userId": 3,
+      "date": "2026-09-19T16:00:00Z",
+      "notes": "Alcanzó el mínimo de 5 unidades"
+    },
+    {
+      "id": "31",
+      "productId": 7,
+      "type": "EXIT",
+      "quantity": 4,
+      "reason": "Entrega de taladros a constructora",
+      "userId": 2,
+      "date": "2026-09-20T13:00:00Z",
+      "notes": "Factura #FER-890"
+    },
+    {
+      "id": "32",
+      "productId": 6,
+      "type": "RETURN",
+      "quantity": 2,
+      "reason": "Devolución por excedente en instalación",
+      "userId": 3,
+      "date": "2026-09-21T09:30:00Z",
+      "notes": "Empaques originales intactos"
+    },
+    {
+      "id": "33",
+      "productId": 2,
+      "type": "ADJUSTMENT",
+      "quantity": 3,
+      "reason": "Conteo físico mensual",
+      "userId": 2,
+      "date": "2026-09-22T08:00:00Z",
+      "notes": "Alineado con auditoría de bodega"
+    },
+    {
+      "id": "34",
+      "productId": 15,
+      "type": "ENTRY",
+      "quantity": 25,
+      "reason": "Suministro farmacéutico periódico",
+      "userId": 1,
+      "date": "2026-09-23T11:00:00Z",
+      "notes": "Lote certificado"
+    },
+    {
+      "id": "35",
+      "productId": 15,
+      "type": "EXIT",
+      "quantity": 3,
+      "reason": "Distribución a estaciones sanitarias",
+      "userId": 3,
+      "date": "2026-09-24T07:15:00Z",
+      "notes": "Consumo interno normal"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "1",
+      "productId": 3,
+      "type": "out_of_stock",
+      "priority": "critical",
+      "date": "2026-09-21T18:00:00Z",
+      "status": "critical",
+      "recommendedAction": "Generar orden de compra urgente a TechSupply Global para al menos 10 unidades de Keychron K2."
+    },
+    {
+      "id": "2",
+      "productId": 9,
+      "type": "out_of_stock",
+      "priority": "critical",
+      "date": "2026-09-23T11:00:00Z",
+      "status": "critical",
+      "recommendedAction": "Contactar a Ferretera Central para reponer cintas métricas 8m."
+    },
+    {
+      "id": "3",
+      "productId": 14,
+      "type": "out_of_stock",
+      "priority": "critical",
+      "date": "2026-09-24T05:30:00Z",
+      "status": "critical",
+      "recommendedAction": "Solicitar despacho de urgencia de paquetes de agua mineral a Alimentos del Sol."
+    },
+    {
+      "id": "4",
+      "productId": 2,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-22T09:15:00Z",
+      "status": "warning",
+      "recommendedAction": "Stock actual (3) por debajo del mínimo (8). Reabastecer Logitech MX Master 3S."
+    },
+    {
+      "id": "5",
+      "productId": 8,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-24T06:00:00Z",
+      "status": "warning",
+      "recommendedAction": "Stock actual (2) por debajo del mínimo (10). Colocar orden con Stanley."
+    },
+    {
+      "id": "6",
+      "productId": 12,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-22T17:10:00Z",
+      "status": "warning",
+      "recommendedAction": "Stock de galletas de avena en nivel crítico (4 unidades, mínimo 15)."
+    },
+    {
+      "id": "7",
+      "productId": 17,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-23T08:00:00Z",
+      "status": "warning",
+      "recommendedAction": "Quedan solo 2 tóners HP 85A. Mínimo requerido es 6 unidades."
+    },
+    {
+      "id": "8",
+      "productId": 5,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-23T10:10:00Z",
+      "status": "warning",
+      "recommendedAction": "Stock en el límite mínimo exacto (5 unidades de Sony WH-1000XM5)."
+    },
+    {
+      "id": "9",
+      "productId": 1,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-17T09:00:00Z",
+      "status": "resolved",
+      "recommendedAction": "Resuelto con el ingreso de 6 unidades el 18 de septiembre."
+    },
+    {
+      "id": "10",
+      "productId": 6,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-10T14:20:00Z",
+      "status": "resolved",
+      "recommendedAction": "Resuelto tras revisión de stock y recepción de devolución."
+    },
+    {
+      "id": "11",
+      "productId": 15,
+      "type": "low_stock",
+      "priority": "warning",
+      "date": "2026-09-12T16:00:00Z",
+      "status": "resolved",
+      "recommendedAction": "Resuelto con la entrada de 25 litros el 23 de septiembre."
+    }
+  ],
+  "settings": {
+    "profile": {
+      "name": "Ulysses Quiros",
+      "email": "admin@stockpilot.com",
+      "phone": "+506 8888-9999",
+      "language": "es"
+    },
+    "company": {
+      "companyName": "StockPilot Solutions",
+      "commercialName": "StockPilot Distribuciones",
+      "taxId": "3-101-765432",
+      "businessType": "Distribución Mayorista y Minorista Multirubro",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "address": "San José, Costa Rica",
+      "phone": "+506 2200-9000",
+      "email": "contacto@stockpilot.com"
+    },
+    "inventory": {
+      "defaultMinimumStock": 5,
+      "allowNegativeStock": false,
+      "autoGenerateAlerts": true,
+      "skuPrefix": "STK-",
+      "barcodeFormat": "EAN-13"
+    },
+    "notifications": {
+      "emailAlerts": true,
+      "criticalStockNotification": true,
+      "movementDigest": true,
+      "systemUpdates": true
+    },
+    "security": {
+      "requireStrongPassword": true,
+      "sessionTimeoutMinutes": 120,
+      "mfaEnabled": false
+    },
+    "appearance": {
+      "theme": "light",
+      "fontSize": "normal",
+      "compactTables": false
+    }
+  },
+  "activities": [
+    {
+      "id": "1",
+      "type": "LOGIN",
+      "description": "Inicio de sesión de administrador Carlos Mendoza",
+      "userId": 1,
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T08:15:00Z"
+    },
+    {
+      "id": "2",
+      "type": "CREATE_MOVEMENT",
+      "description": "Salida de 3 unidades de Alcohol en Gel Antibacterial 1L",
+      "userId": 3,
+      "userName": "Alejandro Gómez",
+      "timestamp": "2026-09-24T07:15:00Z"
+    },
+    {
+      "id": "3",
+      "type": "CREATE_PRODUCT",
+      "description": "Creación del producto Aceite Sintético para Motor 5W-30",
+      "userId": 1,
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-23T15:00:00Z"
+    },
+    {
+      "id": "4",
+      "type": "CREATE_MOVEMENT",
+      "description": "Entrada de 25 unidades de Alcohol en Gel Antibacterial",
+      "userId": 1,
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-23T11:00:00Z"
+    },
+    {
+      "id": "5",
+      "type": "UPDATE_PRODUCT",
+      "description": "Ajuste de inventario en Mouse Logitech MX Master 3S a 3 unidades",
+      "userId": 2,
+      "userName": "Valeria Ramos",
+      "timestamp": "2026-09-22T08:00:00Z"
+    },
+    {
+      "id": "6",
+      "type": "CREATE_SUPPLIER",
+      "description": "Registro de nuevo proveedor Mecánica & Repuestos Pro",
+      "userId": 1,
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-21T14:30:00Z"
+    },
+    {
+      "id": "7",
+      "type": "CREATE_MOVEMENT",
+      "description": "Devolución registrada: 2 unidades de Cable HDMI 2.1",
+      "userId": 3,
+      "userName": "Alejandro Gómez",
+      "timestamp": "2026-09-21T09:30:00Z"
+    },
+    {
+      "type": "LOGIN",
+      "description": "Inicio de sesión exitoso de Carlos Mendoza (admin)",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T14:54:59.635Z",
+      "id": "mXIHZN9B4oY"
+    },
+    {
+      "type": "LOGOUT",
+      "description": "Cierre de sesión de Carlos Mendoza",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T15:05:27.459Z",
+      "id": "UAM6TwS6Dfs"
+    },
+    {
+      "type": "LOGIN",
+      "description": "Inicio de sesión exitoso de Carlos Mendoza (admin)",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T15:05:32.250Z",
+      "id": "XuOzIyhDlao"
+    },
+    {
+      "type": "LOGOUT",
+      "description": "Cierre de sesión de Carlos Mendoza",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T15:05:35.393Z",
+      "id": "Bz4EiRQBkU4"
+    },
+    {
+      "type": "LOGIN",
+      "description": "Inicio de sesión exitoso de Carlos Mendoza (admin)",
+      "userId": "1",
+      "userName": "Carlos Mendoza",
+      "timestamp": "2026-09-24T15:24:49.536Z",
+      "id": "ipsKJv6li8o"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
