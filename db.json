@@ -461,13 +461,13 @@
       "supplierId": 3,
       "purchasePrice": 4.5,
       "salePrice": 8,
-      "stock": 0,
+      "stock": 1,
       "minimumStock": 12,
       "location": "Almacén Alimentos - Tarima B1",
       "status": "active",
       "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=500&auto=format&fit=crop&q=80",
       "createdAt": "2026-08-19T09:00:00Z",
-      "updatedAt": "2026-09-24T05:30:00Z"
+      "updatedAt": "2026-09-24T19:54:13.309Z"
     },
     {
       "id": "15",
@@ -1019,6 +1019,16 @@
       "reason": "Prueba verificacion",
       "date": "2026-09-24T19:27:31.157Z",
       "id": "3BxMdj3IqAY"
+    },
+    {
+      "productId": "14",
+      "type": "ENTRY",
+      "quantity": 1,
+      "reason": "Movimiento de inventario",
+      "userId": "1",
+      "date": "2026-09-24T19:54:13.340Z",
+      "notes": "",
+      "id": "lJKYJkXCtgA"
     }
   ],
   "alerts": [
@@ -1422,6 +1432,22 @@
       "userName": "Ulysses Quiros",
       "timestamp": "2026-09-24T19:18:02.207Z",
       "id": "kKlHCY-zRhY"
+    },
+    {
+      "type": "UPDATE_PRODUCT",
+      "description": "Producto actualizado: Agua Mineral Natural 500ml Pack 12 (Stock: 1)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T19:54:13.330Z",
+      "id": "WCFEylu3mys"
+    },
+    {
+      "type": "CREATE_MOVEMENT",
+      "description": "Entrada de 1 unidades en Agua Mineral Natural 500ml Pack 12 (Stock resultante: 1)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T19:54:13.355Z",
+      "id": "URwAKvwExVc"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

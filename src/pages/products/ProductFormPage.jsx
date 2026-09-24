@@ -13,13 +13,23 @@ import Select from '../../components/ui/Select';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import LoadingState from '../../components/ui/LoadingState';
+import TaxonomyModal from '../../components/ui/TaxonomyModal';
+import {
+  generateTaxonomicSku,
+  generateTaxonomicBarcode,
+  parseSkuTaxonomy
+} from '../../utils/skuTaxonomy';
 import {
   Save,
   ArrowLeft,
   Search,
   Globe,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  Barcode,
+  BookOpen,
+  Tag
 } from 'lucide-react';
 
 export default function ProductFormPage() {
@@ -33,6 +43,7 @@ export default function ProductFormPage() {
   const [suppliers, setSuppliers] = useState([]);
   const [loadingInitial, setLoadingInitial] = useState(isEditing);
   const [saving, setSaving] = useState(false);
+  const [taxonomyModalOpen, setTaxonomyModalOpen] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -142,17 +153,45 @@ export default function ProductFormPage() {
 
   const handleApplyExternalData = () => {
     if (!externalLookupResult?.data) return;
-    const { name, brand, description, image } = externalLookupResult.data;
+    const { name, brand, description, image, barcode } = externalLookupResult.data;
 
     setFormData(prev => ({
       ...prev,
       name: name || prev.name,
       brand: brand || prev.brand,
       description: description || prev.description,
-      image: image || prev.image
+      image: image || prev.image,
+      barcode: barcode || prev.barcode
     }));
 
     notifySuccess('Datos externos importados a los campos del formulario.');
+  };
+
+  const handleGenerateSku = () => {
+    if (!formData.name.trim()) {
+      notifyError('Ingresa primero el nombre del producto para generar el código SKU.');
+      return;
+    }
+    const catId = formData.categoryId || 1;
+    const generated = generateTaxonomicSku({
+      categoryId: catId,
+      productName: formData.name,
+      brand: formData.brand,
+      sequentialId: isEditing ? (id || 1) : Math.floor(Math.random() * 899 + 100)
+    });
+    setFormData(prev => ({ ...prev, sku: generated }));
+    if (errors.sku) setErrors(prev => ({ ...prev, sku: '' }));
+    notifySuccess(`SKU taxonómico generado: ${generated}`);
+  };
+
+  const handleGenerateBarcode = () => {
+    const catId = formData.categoryId || 1;
+    const generated = generateTaxonomicBarcode({
+      categoryId: catId,
+      sequentialId: isEditing ? (id || 1) : Math.floor(Math.random() * 89999 + 10000)
+    });
+    setFormData(prev => ({ ...prev, barcode: generated }));
+    notifySuccess(`Código de barras EAN-13 generado: ${generated}`);
   };
 
   const handleSubmit = async (e) => {
@@ -185,6 +224,8 @@ export default function ProductFormPage() {
     return <LoadingState message="Cargando datos del producto..." />;
   }
 
+  const skuAnalysis = parseSkuTaxonomy(formData.sku);
+
   return (
     <div className="product-form-page">
       <Breadcrumbs
@@ -204,6 +245,15 @@ export default function ProductFormPage() {
           </p>
         </div>
         <div className="page-header-actions">
+          <Button
+            type="button"
+            variant="outline"
+            icon={<BookOpen size={16} />}
+            onClick={() => setTaxonomyModalOpen(true)}
+          >
+            Guía de Taxonomía
+          </Button>
+
           <Button
             variant="secondary"
             icon={<ArrowLeft size={16} />}
@@ -307,15 +357,59 @@ export default function ProductFormPage() {
               error={errors.name}
               required
             />
-            <Input
-              label="Código SKU"
-              name="sku"
-              value={formData.sku}
-              onChange={handleChange}
-              placeholder="Ej. TEC-MON-27C"
-              error={errors.sku}
-              required
-            />
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label className="form-label required">Código SKU</label>
+                <button
+                  type="button"
+                  onClick={handleGenerateSku}
+                  className="btn-ghost"
+                  style={{
+                    fontSize: '11px',
+                    color: 'var(--color-primary-blue)',
+                    padding: '2px 6px',
+                    borderRadius: 'var(--radius-sm)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                  title="Autogenerar código SKU siguiendo la taxonomía oficial de la empresa"
+                >
+                  <Sparkles size={12} />
+                  <span>🪄 Autogenerar SKU</span>
+                </button>
+              </div>
+              <Input
+                name="sku"
+                value={formData.sku}
+                onChange={handleChange}
+                placeholder="Ej. TEC-LAP-HP-001"
+                error={errors.sku}
+                required
+              />
+              {formData.sku && skuAnalysis.valid && (
+                <div
+                  style={{
+                    marginTop: '6px',
+                    fontSize: '11px',
+                    padding: '4px 8px',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'rgba(30, 90, 242, 0.08)',
+                    color: 'var(--color-primary-blue)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Tag size={12} />
+                  <span>
+                    <strong>Taxonomía:</strong> {skuAnalysis.familyName} &gt; {skuAnalysis.subfamilyName} &gt; {skuAnalysis.brand}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="form-grid-3">
@@ -461,6 +555,12 @@ export default function ProductFormPage() {
           </Button>
         </div>
       </form>
+
+      {/* Official Taxonomy Guide Modal */}
+      <TaxonomyModal
+        isOpen={taxonomyModalOpen}
+        onClose={() => setTaxonomyModalOpen(false)}
+      />
     </div>
   );
 }

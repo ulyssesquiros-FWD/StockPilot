@@ -12,7 +12,9 @@ import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import StatusBadge from '../../components/ui/StatusBadge';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import { Plus, Edit2, Trash2, Layers } from 'lucide-react';
+import TaxonomyModal from '../../components/ui/TaxonomyModal';
+import { TAXONOMY_FAMILIES } from '../../utils/skuTaxonomy';
+import { Plus, Edit2, Trash2, Layers, BookOpen } from 'lucide-react';
 
 export default function CategoriesPage() {
   const { user } = useAuth();
@@ -22,6 +24,7 @@ export default function CategoriesPage() {
   const [productCounts, setProductCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [taxonomyModalOpen, setTaxonomyModalOpen] = useState(false);
 
   // Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,6 +63,25 @@ export default function CategoriesPage() {
   useEffect(() => {
     loadCategories();
   }, []);
+
+  // Helper to find taxonomic family matching category
+  const getTaxonomyMatch = (catName) => {
+    if (!catName) return null;
+    const lower = catName.toLowerCase();
+    for (const [code, fam] of Object.entries(TAXONOMY_FAMILIES)) {
+      if (
+        fam.name.toLowerCase().includes(lower) ||
+        lower.includes(fam.name.toLowerCase()) ||
+        (code === 'TEC' && lower.includes('electr')) ||
+        (code === 'FER' && lower.includes('herram')) ||
+        (code === 'OFI' && lower.includes('papel')) ||
+        (code === 'TEX' && lower.includes('ropa'))
+      ) {
+        return { code, ...fam };
+      }
+    }
+    return null;
+  };
 
   const handleOpenCreate = () => {
     setEditingCategory(null);
@@ -119,33 +141,56 @@ export default function CategoriesPage() {
 
   const columns = [
     {
-      header: 'Categoría',
+      header: 'Categoría y Taxonomía',
       key: 'name',
-      render: (_, c) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: 'var(--radius-sm)',
-              backgroundColor: 'var(--color-primary-blue-light)',
-              color: 'var(--color-primary-blue)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}
-          >
-            <Layers size={18} />
-          </div>
-          <div>
-            <div style={{ fontWeight: 600 }}>{c.name}</div>
-            <div className="text-secondary" style={{ maxWidth: '340px' }}>
-              {c.description || 'Sin descripción'}
+      render: (_, c) => {
+        const tax = getTaxonomyMatch(c.name);
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: 'var(--radius-sm)',
+                backgroundColor: 'var(--color-primary-blue-light)',
+                color: 'var(--color-primary-blue)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                fontSize: '18px'
+              }}
+            >
+              {tax?.icon || <Layers size={18} />}
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontWeight: 600 }}>{c.name}</span>
+                {tax && (
+                  <span
+                    style={{
+                      fontFamily: 'monospace',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      background: 'rgba(59, 130, 246, 0.1)',
+                      color: 'var(--color-primary-blue)',
+                      border: '1px solid rgba(59, 130, 246, 0.25)'
+                    }}
+                    title={`Prefijo SKU: ${tax.code} | Código Arancelario HS: ${tax.hsChapter}`}
+                  >
+                    [{tax.code}] HS {tax.hsChapter}
+                  </span>
+                )}
+              </div>
+              <div className="text-secondary" style={{ maxWidth: '340px' }}>
+                {c.description || 'Sin descripción'}
+              </div>
             </div>
           </div>
-        </div>
-      )
+        );
+      }
     },
     {
       header: 'Productos Asociados',
@@ -239,6 +284,13 @@ export default function CategoriesPage() {
           </p>
         </div>
         <div className="page-header-actions">
+          <Button
+            variant="outline"
+            icon={<BookOpen size={18} />}
+            onClick={() => setTaxonomyModalOpen(true)}
+          >
+            Guía de Taxonomía
+          </Button>
           {canCreate(user, 'categories') && (
             <Button variant="primary" icon={<Plus size={18} />} onClick={handleOpenCreate}>
               Nueva Categoría
@@ -319,6 +371,12 @@ export default function CategoriesPage() {
         message={`Se eliminará "${deleteDialog.category?.name}". Verifica que no tenga productos asociados.`}
         confirmText="Eliminar Categoría"
         loading={deleteDialog.loading}
+      />
+
+      {/* Taxonomy Guide Modal */}
+      <TaxonomyModal
+        isOpen={taxonomyModalOpen}
+        onClose={() => setTaxonomyModalOpen(false)}
       />
     </div>
   );
