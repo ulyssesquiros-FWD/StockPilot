@@ -93,7 +93,17 @@ export const apiClient = {
     let url = endpoint;
     if (params) {
       const searchParams = new URLSearchParams();
-      Object.entries(params).forEach(([key, val]) => {
+      const normalized = { ...params };
+
+      // Normalize json-server v1 sort syntax (_sort=-field instead of _order=desc)
+      if (normalized._sort && normalized._order) {
+        if (String(normalized._order).toLowerCase() === 'desc' && !String(normalized._sort).startsWith('-')) {
+          normalized._sort = `-${normalized._sort}`;
+        }
+        delete normalized._order;
+      }
+
+      Object.entries(normalized).forEach(([key, val]) => {
         if (val !== undefined && val !== null && val !== '') {
           searchParams.append(key, val);
         }

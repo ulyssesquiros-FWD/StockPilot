@@ -4,7 +4,9 @@ import { calculateMovementImpact, MOVEMENT_TYPES } from '../utils/inventoryCalcu
 
 export const movementService = {
   async getAll(params = {}) {
-    return await apiClient.get('/movements', params);
+    const data = await apiClient.get('/movements', params);
+    if (!Array.isArray(data)) return [];
+    return data.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   },
 
   async getById(id) {
@@ -41,7 +43,6 @@ export const movementService = {
     const updatedProduct = await productService.update(
       productId,
       {
-        ...product,
         stock: newStock
       },
       user
@@ -49,11 +50,11 @@ export const movementService = {
 
     // 4. Save the movement
     const movementPayload = {
-      productId: Number(productId),
+      productId: String(productId),
       type,
       quantity: qty,
       reason: reason || 'Movimiento de inventario',
-      userId: user?.id || null,
+      userId: user?.id ? String(user.id) : null,
       date: new Date().toISOString(),
       notes: notes || ''
     };

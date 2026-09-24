@@ -52,16 +52,16 @@ export const productService = {
   async update(id, productData, user = null) {
     const payload = {
       ...productData,
-      purchasePrice: Number(productData.purchasePrice) || 0,
-      salePrice: Number(productData.salePrice) || 0,
-      stock: Number(productData.stock) || 0,
-      minimumStock: Number(productData.minimumStock) || 0,
-      categoryId: Number(productData.categoryId) || null,
-      supplierId: Number(productData.supplierId) || null,
       updatedAt: new Date().toISOString()
     };
+    if (productData.purchasePrice !== undefined) payload.purchasePrice = Number(productData.purchasePrice) || 0;
+    if (productData.salePrice !== undefined) payload.salePrice = Number(productData.salePrice) || 0;
+    if (productData.stock !== undefined) payload.stock = Number(productData.stock) || 0;
+    if (productData.minimumStock !== undefined) payload.minimumStock = Number(productData.minimumStock) || 0;
+    if (productData.categoryId !== undefined) payload.categoryId = Number(productData.categoryId) || null;
+    if (productData.supplierId !== undefined) payload.supplierId = Number(productData.supplierId) || null;
 
-    const updated = await apiClient.put(`/products/${id}`, payload);
+    const updated = await apiClient.patch(`/products/${id}`, payload);
 
     // Automatic alert evaluation
     try {

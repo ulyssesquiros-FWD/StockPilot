@@ -49,7 +49,7 @@ export default function MovementsPage() {
     setError(null);
     try {
       const [movs, prods] = await Promise.all([
-        movementService.getAll({ _sort: 'date', _order: 'desc' }),
+        movementService.getAll(),
         productService.getAll()
       ]);
       setMovements(movs || []);
@@ -66,7 +66,7 @@ export default function MovementsPage() {
   }, []);
 
   const productMap = useMemo(() => {
-    return Object.fromEntries(products.map(p => [p.id, p]));
+    return Object.fromEntries(products.map(p => [String(p.id), p]));
   }, [products]);
 
   // Projected stock preview calculator
@@ -77,7 +77,7 @@ export default function MovementsPage() {
       return;
     }
 
-    const prod = productMap[formData.productId];
+    const prod = productMap[String(formData.productId)];
     if (!prod) return;
 
     try {
@@ -120,7 +120,7 @@ export default function MovementsPage() {
       setMovements(prev => [result.movement, ...prev]);
 
       // Update product in local state
-      setProducts(prev => prev.map(p => (p.id === result.product.id ? result.product : p)));
+      setProducts(prev => prev.map(p => (String(p.id) === String(result.product.id) ? result.product : p)));
 
       notifySuccess('Movimiento registrado y stock sincronizado.');
       setModalOpen(false);
@@ -160,7 +160,7 @@ export default function MovementsPage() {
       header: 'Producto',
       key: 'productId',
       render: (val) => {
-        const p = productMap[val];
+        const p = productMap[String(val)] || productMap[val];
         return (
           <div>
             <div style={{ fontWeight: 600 }}>{p ? p.name : `Producto #${val}`}</div>
@@ -207,7 +207,7 @@ export default function MovementsPage() {
   ];
 
   const renderMobileCard = (m) => {
-    const p = productMap[m.productId];
+    const p = productMap[String(m.productId)] || productMap[m.productId];
     const mInfo = formatMovementType(m.type);
     const isExit = m.type === 'EXIT';
 

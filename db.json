@@ -252,13 +252,13 @@
       "supplierId": 1,
       "purchasePrice": 55,
       "salePrice": 89,
-      "stock": 0,
+      "stock": 1,
       "minimumStock": 6,
       "location": "Bodega Central - Pasillo A1",
       "status": "active",
       "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=80",
       "createdAt": "2026-08-03T14:00:00Z",
-      "updatedAt": "2026-09-21T18:00:00Z"
+      "updatedAt": "2026-09-24T19:18:02.160Z"
     },
     {
       "id": "4",
@@ -290,13 +290,13 @@
       "supplierId": 1,
       "purchasePrice": 240,
       "salePrice": 360,
-      "stock": 5,
+      "stock": 6,
       "minimumStock": 5,
       "location": "Bodega Seguridad - Estante S1",
       "status": "active",
       "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80",
       "createdAt": "2026-08-06T15:20:00Z",
-      "updatedAt": "2026-09-23T10:10:00Z"
+      "updatedAt": "2026-09-24T19:17:12.713Z"
     },
     {
       "id": "6",
@@ -991,6 +991,34 @@
       "userId": 3,
       "date": "2026-09-24T07:15:00Z",
       "notes": "Consumo interno normal"
+    },
+    {
+      "productId": 5,
+      "type": "ENTRY",
+      "quantity": 1,
+      "reason": "test",
+      "userId": "1",
+      "date": "2026-09-24T19:17:12.756Z",
+      "notes": "123341",
+      "id": "7Dcj8adsQV8"
+    },
+    {
+      "productId": 3,
+      "type": "ENTRY",
+      "quantity": 1,
+      "reason": "test",
+      "userId": "1",
+      "date": "2026-09-24T19:18:02.192Z",
+      "notes": "312312",
+      "id": "MdjVqmip4VU"
+    },
+    {
+      "productId": "1",
+      "type": "ENTRY",
+      "quantity": 2,
+      "reason": "Prueba verificacion",
+      "date": "2026-09-24T19:27:31.157Z",
+      "id": "3BxMdj3IqAY"
     }
   ],
   "alerts": [
@@ -1063,8 +1091,9 @@
       "type": "low_stock",
       "priority": "warning",
       "date": "2026-09-23T10:10:00Z",
-      "status": "warning",
-      "recommendedAction": "Stock en el límite mínimo exacto (5 unidades de Sony WH-1000XM5)."
+      "status": "resolved",
+      "recommendedAction": "Stock en el límite mínimo exacto (5 unidades de Sony WH-1000XM5).",
+      "resolvedAt": "2026-09-24T19:17:12.732Z"
     },
     {
       "id": "9",
@@ -1361,6 +1390,38 @@
       "userName": "Ulysses Quiros",
       "timestamp": "2026-09-24T16:58:09.395Z",
       "id": "ws4ELrs4nvU"
+    },
+    {
+      "type": "UPDATE_PRODUCT",
+      "description": "Producto actualizado: Audífonos Inalámbricos Sony WH-1000XM5 (Stock: 6)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T19:17:12.741Z",
+      "id": "pWzun-hXxCQ"
+    },
+    {
+      "type": "CREATE_MOVEMENT",
+      "description": "Entrada de 1 unidades en Audífonos Inalámbricos Sony WH-1000XM5 (Stock resultante: 6)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T19:17:12.770Z",
+      "id": "O3aFUPMdytk"
+    },
+    {
+      "type": "UPDATE_PRODUCT",
+      "description": "Producto actualizado: Teclado Mecánico Keychron K2 RGB (Stock: 1)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T19:18:02.176Z",
+      "id": "gRa4sIa44qY"
+    },
+    {
+      "type": "CREATE_MOVEMENT",
+      "description": "Entrada de 1 unidades en Teclado Mecánico Keychron K2 RGB (Stock resultante: 1)",
+      "userId": "1",
+      "userName": "Ulysses Quiros",
+      "timestamp": "2026-09-24T19:18:02.207Z",
+      "id": "kKlHCY-zRhY"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
