@@ -19,7 +19,7 @@ import productService from '../../services/productService';
 import alertService from '../../services/alertService';
 import currencyService from '../../services/currencyService';
 
-export default function Header({ onMenuClick }) {
+export default function Header({ onMenuClick, onOpenAI }) {
   const { user } = useAuth();
   const { theme, toggleTheme, fontSize, setFontSize } = useTheme();
   const navigate = useNavigate();
@@ -237,13 +237,13 @@ export default function Header({ onMenuClick }) {
           </span>
         </button>
 
-        {/* Quick link to StockPilot IA */}
+        {/* Quick link / dialog to StockPilot IA */}
         <button
           type="button"
-          onClick={() => navigate('/asistente-ia')}
+          onClick={() => (onOpenAI ? onOpenAI() : navigate('/asistente-ia'))}
           className="btn-icon btn-ghost"
-          title="Abrir Asistente IA"
-          aria-label="Abrir Asistente StockPilot IA"
+          title="Abrir Asistente IA en esta página"
+          aria-label="Abrir Asistente StockPilot IA interactivo"
           style={{ color: '#10B981' }}
         >
           <Sparkles size={20} />

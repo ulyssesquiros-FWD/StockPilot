@@ -21,7 +21,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { canAccessRoute } from '../../utils/permissions';
 import Avatar from '../ui/Avatar';
 
-export default function Sidebar({ isOpen, onClose, alertCount = 0 }) {
+export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
   const { user, logout } = useAuth();
   const { theme } = useTheme();
   const navigate = useNavigate();
@@ -120,60 +120,110 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0 }) {
             gap: '4px'
           }}
         >
-          {filteredNavItems.map(item => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => {
-                if (window.innerWidth <= 768 && onClose) onClose();
-              }}
-              style={({ isActive }) => ({
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 14px',
-                borderRadius: 'var(--radius-md)',
-                color: isActive ? '#FFFFFF' : '#94A3B8',
-                backgroundColor: isActive ? 'var(--color-primary-blue)' : 'transparent',
-                fontWeight: isActive ? 600 : 500,
-                fontSize: '14px',
-                textDecoration: 'none',
-                transition: 'all 0.15s ease'
-              })}
-            >
-              <span style={{ display: 'flex', alignItems: 'center' }}>{item.icon}</span>
-              <span style={{ flex: 1 }}>{item.label}</span>
-              {item.badge && (
-                <span
-                  style={{
-                    backgroundColor: 'var(--color-danger-red)',
-                    color: '#FFFFFF',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    padding: '2px 7px',
-                    borderRadius: '10px'
+          {filteredNavItems.map(item => {
+            const isAI = item.to === '/asistente-ia';
+            if (isAI && onOpenAI) {
+              return (
+                <button
+                  key={item.to}
+                  type="button"
+                  onClick={() => {
+                    if (window.innerWidth <= 768 && onClose) onClose();
+                    onOpenAI();
                   }}
-                >
-                  {item.badge}
-                </span>
-              )}
-              {item.highlight && (
-                <span
                   style={{
-                    backgroundColor: 'rgba(16, 185, 129, 0.25)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '10px 14px',
+                    borderRadius: 'var(--radius-md)',
                     color: '#34D399',
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    padding: '2px 6px',
-                    borderRadius: '6px',
-                    textTransform: 'uppercase'
+                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    width: '100%',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
                   }}
+                  title="Abrir Asistente IA en la página actual"
+                  aria-label="Abrir asistente de IA en la página actual"
                 >
-                  IA
-                </span>
-              )}
-            </NavLink>
-          ))}
+                  <span style={{ display: 'flex', alignItems: 'center' }}>{item.icon}</span>
+                  <span style={{ flex: 1 }}>{item.label}</span>
+                  <span
+                    style={{
+                      backgroundColor: '#10B981',
+                      color: '#FFFFFF',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      padding: '2px 6px',
+                      borderRadius: '6px',
+                      textTransform: 'uppercase'
+                    }}
+                  >
+                    Copilot
+                  </span>
+                </button>
+              );
+            }
+
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={() => {
+                  if (window.innerWidth <= 768 && onClose) onClose();
+                }}
+                style={({ isActive }) => ({
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '10px 14px',
+                  borderRadius: 'var(--radius-md)',
+                  color: isActive ? '#FFFFFF' : '#94A3B8',
+                  backgroundColor: isActive ? 'var(--color-primary-blue)' : 'transparent',
+                  fontWeight: isActive ? 600 : 500,
+                  fontSize: '14px',
+                  textDecoration: 'none',
+                  transition: 'all 0.15s ease'
+                })}
+              >
+                <span style={{ display: 'flex', alignItems: 'center' }}>{item.icon}</span>
+                <span style={{ flex: 1 }}>{item.label}</span>
+                {item.badge && (
+                  <span
+                    style={{
+                      backgroundColor: 'var(--color-danger-red)',
+                      color: '#FFFFFF',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      padding: '2px 7px',
+                      borderRadius: '10px'
+                    }}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+                {item.highlight && (
+                  <span
+                    style={{
+                      backgroundColor: 'rgba(16, 185, 129, 0.25)',
+                      color: '#34D399',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      padding: '2px 6px',
+                      borderRadius: '6px',
+                      textTransform: 'uppercase'
+                    }}
+                  >
+                    IA
+                  </span>
+                )}
+              </NavLink>
+            );
+          })}
         </nav>
 
         {/* User Info & Logout Footer */}

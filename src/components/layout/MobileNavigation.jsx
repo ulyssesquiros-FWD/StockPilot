@@ -8,7 +8,7 @@ import {
   Sparkles
 } from 'lucide-react';
 
-export default function MobileNavigation({ alertCount = 0 }) {
+export default function MobileNavigation({ alertCount = 0, onOpenAI }) {
   const items = [
     { to: '/dashboard', label: 'Inicio', icon: <LayoutDashboard size={20} /> },
     { to: '/productos', label: 'Productos', icon: <Package size={20} /> },
@@ -36,44 +36,77 @@ export default function MobileNavigation({ alertCount = 0 }) {
       }}
       aria-label="Navegación móvil inferior"
     >
-      {items.map(item => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          style={({ isActive }) => ({
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '3px',
-            flex: 1,
-            height: '100%',
-            color: isActive ? 'var(--color-primary-blue)' : 'var(--text-muted)',
-            textDecoration: 'none',
-            fontSize: '11px',
-            fontWeight: isActive ? 600 : 500,
-            position: 'relative'
-          })}
-        >
-          <span style={{ position: 'relative' }}>
-            {item.icon}
-            {item.badge && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '-4px',
-                  right: '-6px',
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--color-danger-red)'
-                }}
-              />
-            )}
-          </span>
-          <span>{item.label}</span>
-        </NavLink>
-      ))}
+      {items.map(item => {
+        const isAI = item.to === '/asistente-ia';
+        if (isAI && onOpenAI) {
+          return (
+            <button
+              key={item.to}
+              type="button"
+              onClick={onOpenAI}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '3px',
+                flex: 1,
+                height: '100%',
+                color: 'var(--color-primary-green)',
+                background: 'transparent',
+                border: 'none',
+                fontSize: '11px',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+              title="Abrir Asistente IA"
+              aria-label="Abrir asistente de IA interactivo en la pantalla actual"
+            >
+              <span style={{ position: 'relative' }}>{item.icon}</span>
+              <span>{item.label}</span>
+            </button>
+          );
+        }
+
+        return (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            style={({ isActive }) => ({
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '3px',
+              flex: 1,
+              height: '100%',
+              color: isActive ? 'var(--color-primary-blue)' : 'var(--text-muted)',
+              textDecoration: 'none',
+              fontSize: '11px',
+              fontWeight: isActive ? 600 : 500,
+              position: 'relative'
+            })}
+          >
+            <span style={{ position: 'relative' }}>
+              {item.icon}
+              {item.badge && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-4px',
+                    right: '-6px',
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--color-danger-red)'
+                  }}
+                />
+              )}
+            </span>
+            <span>{item.label}</span>
+          </NavLink>
+        );
+      })}
     </nav>
   );
 }
