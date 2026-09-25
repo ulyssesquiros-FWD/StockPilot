@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import reportService from '../../services/reportService';
 import categoryService from '../../services/categoryService';
+import supplierService from '../../services/supplierService';
+import currencyService from '../../services/currencyService';
 import ChartCard from '../../components/ui/ChartCard';
 import Button from '../../components/ui/Button';
 import Tabs from '../../components/ui/Tabs';
 import DataTable from '../../components/ui/DataTable';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
+import PdfReportModal from '../../components/ui/PdfReportModal';
 import { formatCurrency, formatDate } from '../../utils/formatters';
-import { Download, TrendingUp, FileText } from 'lucide-react';
+import { Download, TrendingUp, FileText, Printer } from 'lucide-react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -25,6 +28,10 @@ export default function ReportsPage() {
   const [activeReport, setActiveReport] = useState('inventory');
   const [reportData, setReportData] = useState(null);
   const [movementData, setMovementData] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [liveCrcRate, setLiveCrcRate] = useState(515.0);
+  const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,12 +40,20 @@ export default function ReportsPage() {
       setLoading(true);
       setError(null);
       try {
-        const [inv, mov] = await Promise.all([
+        const [inv, mov, cats, sups, ratesData] = await Promise.all([
           reportService.getInventoryReport(),
-          reportService.getMovementReport()
+          reportService.getMovementReport(),
+          categoryService.getAll().catch(() => []),
+          supplierService.getAll().catch(() => []),
+          currencyService.getRates().catch(() => null)
         ]);
         setReportData(inv);
         setMovementData(mov);
+        setCategories(cats || []);
+        setSuppliers(sups || []);
+        if (ratesData?.rates?.CRC) {
+          setLiveCrcRate(ratesData.rates.CRC);
+        }
       } catch (err) {
         setError(err.message || 'Error al compilar reportes.');
       } finally {
@@ -154,9 +169,16 @@ export default function ReportsPage() {
             Consolidado financiero, volumen de activos y rotación de mercancías
           </p>
         </div>
-        <div className="page-header-actions">
+        <div className="page-header-actions" style={{ display: 'flex', gap: '8px' }}>
           <Button
             variant="primary"
+            icon={<Printer size={16} />}
+            onClick={() => setPdfModalOpen(true)}
+          >
+            Generar Informe PDF
+          </Button>
+          <Button
+            variant="outline"
             icon={<Download size={16} />}
             onClick={handleExportCSV}
           >
@@ -226,6 +248,17 @@ export default function ReportsPage() {
           emptyMessage="No hay movimientos registrados para mostrar."
         />
       )}
+
+      {/* Executive PDF Report Generator Modal */}
+      <PdfReportModal
+        isOpen={pdfModalOpen}
+        onClose={() => setPdfModalOpen(false)}
+        products={reportData.products}
+        movements={movementData?.movements || []}
+        categories={categories}
+        suppliers={suppliers}
+        crcExchangeRate={liveCrcRate}
+      />
     </div>
   );
 }
