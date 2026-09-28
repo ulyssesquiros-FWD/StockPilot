@@ -7,7 +7,7 @@
 const N8N_AI_WEBHOOK =
   (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_N8N_AI_WEBHOOK_URL) ||
   (typeof process !== 'undefined' && process.env && process.env.VITE_N8N_AI_WEBHOOK_URL) ||
-  'http://localhost:5678/webhook/stockpilot-ai';
+  '/api/n8n/webhook/stockpilot-ai';
 
 export const aiService = {
   /**
@@ -21,12 +21,16 @@ export const aiService = {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout for Gemini LLM
 
+
       const response = await fetch(N8N_AI_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, context: { products, movements, alerts } }),
         signal: controller.signal
       });
+
+      console.log(response);
+      
 
       clearTimeout(timeoutId);
 
@@ -39,7 +43,8 @@ export const aiService = {
           timestamp: data.timestamp || new Date().toISOString()
         };
       }
-    } catch {
+    } catch (error) {
+      console.error('Error fetching AI from n8n:', error);
       // Fallback is activated below
     }
 
