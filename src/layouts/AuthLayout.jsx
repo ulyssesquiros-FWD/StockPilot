@@ -17,38 +17,39 @@ export default function AuthLayout() {
         className="auth-hero-panel"
         style={{
           flex: 1,
-          backgroundColor: '#0A2E5B',
-          background: 'linear-gradient(135deg, #0A2E5B 0%, #0B4D9B 100%)',
+          backgroundColor: '#091122',
+          background: 'linear-gradient(135deg, #0B152B 0%, #060913 100%)',
           color: '#FFFFFF',
           padding: '48px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          borderRight: '1px solid rgba(255, 255, 255, 0.08)'
         }}
       >
-        {/* Subtle decorative circles */}
+        {/* Subtle decorative mesh gradient */}
         <div
           style={{
             position: 'absolute',
-            top: '-100px',
-            right: '-100px',
-            width: '350px',
-            height: '350px',
+            top: '-60px',
+            right: '-60px',
+            width: '420px',
+            height: '420px',
             borderRadius: '50%',
-            background: 'rgba(16, 185, 129, 0.12)',
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(15, 82, 186, 0.08) 50%, transparent 70%)',
             pointerEvents: 'none'
           }}
         />
 
         <div>
-          <LogoFull variant="dark" size={40} />
-          <div style={{ marginTop: '60px', maxWidth: '480px' }}>
-            <h1 style={{ color: '#FFFFFF', fontSize: '36px', lineHeight: 1.2, fontWeight: 800 }}>
+          <LogoFull variant="dark" size={38} />
+          <div style={{ marginTop: '56px', maxWidth: '480px' }}>
+            <h1 className="font-heading" style={{ color: '#FFFFFF', fontSize: '34px', lineHeight: 1.2, fontWeight: 800, letterSpacing: '-0.03em' }}>
               Gestión inteligente de inventarios para empresas ágiles.
             </h1>
-            <p style={{ marginTop: '16px', color: '#94A3B8', fontSize: '16px', lineHeight: 1.6 }}>
+            <p style={{ marginTop: '16px', color: '#94A3B8', fontSize: '15px', lineHeight: 1.6 }}>
               Centraliza el control de existencias, automatiza alertas de stock mínimo, rastrea movimientos y obtén recomendaciones analíticas potenciadas por IA.
             </p>
           </div>

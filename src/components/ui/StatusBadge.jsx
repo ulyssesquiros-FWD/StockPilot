@@ -11,19 +11,19 @@ export default function StatusBadge({
     switch (status) {
       case 'available':
         return (
-          <Badge variant="success" icon={<Check size={14} />} className={className}>
+          <Badge variant="success" icon={<Check size={13} />} className={className}>
             Disponible
           </Badge>
         );
       case 'low_stock':
         return (
-          <Badge variant="warning" icon={<AlertTriangle size={14} />} className={className}>
+          <Badge variant="warning" icon={<AlertTriangle size={13} />} className={className}>
             Stock bajo
           </Badge>
         );
       case 'out_of_stock':
         return (
-          <Badge variant="danger" icon={<X size={14} />} className={className}>
+          <Badge variant="danger" icon={<X size={13} />} className={className}>
             Agotado
           </Badge>
         );
@@ -39,13 +39,13 @@ export default function StatusBadge({
   if (type === 'user') {
     if (status === 'active') {
       return (
-        <Badge variant="success" icon={<Check size={14} />} className={className}>
+        <Badge variant="success" icon={<Check size={13} />} className={className}>
           Activo
         </Badge>
       );
     }
     return (
-      <Badge variant="neutral" icon={<X size={14} />} className={className}>
+      <Badge variant="neutral" icon={<X size={13} />} className={className}>
         Inactivo
       </Badge>
     );
@@ -55,19 +55,19 @@ export default function StatusBadge({
     switch (status) {
       case 'critical':
         return (
-          <Badge variant="danger" icon={<ShieldAlert size={14} />} className={className}>
+          <Badge variant="danger" icon={<ShieldAlert size={13} />} className={className}>
             Crítico
           </Badge>
         );
       case 'warning':
         return (
-          <Badge variant="warning" icon={<AlertTriangle size={14} />} className={className}>
+          <Badge variant="warning" icon={<AlertTriangle size={13} />} className={className}>
             Advertencia
           </Badge>
         );
       case 'resolved':
         return (
-          <Badge variant="success" icon={<CheckCircle2 size={14} />} className={className}>
+          <Badge variant="success" icon={<CheckCircle2 size={13} />} className={className}>
             Resuelto
           </Badge>
         );

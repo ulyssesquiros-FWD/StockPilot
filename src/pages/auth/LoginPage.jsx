@@ -75,16 +75,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: 'var(--bg-surface)',
+        border: '1px solid var(--border-color)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '36px 32px',
+        boxShadow: 'var(--shadow-lg)'
+      }}
+    >
       <div style={{ marginBottom: '28px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', marginBottom: '16px' }}>
-          <LogoFull size={38} showTagline={true} />
+        <div style={{ display: 'inline-block', marginBottom: '14px' }}>
+          <LogoFull size={36} showTagline={true} />
         </div>
-        <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-main)' }}>
+        <h2 className="font-heading" style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
           Iniciar Sesión
         </h2>
-        <p className="text-secondary" style={{ marginTop: '4px' }}>
-          Accede a tu plataforma de inventario inteligente
+        <p className="text-secondary" style={{ marginTop: '4px', fontSize: '13px' }}>
+          Plataforma de gestión de inventarios y cadena de suministro
         </p>
       </div>
 

@@ -122,7 +122,9 @@ export default function Header({ onMenuClick, onOpenAI }) {
       className="dashboard-header"
       style={{
         height: 'var(--header-height)',
-        backgroundColor: 'var(--bg-surface)',
+        backgroundColor: theme === 'dark' ? 'rgba(8, 12, 20, 0.82)' : 'rgba(255, 255, 255, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid var(--border-color)',
         display: 'flex',
         alignItems: 'center',
@@ -130,7 +132,8 @@ export default function Header({ onMenuClick, onOpenAI }) {
         padding: '0 var(--space-lg)',
         position: 'sticky',
         top: 0,
-        zIndex: 900
+        zIndex: 900,
+        transition: 'background-color var(--transition-normal), border-color var(--transition-normal)'
       }}
     >
       {/* Left: Mobile hamburger & Global Search */}
@@ -222,18 +225,28 @@ export default function Header({ onMenuClick, onOpenAI }) {
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            padding: '5px 10px',
-            borderRadius: 'var(--radius-md)',
+            padding: '5px 11px',
+            borderRadius: 'var(--radius-full)',
             backgroundColor: 'var(--bg-surface-alt)',
             border: '1px solid var(--border-color)',
             fontSize: '12px',
             fontWeight: 600,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            transition: 'all 0.15s ease'
           }}
         >
-          <DollarSign size={15} color="var(--color-primary-green)" />
-          <span style={{ color: 'var(--text-main)', fontSize: '12px', display: 'flex', gap: '4px' }}>
-            USD: <span style={{ color: 'var(--color-primary-green)', fontWeight: 700 }}>₡{liveCrcRate ? Number(liveCrcRate).toFixed(1) : '452.3'}</span>
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-primary-green)',
+              boxShadow: '0 0 6px var(--color-primary-green)'
+            }}
+          />
+          <DollarSign size={14} color="var(--color-primary-green)" />
+          <span style={{ color: 'var(--text-main)', fontSize: '11.5px', display: 'flex', gap: '4px', letterSpacing: '-0.01em' }}>
+            USD <span className="font-mono" style={{ color: 'var(--color-primary-green)', fontWeight: 700 }}>₡{liveCrcRate ? Number(liveCrcRate).toFixed(1) : '452.3'}</span>
           </span>
         </button>
 
