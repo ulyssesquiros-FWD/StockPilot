@@ -3,6 +3,7 @@ import aiService from '../services/aiService';
 import productService from '../services/productService';
 import movementService from '../services/movementService';
 import alertService from '../services/alertService';
+import categoryService from '../services/categoryService';
 
 export default function useAI() {
   const [messages, setMessages] = useState([
@@ -31,17 +32,19 @@ export default function useAI() {
     setError(null);
 
     try {
-      // Gather live context to feed the AI
-      const [products, movements, alerts] = await Promise.all([
+      // Gather live context to feed the AI (products, movements, alerts, categories)
+      const [products, movements, alerts, categories] = await Promise.all([
         productService.getAll().catch(() => []),
         movementService.getAll().catch(() => []),
-        alertService.getAll().catch(() => [])
+        alertService.getAll().catch(() => []),
+        categoryService.getAll().catch(() => [])
       ]);
 
       const result = await aiService.askAssistant(userPrompt, {
         products,
         movements,
-        alerts
+        alerts,
+        categories
       });
 
       const aiMsg = {

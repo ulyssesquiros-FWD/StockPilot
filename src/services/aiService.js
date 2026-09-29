@@ -14,23 +14,27 @@ export const aiService = {
    * Send a query to the AI assistant with full inventory context
    */
   async askAssistant(prompt, context = {}) {
-    const { products = [], movements = [], alerts = [] } = context;
+    const { products = [], movements = [], alerts = [], categories = [] } = context;
 
     // Try n8n webhook first
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout for Gemini LLM
 
-
       const response = await fetch(N8N_AI_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, context: { products, movements, alerts } }),
+        body: JSON.stringify({
+          prompt,
+          context: {
+            products,
+            movements,
+            alerts,
+            categories
+          }
+        }),
         signal: controller.signal
       });
-
-      console.log(response);
-      
 
       clearTimeout(timeoutId);
 
@@ -51,7 +55,7 @@ export const aiService = {
     // Controlled deterministic AI fallback for seamless demo
     return {
       source: 'local_engine',
-      response: this.generateLocalIntelligence(prompt, { products, movements, alerts }),
+      response: this.generateLocalIntelligence(prompt, { products, movements, alerts, categories }),
       timestamp: new Date().toISOString(),
       fallbackNote: 'Servicio n8n en espera. Ejecutando motor de inferencia local StockPilot IA.'
     };
@@ -60,12 +64,51 @@ export const aiService = {
   /**
    * Deterministic inference engine based on real store state
    */
-  generateLocalIntelligence(prompt, { products, movements, alerts }) {
+  generateLocalIntelligence(prompt, { products = [], movements = [], alerts = [], categories = [] }) {
     const q = (prompt || '').toLowerCase();
 
     const outOfStock = products.filter(p => Number(p.stock) <= 0);
     const lowStock = products.filter(p => Number(p.stock) > 0 && Number(p.stock) <= Number(p.minimumStock));
-    const totalValue = products.reduce((acc, p) => acc + (Number(p.stock) * Number(p.purchasePrice)), 0);
+    const totalValue = products.reduce((acc, p) => acc + (Number(p.stock) * Number(p.purchasePrice || 0)), 0);
+
+    // Standard taxonomy categories
+    const standardCategories = [
+      { id: '1', name: 'Tecnología y Electrónica', code: 'TEC', keywords: ['tecnologia', 'electronica', 'computo', 'tec'] },
+      { id: '2', name: 'Ferretería y Construcción', code: 'FER', keywords: ['ferreteria', 'construccion', 'herramientas', 'fer'] },
+      { id: '3', name: 'Alimentos y Bebidas', code: 'ALI', keywords: ['alimentos', 'bebidas', 'comida', 'ali'] },
+      { id: '4', name: 'Farmacia y Salud', code: 'FAR', keywords: ['farmacia', 'salud', 'medico', 'medicamentos', 'far', 'botiquin', 'antibacterial'] },
+      { id: '5', name: 'Oficina y Papelería', code: 'OFI', keywords: ['oficina', 'papeleria', 'toner', 'ofi'] },
+      { id: '6', name: 'Textil y Uniformes', code: 'TEX', keywords: ['textil', 'uniformes', 'ropa', 'tex'] },
+      { id: '7', name: 'Repuestos Automotrices', code: 'AUT', keywords: ['repuestos', 'automotriz', 'mecanica', 'aut'] }
+    ];
+
+    const catList = categories.length > 0 ? categories : standardCategories;
+
+    // 0. Consulta directa sobre cantidad o listado de productos de una categoría específica
+    for (const cat of standardCategories) {
+      const matchesKeyword = cat.keywords.some(k => q.includes(k));
+      if (matchesKeyword && (q.includes('cantidad') || q.includes('cuanto') || q.includes('cuántos') || q.includes('asociado') || q.includes('asocidos') || q.includes('lista') || q.includes('productos') || q.includes('stock'))) {
+        const catCode = cat.code;
+        const catProducts = products.filter(p => {
+          if (String(p.categoryId) === String(cat.id)) return true;
+          if (p.sku && catCode && p.sku.toUpperCase().startsWith(catCode)) return true;
+          if (p.category && p.category.toLowerCase().includes(cat.name.toLowerCase())) return true;
+          return false;
+        });
+
+        const rows = catProducts.map(p => {
+          const isAgotado = Number(p.stock) <= 0;
+          const isBajo = Number(p.stock) > 0 && Number(p.stock) <= Number(p.minimumStock);
+          const estado = isAgotado ? '🔴 Agotado' : isBajo ? '🟡 Stock Bajo' : '🟢 Disponible (Óptimo)';
+          return `| \`${p.sku}\` | **${p.name}** | ${p.brand || 'N/A'} | **${p.stock}** | ${p.minimumStock} | $${Number(p.salePrice || 0).toFixed(2)} | ${estado} |`;
+        }).join('\n');
+
+        const totalUnidades = catProducts.reduce((acc, p) => acc + Number(p.stock || 0), 0);
+        const valorCategoria = catProducts.reduce((acc, p) => acc + (Number(p.stock || 0) * Number(p.purchasePrice || 0)), 0);
+
+        return `# 📦 Análisis de Inventario — Categoría ${cat.name} (${cat.code})\n\n## 📊 Resumen Ejecutivo\nEn el catálogo de StockPilot se encuentran registrados **${catProducts.length} productos** asociados a la categoría **${cat.name}**:\n\n| SKU | Producto | Marca | Stock Actual | Mínimo | Precio Venta | Estado |\n|---|---|---|:---:|:---:|:---:|---|\n${rows || '| — | Sin artículos registrados | — | — | — | — | — |'}\n\n### 💡 Indicadores de la Categoría:\n- **Total de Referencias (SKU):** ${catProducts.length} artículo(s).\n- **Volumen Total en Bodega:** ${totalUnidades} unidades físicas disponibles.\n- **Valoración de Inventario:** $${valorCategoria.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD.\n- **Diagnóstico Operativo:** ${catProducts.every(p => Number(p.stock) > Number(p.minimumStock)) ? '✅ Todos los artículos de este rubro cuentan con existencias óptimas y margen de seguridad saludable.' : '⚠️ Se identifican artículos que requieren reabastecimiento próximo.'}\n\n¿Deseas que analice las alertas o genere una sugerencia de compra para esta categoría?`;
+      }
+    }
 
     // 1. Recomendación de reabastecimiento / compras
     if (q.includes('reabastecer') || q.includes('compra') || q.includes('pedir') || q.includes('pedido')) {
@@ -113,7 +156,7 @@ export const aiService = {
 
     // 4. Clasificación inteligente
     if (q.includes('clasifica') || q.includes('categoría') || q.includes('clasificar')) {
-      return `🏷️ **Clasificador Inteligente de Referencias StockPilot**\n\nPara clasificar un nuevo ítem, ingrese su nombre y características. Las categorías sugeridas en el sistema son:\n• **Tecnología y Electrónica** (cables, periféricos, equipos)\n• **Ferretería y Construcción** (herramientas, tornillería, EPP)\n• **Alimentos y Bebidas** (granos, abarrotes, insumos de cafetería)\n• **Farmacia y Salud** (botiquines, sanitizantes)\n• **Oficina y Papelería** (tóneres, papel, consumibles)`;
+      return `🏷️ **Clasificador Inteligente de Referencias StockPilot**\n\nPara clasificar un nuevo ítem, ingrese su nombre y características. Las categorías sugeridas en el sistema son:\n• **Tecnología y Electrónica (TEC)** (cables, periféricos, equipos)\n• **Ferretería y Construcción (FER)** (herramientas, tornillería, EPP)\n• **Alimentos y Bebidas (ALI)** (granos, abarrotes, insumos de cafetería)\n• **Farmacia y Salud (FAR)** (botiquines, sanitizantes)\n• **Oficina y Papelería (OFI)** (tóneres, papel, consumibles)\n• **Textil y Uniformes (TEX)** (indumentaria, chalecos reflectivos)\n• **Repuestos Automotrices (AUT)** (repuestos mecánicos, aceites)`;
     }
 
     // 5. Resumen general / salud del inventario
