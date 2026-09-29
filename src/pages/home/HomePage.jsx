@@ -1,59 +1,144 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import LogoFull from '../../assets/brand/LogoFull';
 import LogoIsotype from '../../assets/brand/LogoIsotype';
-import Button from '../../components/ui/Button';
+import './home.css';
 import {
   Sparkles,
   ArrowRight,
   Package,
   Layers,
-  Activity,
   ShieldCheck,
   FileText,
   Bot,
   Truck,
   CheckCircle2,
-  Clock,
   TrendingUp,
-  BarChart3,
-  Cpu,
   LogIn,
   LayoutDashboard,
-  ExternalLink,
   Zap,
-  ChevronRight
+  Sun,
+  Moon,
+  Menu,
+  X,
+  Copy,
+  Check,
+  ArrowLeftRight,
+  Laptop,
+  Hammer,
+  Coffee,
+  HeartPulse,
+  Shirt,
+  Car,
+  AlertTriangle
 } from 'lucide-react';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+
+  // Interactive State
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [copiedRole, setCopiedRole] = useState(null);
+  const [activeAiDemo, setActiveAiDemo] = useState(0);
+
+  const isDark = theme === 'dark';
+
+  const copyCredentials = (email, pass, roleKey) => {
+    navigator.clipboard?.writeText(`${email} | ${pass}`);
+    setCopiedRole(roleKey);
+    setTimeout(() => setCopiedRole(null), 2000);
+  };
+
+  const aiDemoConversations = [
+    {
+      q: '¿Qué productos de Farmacia y Salud tenemos registrados en bodega?',
+      a: 'En StockPilot hay EXACTAMENTE 2 productos asociados a Farmacia y Salud (FAR): FAR-GEL-1L (Alcohol en Gel 1L, Stock: 22 u.) y FAR-BOT-IND45 (Botiquín Industrial, Stock: 5 u.). Ambos cuentan con existencias saludables sin alertas de quiebre.',
+      tag: 'Consulta de Categoría'
+    },
+    {
+      q: '¿Cuáles son las referencias críticas en riesgo inminente de agotamiento?',
+      a: 'Diagnóstico crítico de inventario: La Cinta Métrica Profesional 8m (FER-STA-TAPE8) está AGOTADA (0 u.). Además, 6 productos (incluyendo Mouse Logitech MX y Tóner HP 85A) están en stock mínimo. Se recomienda emitir orden de reposición hoy.',
+      tag: 'Detección de Quiebres'
+    },
+    {
+      q: '¿Cuál es la valorización total del inventario y rotación reciente?',
+      a: 'El valor total de adquisición registrado asciende a $16,917.50 USD distribuidos en 23 SKUs. En los últimos 30 días se auditaron 39 transacciones de Kardex, con una concentración de salida del 42% en la familia TEC.',
+      tag: 'Valorización & Métricas'
+    }
+  ];
+
+  const tickerItems = [
+    { icon: <Zap size={14} />, text: 'CONTROL EN TIEMPO REAL', highlight: true },
+    { icon: <Bot size={14} />, text: 'IA CON MEMORIA CONTEXTUAL DE 1 HORA' },
+    { icon: <ShieldCheck size={14} />, text: 'TRAZABILIDAD 100% EN KARDEX' },
+    { icon: <Package size={14} />, text: 'TAXONOMÍA SAC / HS CON CÓDIGOS DE BARRAS' },
+    { icon: <TrendingUp size={14} />, text: 'DETECCIÓN TEMPRANA DE QUIEBRES' },
+    { icon: <FileText size={14} />, text: 'REPORTES GERENCIALES EN PDF EN 1 CLIC' },
+    { icon: <Sparkles size={14} />, text: '7 FAMILIAS COMERCIALES ESTANDARIZADAS', highlight: true },
+    { icon: <CheckCircle2 size={14} />, text: 'SEGURIDAD RBAC MULTI-ROL' }
+  ];
 
   return (
-    <div
-      className="stockpilot-landing"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-app)',
-        color: 'var(--text-main)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
-      {/* 1. Header / Navigation Bar */}
-      <header
+    <div className="stockpilot-landing">
+      {/* Background Ambience Layers */}
+      <div className="lp-bg-ambient" aria-hidden="true" />
+      <div className="lp-grid-pattern" aria-hidden="true" />
+
+      {/* Top Release Banner */}
+      <aside
         style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          backgroundColor: 'rgba(15, 23, 42, 0.85)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          padding: '16px 24px'
+          backgroundColor: isDark ? 'rgba(10, 46, 91, 0.65)' : 'rgba(235, 243, 252, 0.95)',
+          borderBottom: '1px solid rgba(30, 90, 242, 0.2)',
+          padding: '8px 16px',
+          textAlign: 'center',
+          fontSize: '12.5px',
+          fontWeight: 500,
+          color: isDark ? '#93C5FD' : '#0B4D9B',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          position: 'relative',
+          zIndex: 1001
         }}
       >
+        <span
+          style={{
+            backgroundColor: '#10B981',
+            color: '#FFFFFF',
+            fontSize: '10px',
+            fontWeight: 700,
+            padding: '1px 6px',
+            borderRadius: '4px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.04em'
+          }}
+        >
+          Nuevo v4.0
+        </span>
+        <span>Copiloto de IA con memoria contextual de 1 hora y reportes ejecutivos en PDF.</span>
+        <Link
+          to="/login"
+          style={{
+            color: isDark ? '#FFFFFF' : '#0B4D9B',
+            fontWeight: 700,
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '3px',
+            marginLeft: '4px'
+          }}
+        >
+          Probar Ahora <ArrowRight size={13} />
+        </Link>
+      </aside>
+
+      {/* 1. Header / Navbar */}
+      <header className="lp-navbar" role="banner">
         <div
           style={{
             maxWidth: '1240px',
@@ -64,176 +149,183 @@ export default function HomePage() {
             gap: '20px'
           }}
         >
-          {/* Brand Logo */}
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <LogoFull variant="dark" size={36} />
+          {/* Logo */}
+          <Link to="/" style={{ textDecoration: 'none' }} aria-label="Inicio StockPilot">
+            <LogoFull variant={isDark ? 'dark' : 'light'} size={34} />
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Nav Links */}
           <nav
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '28px',
-              fontSize: '14px',
-              fontWeight: 500
-            }}
             className="landing-nav-links"
+            aria-label="Navegación principal"
+            style={{ display: 'flex', alignItems: 'center', gap: '26px' }}
           >
-            <a
-              href="#proposito"
-              style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
-            >
-              Propósito
-            </a>
-            <a
-              href="#funcionamiento"
-              style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
-            >
-              Funcionamiento
-            </a>
-            <a
-              href="#modulos"
-              style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
-            >
-              Módulos
-            </a>
-            <a
-              href="#asistente-ia"
-              style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
-            >
-              Copiloto IA
-            </a>
-            <a
-              href="#arquitectura"
-              style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
-            >
-              Arquitectura
-            </a>
+            <a href="#proposito" className="lp-nav-link">Propósito</a>
+            <a href="#solucion" className="lp-nav-link">Solución</a>
+            <a href="#caracteristicas" className="lp-nav-link">Plataforma</a>
+            <a href="#inteligencia" className="lp-nav-link">Copiloto IA</a>
+            <a href="#sectores" className="lp-nav-link">Sectores</a>
+            <a href="#beneficios" className="lp-nav-link">Beneficios</a>
           </nav>
 
-          {/* User Auth Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Right Controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {/* Theme Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="btn-icon btn-ghost"
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '8px',
+                border: '1px solid var(--lp-border)',
+                color: 'var(--lp-text)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'var(--lp-surface)'
+              }}
+              title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              aria-label="Alternar tema de interfaz"
+            >
+              {isDark ? <Sun size={17} style={{ color: '#FBBF24' }} /> : <Moon size={17} style={{ color: '#0A2E5B' }} />}
+            </button>
+
+            {/* Auth CTA */}
             {isAuthenticated ? (
-              <Button
-                variant="primary"
-                size="sm"
-                icon={<LayoutDashboard size={16} />}
+              <button
+                type="button"
+                className="lp-btn-primary"
                 onClick={() => navigate('/dashboard')}
                 style={{
-                  backgroundColor: '#10B981',
-                  borderColor: '#10B981',
-                  color: '#FFFFFF',
-                  fontWeight: 600,
-                  boxShadow: '0 4px 14px rgba(16, 185, 129, 0.35)'
+                  padding: '9px 18px',
+                  fontSize: '13.5px',
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)'
                 }}
               >
-                Ir a mi Dashboard
-              </Button>
+                <LayoutDashboard size={16} /> Mi Dashboard
+              </button>
             ) : (
               <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate('/login')}
-                  style={{ color: '#E2E8F0', fontWeight: 500 }}
+                <Link
+                  to="/login"
+                  style={{
+                    color: 'var(--lp-text)',
+                    fontSize: '13.5px',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    transition: 'background-color 0.2s'
+                  }}
+                  className="hide-mobile"
                 >
                   Iniciar Sesión
-                </Button>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  icon={<LogIn size={15} />}
+                </Link>
+                <button
+                  type="button"
+                  className="lp-btn-primary"
                   onClick={() => navigate('/login')}
-                  style={{
-                    backgroundColor: '#1E5AF2',
-                    borderColor: '#1E5AF2',
-                    color: '#FFFFFF',
-                    fontWeight: 600,
-                    boxShadow: '0 4px 14px rgba(30, 90, 242, 0.35)'
-                  }}
+                  style={{ padding: '9px 20px', fontSize: '13.5px' }}
                 >
-                  Acceder al Sistema
-                </Button>
+                  <LogIn size={15} /> Acceder al Sistema
+                </button>
               </>
             )}
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              type="button"
+              className="btn-icon btn-ghost show-mobile-only"
+              onClick={() => setMobileMenuOpen(prev => !prev)}
+              aria-label="Menú móvil"
+              style={{
+                display: 'none',
+                padding: '6px',
+                border: '1px solid var(--lp-border)',
+                borderRadius: '8px',
+                color: 'var(--lp-text)'
+              }}
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Slide-down Menu */}
+        {mobileMenuOpen && (
+          <div
+            style={{
+              padding: '16px 20px',
+              backgroundColor: 'var(--lp-surface)',
+              borderTop: '1px solid var(--lp-border)',
+              marginTop: '12px',
+              borderRadius: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              boxShadow: '0 20px 30px rgba(0,0,0,0.2)'
+            }}
+          >
+            <a href="#proposito" onClick={() => setMobileMenuOpen(false)} className="lp-nav-link">Propósito</a>
+            <a href="#solucion" onClick={() => setMobileMenuOpen(false)} className="lp-nav-link">Solución</a>
+            <a href="#caracteristicas" onClick={() => setMobileMenuOpen(false)} className="lp-nav-link">Plataforma</a>
+            <a href="#inteligencia" onClick={() => setMobileMenuOpen(false)} className="lp-nav-link">Copiloto IA</a>
+            <a href="#sectores" onClick={() => setMobileMenuOpen(false)} className="lp-nav-link">Sectores</a>
+            <a href="#beneficios" onClick={() => setMobileMenuOpen(false)} className="lp-nav-link">Beneficios</a>
+            <div style={{ paddingTop: '8px', borderTop: '1px solid var(--lp-border)' }}>
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="lp-btn-primary"
+                style={{ width: '100%', textAlign: 'center' }}
+              >
+                Ingresar a la Plataforma
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 2. Hero Section */}
       <section
         style={{
           position: 'relative',
-          padding: '80px 24px 70px',
-          overflow: 'hidden',
-          background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 90, 242, 0.25), transparent)'
+          padding: '70px 24px 80px',
+          textAlign: 'center',
+          zIndex: 1
         }}
+        aria-labelledby="hero-heading"
       >
-        <div style={{ maxWidth: '1180px', margin: '0 auto', textAlign: 'center' }}>
-          {/* Project Release Pill */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '6px 14px',
-              borderRadius: '24px',
-              backgroundColor: 'rgba(30, 90, 242, 0.12)',
-              border: '1px solid rgba(30, 90, 242, 0.3)',
-              color: '#60A5FA',
-              fontSize: '12.5px',
-              fontWeight: 600,
-              marginBottom: '24px',
-              backdropFilter: 'blur(8px)'
-            }}
-          >
+        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          {/* Tag Pill */}
+          <div className="lp-badge-pill lp-animate-fade">
             <Sparkles size={14} style={{ color: '#10B981' }} />
-            <span>StockPilot v4.0 • Plataforma Empresarial con Copiloto IA (n8n + Gemini)</span>
+            <span>Plataforma Empresarial • Tu inventario, en control.</span>
           </div>
 
-          {/* Main Title */}
-          <h1
-            style={{
-              fontSize: 'clamp(32px, 5vw, 56px)',
-              fontWeight: 800,
-              lineHeight: 1.15,
-              letterSpacing: '-0.03em',
-              maxWidth: '920px',
-              margin: '0 auto 20px',
-              background: 'linear-gradient(180deg, #FFFFFF 0%, #CBD5E1 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}
-          >
-            Control total de inventarios, trazabilidad exacta y asistencia predictiva.
+          {/* Main Headline */}
+          <h1 id="hero-heading" className="lp-hero-title lp-hero-title-gradient lp-animate-fade">
+            Control integral de inventarios, trazabilidad exacta y asistencia predictiva con IA.
           </h1>
 
-          {/* Subtitle / Value Proposition */}
+          {/* Subtitle */}
           <p
             style={{
               fontSize: 'clamp(16px, 2vw, 19px)',
               lineHeight: 1.6,
-              color: '#94A3B8',
-              maxWidth: '760px',
+              color: 'var(--lp-text-muted)',
+              maxWidth: '820px',
               margin: '0 auto 36px',
               fontWeight: 400
             }}
           >
-            Optimiza niveles de existencias, automatiza la codificación taxonómica de SKUs, detecta anomalías antes de que ocurran y toma decisiones fundamentadas con un agente de IA en tiempo real.
+            Centraliza existencias con codificación taxonómica internacional SAC/HS, audita movimientos en tiempo real, anticipa quiebres de stock y acelera tus compras con un copiloto inteligente autónomo.
           </p>
 
-          {/* CTA Buttons */}
+          {/* Hero CTAs */}
           <div
             style={{
               display: 'flex',
@@ -241,223 +333,537 @@ export default function HomePage() {
               justifyContent: 'center',
               gap: '16px',
               flexWrap: 'wrap',
-              marginBottom: '56px'
+              marginBottom: '48px'
             }}
           >
-            <Button
-              variant="primary"
-              size="lg"
-              icon={<ArrowRight size={18} />}
-              onClick={() => navigate('/login')}
-              style={{
-                backgroundColor: '#1E5AF2',
-                borderColor: '#1E5AF2',
-                color: '#FFFFFF',
-                fontSize: '15px',
-                fontWeight: 600,
-                padding: '14px 28px',
-                borderRadius: '8px',
-                boxShadow: '0 8px 24px -4px rgba(30, 90, 242, 0.5)'
-              }}
-            >
-              {isAuthenticated ? 'Ingresar a mi Tablero' : 'Iniciar Sesión en StockPilot'}
-            </Button>
+            <Link to="/login" className="lp-btn-primary">
+              <span>{isAuthenticated ? 'Ir a mi Dashboard' : 'Iniciar Sesión en StockPilot'}</span>
+              <ArrowRight size={17} />
+            </Link>
 
-            <a
-              href="#funcionamiento"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '13px 24px',
-                borderRadius: '8px',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#E2E8F0',
-                fontSize: '15px',
-                fontWeight: 600,
-                textDecoration: 'none',
-                transition: 'background-color 0.2s, border-color 0.2s'
-              }}
-            >
-              Conocer Cómo Funciona
+            <a href="#plataforma-demo" className="lp-btn-secondary">
+              <Zap size={16} style={{ color: '#F59E0B' }} />
+              <span>Explorar Plataforma en Vivo</span>
             </a>
           </div>
 
-          {/* Trust Highlights */}
+          {/* Trust Highlights Checklist */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '28px',
+              gap: '24px',
               flexWrap: 'wrap',
-              color: '#94A3B8',
-              fontSize: '13px'
+              fontSize: '13px',
+              color: 'var(--lp-text-muted)',
+              marginBottom: '60px'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ShieldCheck size={16} style={{ color: '#10B981' }} />
-              <span>Taxonomía Oficial SAC / HS</span>
+              <CheckCircle2 size={16} style={{ color: '#10B981' }} />
+              <span>Taxonomía oficial SAC / HS</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Bot size={16} style={{ color: '#38BDF8' }} />
-              <span>Memoria IA de 1 Hora</span>
+              <CheckCircle2 size={16} style={{ color: '#10B981' }} />
+              <span>Memoria IA de 1 hora activa</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <FileText size={16} style={{ color: '#F59E0B' }} />
-              <span>Reportes Ejecutivos en PDF</span>
+              <CheckCircle2 size={16} style={{ color: '#10B981' }} />
+              <span>Expedientes ejecutivos en PDF</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Clock size={16} style={{ color: '#A78BFA' }} />
-              <span>Kardex y Trazabilidad al Segundo</span>
+              <CheckCircle2 size={16} style={{ color: '#10B981' }} />
+              <span>Kardex auditado segundo a segundo</span>
+            </div>
+          </div>
+
+          {/* 3. Hero Visual Showcase: Interactive SaaS Dashboard Mockup */}
+          <div id="plataforma-demo" className="lp-mockup-wrapper">
+            {/* Window Chrome Header */}
+            <div
+              style={{
+                padding: '12px 20px',
+                background: isDark ? '#0A1E3B' : '#F1F5F9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid var(--lp-border)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#EF4444' }} />
+                <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+                <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                <div
+                  style={{
+                    marginLeft: '12px',
+                    padding: '3px 12px',
+                    borderRadius: '6px',
+                    backgroundColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)',
+                    border: '1px solid var(--lp-border)',
+                    fontSize: '11.5px',
+                    fontFamily: 'monospace',
+                    color: 'var(--lp-text-muted)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <ShieldCheck size={12} style={{ color: '#10B981' }} />
+                  <span>https://app.stockpilot.io/dashboard</span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    padding: '3px 9px',
+                    borderRadius: '12px'
+                  }}
+                >
+                  <span className="lp-pulse" style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10B981' }} />
+                  Kardex Sincronizado en Tiempo Real
+                </span>
+              </div>
+            </div>
+
+            {/* Mockup Dashboard Content */}
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px', textAlign: 'left' }}>
+              {/* 4 Interactive KPI Cards */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+                  gap: '14px'
+                }}
+              >
+                <div className="lp-card" style={{ padding: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--lp-text-muted)', textTransform: 'uppercase' }}>
+                      Catálogo Total
+                    </span>
+                    <Package size={18} style={{ color: '#1E5AF2' }} />
+                  </div>
+                  <div style={{ fontSize: '24px', fontWeight: 800, marginTop: '6px', color: 'var(--lp-text)' }}>
+                    23 SKUs
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: '#10B981', marginTop: '2px', fontWeight: 500 }}>
+                    7 Familias Taxonómicas
+                  </div>
+                </div>
+
+                <div className="lp-card" style={{ padding: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--lp-text-muted)', textTransform: 'uppercase' }}>
+                      Valorización
+                    </span>
+                    <TrendingUp size={18} style={{ color: '#10B981' }} />
+                  </div>
+                  <div style={{ fontSize: '24px', fontWeight: 800, marginTop: '6px', color: '#10B981' }}>
+                    $16,917.50 USD
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', marginTop: '2px' }}>
+                    Costo promedio ponderado
+                  </div>
+                </div>
+
+                <div className="lp-card" style={{ padding: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--lp-text-muted)', textTransform: 'uppercase' }}>
+                      Semáforo Crítico
+                    </span>
+                    <AlertTriangle size={18} style={{ color: '#F59E0B' }} />
+                  </div>
+                  <div style={{ fontSize: '24px', fontWeight: 800, marginTop: '6px', color: '#F59E0B' }}>
+                    1 Agotado • 6 Mínimos
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: '#EF4444', marginTop: '2px', fontWeight: 500 }}>
+                    Atención prioritaria de compra
+                  </div>
+                </div>
+
+                <div className="lp-card" style={{ padding: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--lp-text-muted)', textTransform: 'uppercase' }}>
+                      Asistencia IA
+                    </span>
+                    <Bot size={18} style={{ color: '#8B5CF6' }} />
+                  </div>
+                  <div style={{ fontSize: '24px', fontWeight: 800, marginTop: '6px', color: 'var(--lp-text)' }}>
+                    Activo • 1h
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: '#8B5CF6', marginTop: '2px', fontWeight: 500 }}>
+                    Google Gemini + n8n
+                  </div>
+                </div>
+              </div>
+
+              {/* Realistic Inventory Table Preview */}
+              <div
+                style={{
+                  borderRadius: '10px',
+                  border: '1px solid var(--lp-border)',
+                  overflowX: 'auto',
+                  backgroundColor: 'var(--lp-surface-alt)'
+                }}
+              >
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12.5px' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--lp-border)', textAlign: 'left', color: 'var(--lp-text-muted)' }}>
+                      <th style={{ padding: '10px 14px' }}>SKU Taxonómico</th>
+                      <th style={{ padding: '10px 14px' }}>Producto</th>
+                      <th style={{ padding: '10px 14px' }}>Familia</th>
+                      <th style={{ padding: '10px 14px' }}>Existencia</th>
+                      <th style={{ padding: '10px 14px' }}>Mínimo</th>
+                      <th style={{ padding: '10px 14px' }}>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ borderBottom: '1px solid var(--lp-border)' }}>
+                      <td style={{ padding: '10px 14px', fontFamily: 'monospace', fontWeight: 700, color: '#1E5AF2' }}>
+                        TEC-LAP-HP-001
+                      </td>
+                      <td style={{ padding: '10px 14px', fontWeight: 600 }}>Laptop HP ProBook 450 G9 15.6"</td>
+                      <td style={{ padding: '10px 14px' }}><span className="badge badge-primary">TEC</span></td>
+                      <td style={{ padding: '10px 14px', fontWeight: 700 }}>12 u.</td>
+                      <td style={{ padding: '10px 14px', color: 'var(--lp-text-muted)' }}>5 u.</td>
+                      <td style={{ padding: '10px 14px' }}><span className="badge badge-success">🟢 Disponible</span></td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--lp-border)' }}>
+                      <td style={{ padding: '10px 14px', fontFamily: 'monospace', fontWeight: 700, color: '#F59E0B' }}>
+                        FER-STA-TAPE8
+                      </td>
+                      <td style={{ padding: '10px 14px', fontWeight: 600 }}>Cinta Métrica Profesional 8m / 26ft</td>
+                      <td style={{ padding: '10px 14px' }}><span className="badge badge-warning">FER</span></td>
+                      <td style={{ padding: '10px 14px', fontWeight: 700, color: '#EF4444' }}>0 u.</td>
+                      <td style={{ padding: '10px 14px', color: 'var(--lp-text-muted)' }}>10 u.</td>
+                      <td style={{ padding: '10px 14px' }}><span className="badge badge-danger">🔴 Agotado</span></td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--lp-border)' }}>
+                      <td style={{ padding: '10px 14px', fontFamily: 'monospace', fontWeight: 700, color: '#EF4444' }}>
+                        FAR-GEL-1L
+                      </td>
+                      <td style={{ padding: '10px 14px', fontWeight: 600 }}>Alcohol en Gel Antibacterial 1L con Dosificador</td>
+                      <td style={{ padding: '10px 14px' }}><span className="badge badge-info">FAR</span></td>
+                      <td style={{ padding: '10px 14px', fontWeight: 700 }}>22 u.</td>
+                      <td style={{ padding: '10px 14px', color: 'var(--lp-text-muted)' }}>8 u.</td>
+                      <td style={{ padding: '10px 14px' }}><span className="badge badge-success">🟢 Disponible</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Floating AI Notification Toast in Mockup */}
+              <div
+                style={{
+                  padding: '14px 18px',
+                  borderRadius: '12px',
+                  background: isDark ? 'linear-gradient(135deg, rgba(10, 46, 91, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)' : '#EBF3FC',
+                  border: '1px solid rgba(30, 90, 242, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: '#10B981',
+                    color: '#FFFFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}
+                >
+                  <Sparkles size={16} />
+                </div>
+                <div style={{ flex: 1, fontSize: '12.5px', lineHeight: 1.4 }}>
+                  <strong style={{ color: isDark ? '#FFFFFF' : '#0A2E5B' }}>Sugerencia StockPilot IA:</strong>{' '}
+                  <span style={{ color: isDark ? '#CBD5E1' : '#334155' }}>
+                    Se detectó un quiebre en Ferretería y 6 productos bajo umbral. ¿Deseas redactar la orden de compra ahora?
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  style={{
+                    padding: '5px 12px',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    borderRadius: '6px',
+                    backgroundColor: '#1E5AF2',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Ver Asistente
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Interactive System Preview Showcase */}
-      <section style={{ padding: '0 24px 60px' }}>
+      {/* CINTA PUBLICITARIA CONTINUA CON MOVIMIENTO (MARQUEE INFINITO) */}
+      <div className="lp-marquee-container" aria-label="Beneficios destacados de StockPilot">
+        <div className="lp-marquee-track">
+          {tickerItems.concat(tickerItems).map((item, idx) => (
+            <div
+              key={idx}
+              className={`lp-marquee-item ${item.highlight ? 'lp-marquee-item-highlight' : ''}`}
+            >
+              {item.icon}
+              <span>{item.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Métricas / Indicadores de Confianza */}
+      <section
+        style={{
+          borderTop: '1px solid var(--lp-border)',
+          borderBottom: '1px solid var(--lp-border)',
+          backgroundColor: 'var(--lp-surface-alt)',
+          padding: '40px 24px'
+        }}
+      >
         <div
           style={{
             maxWidth: '1120px',
             margin: '0 auto',
-            backgroundColor: '#0F172A',
-            borderRadius: '16px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(30, 90, 242, 0.2)',
-            overflow: 'hidden'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '24px',
+            textAlign: 'center'
           }}
         >
-          {/* Mockup Window Chrome */}
-          <div
-            style={{
-              backgroundColor: '#0A1E3B',
-              padding: '12px 20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#EF4444' }} />
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10B981' }} />
-              <span style={{ fontSize: '12px', color: '#94A3B8', marginLeft: '12px', fontFamily: 'monospace' }}>
-                https://stockpilot.app/dashboard
-              </span>
-            </div>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#34D399',
-                backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                padding: '2px 8px',
-                borderRadius: '12px'
-              }}
-            >
-              ● Sistema en Operación Normal
-            </span>
+          <div>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: 'var(--lp-primary)', lineHeight: 1 }}>+99.8%</div>
+            <div style={{ fontSize: '13.5px', fontWeight: 600, marginTop: '6px' }}>Precisión de Inventario</div>
+            <div style={{ fontSize: '12px', color: 'var(--lp-text-muted)', marginTop: '2px' }}>Trazabilidad exacta en entradas y salidas</div>
           </div>
 
-          {/* Mockup Body Content */}
-          <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {/* KPI preview grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '14px'
-              }}
-            >
-              <div style={{ padding: '16px', backgroundColor: '#1E293B', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 600 }}>Total SKUs Activos</div>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: '#FFFFFF', marginTop: '4px' }}>23 Artículos</div>
-                <div style={{ fontSize: '11px', color: '#10B981', marginTop: '2px' }}>7 Familias Taxonómicas</div>
-              </div>
+          <div>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: '#10B981', lineHeight: 1 }}>7 Familias</div>
+            <div style={{ fontSize: '13.5px', fontWeight: 600, marginTop: '6px' }}>Normativa SAC / HS</div>
+            <div style={{ fontSize: '12px', color: 'var(--lp-text-muted)', marginTop: '2px' }}>Estandarización arancelaria global</div>
+          </div>
 
-              <div style={{ padding: '16px', backgroundColor: '#1E293B', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 600 }}>Valorización Inventario</div>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: '#60A5FA', marginTop: '4px' }}>$16,917.50 USD</div>
-                <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>Costo de adquisición ponderado</div>
-              </div>
+          <div>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: '#8B5CF6', lineHeight: 1 }}>1 Hora</div>
+            <div style={{ fontSize: '13.5px', fontWeight: 600, marginTop: '6px' }}>Memoria Contextual IA</div>
+            <div style={{ fontSize: '12px', color: 'var(--lp-text-muted)', marginTop: '2px' }}>Agente Gemini conectado a tu catálogo</div>
+          </div>
 
-              <div style={{ padding: '16px', backgroundColor: '#1E293B', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 600 }}>Semáforo Crítico</div>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: '#F59E0B', marginTop: '4px' }}>1 Agotado • 6 Mínimos</div>
-                <div style={{ fontSize: '11px', color: '#F87171', marginTop: '2px' }}>Alertas generadas automáticamente</div>
-              </div>
+          <div>
+            <div style={{ fontSize: '36px', fontWeight: 800, color: '#F59E0B', lineHeight: 1 }}>1 Clic</div>
+            <div style={{ fontSize: '13.5px', fontWeight: 600, marginTop: '6px' }}>Reporte Ejecutivo PDF</div>
+            <div style={{ fontSize: '12px', color: 'var(--lp-text-muted)', marginTop: '2px' }}>Auditoría oficial lista para gerencia</div>
+          </div>
+        </div>
+      </section>
 
-              <div style={{ padding: '16px', backgroundColor: '#1E293B', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 600 }}>Precisión Operativa</div>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: '#10B981', marginTop: '4px' }}>99.8%</div>
-                <div style={{ fontSize: '11px', color: '#34D399', marginTop: '2px' }}>Trazabilidad de entradas y salidas</div>
-              </div>
+      {/* BANNER PUBLICITARIO PREMIUM CON MOVIMIENTO & ANIMACIÓN */}
+      <section className="lp-ad-banner-section" aria-label="Promoción y Publicidad StockPilot">
+        <div className="lp-ad-banner-card">
+          <div className="lp-ad-shimmer-bg" aria-hidden="true" />
+
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <div className="lp-ad-badge-pulse">
+              <span className="lp-ad-beacon" aria-hidden="true" />
+              <span>Oferta de Implementación • Acceso Inmediato</span>
             </div>
 
-            {/* AI Copilot live demonstration block */}
-            <div
-              style={{
-                backgroundColor: 'rgba(10, 46, 91, 0.45)',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
-                borderRadius: '12px',
-                padding: '18px 20px',
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '14px'
-              }}
-            >
-              <div
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '50%',
-                  backgroundColor: '#10B981',
-                  color: '#FFFFFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  boxShadow: '0 0 12px rgba(16, 185, 129, 0.5)'
-                }}
+            <h2 style={{ fontSize: 'clamp(24px, 3.2vw, 32px)', fontWeight: 800, lineHeight: 1.25, marginBottom: '14px', color: 'var(--lp-text)' }}>
+              Acelera la Productividad de tu Empresa con <span className="lp-gradient-text">StockPilot Pro</span>
+            </h2>
+
+            <p style={{ fontSize: '15px', color: 'var(--lp-text-muted)', lineHeight: 1.6, marginBottom: '22px', maxWidth: '580px' }}>
+              Descubre por qué las empresas líderes centralizan su gestión en StockPilot. Digitaliza tus almacenes, anticípate a los quiebres de existencias con IA y genera auditorías ejecutivas en segundos sin costos ocultos de instalación.
+            </p>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'center' }}>
+              <button
+                type="button"
+                className="lp-ad-cta-btn"
+                onClick={() => navigate('/login')}
               >
-                <Sparkles size={18} />
+                <span>Comenzar Prueba Gratuita</span>
+                <ArrowRight size={17} />
+              </button>
+
+              <span style={{ fontSize: '12.5px', color: 'var(--lp-text-muted)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <CheckCircle2 size={15} color="#10B981" />
+                Sin tarjeta requerida • Acceso libre a roles de prueba
+              </span>
+            </div>
+          </div>
+
+          {/* Tarjeta interactiva lateral del banner */}
+          <div className="lp-ad-metric-box">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--lp-border)', paddingBottom: '10px' }}>
+              <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 700 }}>
+                ⚡ Alta Disponibilidad
+              </span>
+              <span style={{ fontSize: '11px', color: 'var(--lp-text-muted)' }}>
+                StockPilot Cloud
+              </span>
+            </div>
+
+            <div className="lp-ad-benefit-item">
+              <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(30, 90, 242, 0.12)', color: '#1E5AF2', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Zap size={16} />
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>StockPilot IA — Inferencia en Tiempo Real</span>
-                  <span style={{ fontSize: '11px', color: '#38BDF8', fontFamily: 'monospace' }}>Gemini Agent + n8n Webhook</span>
-                </div>
-                <p style={{ margin: '6px 0 0', fontSize: '13px', color: '#CBD5E1', lineHeight: 1.55 }}>
-                  "He diagnosticado el inventario completo: la categoría <strong>Farmacia y Salud (FAR)</strong> cuenta con 2 artículos en estado óptimo. Sin embargo, en <strong>Ferretería (FER)</strong> la <em>Cinta Métrica Profesional 8m</em> se encuentra agotada (0 u.) y 6 productos de tecnología y alimentos alcanzaron su punto de reorden. ¿Deseas redactar la orden de compra preventiva?"
-                </p>
+              <span>Despliegue operativo en menos de 5 minutos</span>
+            </div>
+
+            <div className="lp-ad-benefit-item">
+              <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.12)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Bot size={16} />
               </div>
+              <span>Agente IA con retención contextual activa</span>
+            </div>
+
+            <div className="lp-ad-benefit-item">
+              <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(139, 92, 246, 0.12)', color: '#8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <ShieldCheck size={16} />
+              </div>
+              <span>Kardex auditado bajo estándar internacional</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Propósito del Proyecto (Misión & Por qué existe) */}
+      {/* 5. Problema vs Solución */}
       <section
         id="proposito"
         style={{
           padding: '80px 24px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-          backgroundColor: 'rgba(15, 23, 42, 0.4)'
+          maxWidth: '1120px',
+          margin: '0 auto'
+        }}
+      >
+        <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 48px' }}>
+          <span style={{ color: 'var(--lp-primary)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            Transformación Operativa
+          </span>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em' }}>
+            El Desafío del Inventario y la Solución StockPilot
+          </h2>
+          <p style={{ color: 'var(--lp-text-muted)', fontSize: '16px', lineHeight: 1.6, marginTop: '12px' }}>
+            Las empresas pierden hasta un 18% anual por quiebres imprevistos y descontrol de existencias. StockPilot transforma la incertidumbre en ventaja competitiva.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '24px'
+          }}
+        >
+          {/* Problema */}
+          <div
+            style={{
+              padding: '32px',
+              borderRadius: '16px',
+              backgroundColor: isDark ? 'rgba(239, 68, 68, 0.05)' : '#FEF2F2',
+              border: '1px solid rgba(239, 68, 68, 0.2)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#EF4444', fontWeight: 700, fontSize: '16px', marginBottom: '18px' }}>
+              <AlertTriangle size={20} />
+              <span>La Gestión Tradicional y Caótica</span>
+            </div>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '14px', lineHeight: 1.5 }}>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <span style={{ color: '#EF4444', fontWeight: 700 }}>✕</span>
+                <span>Hojas de cálculo desincronizadas con datos obsoletos y descuadres físicos.</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <span style={{ color: '#EF4444', fontWeight: 700 }}>✕</span>
+                <span>Códigos SKU inventados sin jerarquía que duplican referencias en bodega.</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <span style={{ color: '#EF4444', fontWeight: 700 }}>✕</span>
+                <span>Desabastecimientos sorpresa que detienen ventas y frustran a los clientes.</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <span style={{ color: '#EF4444', fontWeight: 700 }}>✕</span>
+                <span>Horas de trabajo manual para armar reportes que nacen desactualizados.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Solución */}
+          <div
+            style={{
+              padding: '32px',
+              borderRadius: '16px',
+              backgroundColor: isDark ? 'rgba(16, 185, 129, 0.05)' : '#ECFDF5',
+              border: '1px solid rgba(16, 185, 129, 0.25)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#10B981', fontWeight: 700, fontSize: '16px', marginBottom: '18px' }}>
+              <ShieldCheck size={20} />
+              <span>La Experiencia con StockPilot</span>
+            </div>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '14px', lineHeight: 1.5 }}>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
+                <span>Base unificada en tiempo real con recálculo automático de saldos y costos.</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
+                <span>Codificación taxonómica formal estandarizada por familias arancelarias.</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
+                <span>Semáforo dinámico de alertas que avisa antes de que ocurra el quiebre.</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
+                <span>Copiloto de IA conversacional que responde diagnósticos en segundos.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Características Principales (Core Modules) */}
+      <section
+        id="caracteristicas"
+        style={{
+          padding: '80px 24px',
+          backgroundColor: 'var(--lp-surface-alt)',
+          borderTop: '1px solid var(--lp-border)'
         }}
       >
         <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 50px' }}>
-            <span style={{ color: '#38BDF8', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Misión & Visión Logística
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 48px' }}>
+            <span style={{ color: '#10B981', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Capacidades Centrales
             </span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-              El Propósito Detrás de StockPilot
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em' }}>
+              Módulos Diseñados para la Operación Diaria
             </h2>
-            <p style={{ color: '#94A3B8', fontSize: '16px', lineHeight: 1.6, marginTop: '12px' }}>
-              Nacido para resolver la brecha entre hojas de cálculo desactualizadas y sistemas ERP monolíticos inalcanzables para operaciones ágiles.
+            <p style={{ color: 'var(--lp-text-muted)', fontSize: '16px', lineHeight: 1.6, marginTop: '12px' }}>
+              Cada módulo resuelve un área clave de la cadena de suministro con interfaces ágiles, sin curvas de aprendizaje complejas.
             </p>
           </div>
 
@@ -465,354 +871,90 @@ export default function HomePage() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '24px'
-            }}
-          >
-            {/* Card 1 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '14px',
-                padding: '28px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}
-            >
-              <div
-                style={{
-                  width: '46px',
-                  height: '46px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(239, 68, 68, 0.12)',
-                  color: '#EF4444',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Activity size={24} />
-              </div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
-                Cero Fricción y Prevención de Quiebres
-              </h3>
-              <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.6, margin: 0 }}>
-                Las roturas de stock y los excesos inmovilizan capital de trabajo. StockPilot alerta oportunamente los niveles críticos para que las compras se anticipen a la demanda en lugar de reaccionar tarde.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '14px',
-                padding: '28px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}
-            >
-              <div
-                style={{
-                  width: '46px',
-                  height: '46px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(30, 90, 242, 0.12)',
-                  color: '#1E5AF2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Layers size={24} />
-              </div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
-                Gobernanza Taxonómica Estandarizada
-              </h3>
-              <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.6, margin: 0 }}>
-                Alineado con el Sistema Arancelario Centroamericano (SAC) y el Código Armonizado (HS). Cada producto posee un SKU unívoco y estructurado que elimina la duplicidad y el caos en bodega.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '14px',
-                padding: '28px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}
-            >
-              <div
-                style={{
-                  width: '46px',
-                  height: '46px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                  color: '#10B981',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Bot size={24} />
-              </div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
-                Inteligencia Artificial Práctica
-              </h3>
-              <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.6, margin: 0 }}>
-                La IA no es un adorno: es un copiloto logístico que procesa el catálogo en milisegundos, retiene el contexto de la conversación por 1 hora y ayuda al supervisor a planificar abastecimientos estratégicos.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Funcionamiento Integral (Paso a Paso en 4 Fases) */}
-      <section
-        id="funcionamiento"
-        style={{
-          padding: '80px 24px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)'
-        }}
-      >
-        <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 50px' }}>
-            <span style={{ color: '#10B981', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Flujo Operativo
-            </span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-              ¿Cómo Funciona StockPilot?
-            </h2>
-            <p style={{ color: '#94A3B8', fontSize: '16px', lineHeight: 1.6, marginTop: '12px' }}>
-              Desde el ingreso de una nueva referencia hasta la toma de decisiones con inteligencia artificial en un circuito continuo.
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
               gap: '20px'
             }}
           >
-            {/* Step 1 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '24px',
-                position: 'relative'
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 800,
-                  color: 'rgba(30, 90, 242, 0.4)',
-                  lineHeight: 1,
-                  marginBottom: '12px'
-                }}
-              >
-                01
+            {/* Feature 1 */}
+            <div className="lp-card">
+              <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: 'rgba(30, 90, 242, 0.12)', color: '#1E5AF2', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <Package size={22} />
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 8px 0' }}>
-                Catalogación & SKU
-              </h4>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.55, margin: 0 }}>
-                El operador registra el artículo asignándolo a una familia. El sistema genera de forma automática el SKU normalizado (ej. <code>TEC-LAP-HP-001</code>) y el código de barras.
+              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: '0 0 8px 0' }}>Catálogo & Ficha Técnica</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Control total de precios de compra, venta, márgenes comerciales, imágenes, marcas y umbrales de seguridad mínimos por referencia.
               </p>
             </div>
 
-            {/* Step 2 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '24px',
-                position: 'relative'
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 800,
-                  color: 'rgba(16, 185, 129, 0.4)',
-                  lineHeight: 1,
-                  marginBottom: '12px'
-                }}
-              >
-                02
+            {/* Feature 2 */}
+            <div className="lp-card">
+              <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: 'rgba(16, 185, 129, 0.12)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <Layers size={22} />
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 8px 0' }}>
-                Control de Movimientos
-              </h4>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.55, margin: 0 }}>
-                Cada entrada de compras, salida por venta o ajuste de inventario queda registrada de forma inmutable con fecha, usuario responsable, motivo y cálculo de saldo resultante.
+              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: '0 0 8px 0' }}>Taxonomía de SKUs & Códigos</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Generación automática de códigos de 4 bloques jerárquicos y código de barras con validación de checksum oficial.
               </p>
             </div>
 
-            {/* Step 3 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '24px',
-                position: 'relative'
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 800,
-                  color: 'rgba(245, 158, 11, 0.4)',
-                  lineHeight: 1,
-                  marginBottom: '12px'
-                }}
-              >
-                03
+            {/* Feature 3 */}
+            <div className="lp-card">
+              <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: 'rgba(245, 158, 11, 0.12)', color: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <ArrowLeftRight size={22} />
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 8px 0' }}>
-                Monitoreo & Semáforo
-              </h4>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.55, margin: 0 }}>
-                El motor analiza los umbrales de stock mínimo de seguridad. Cuando una existencia desciende al umbral crítico, se activan alertas automáticas en el panel y en la campana de avisos.
+              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: '0 0 8px 0' }}>Kardex y Trazabilidad</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Bitácora de movimientos inmutables con registro de tipo (Entrada, Salida, Ajuste), fecha, motivo y usuario auditor responsable.
               </p>
             </div>
 
-            {/* Step 4 */}
-            <div
-              style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '24px',
-                position: 'relative'
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 800,
-                  color: 'rgba(139, 92, 246, 0.4)',
-                  lineHeight: 1,
-                  marginBottom: '12px'
-                }}
-              >
-                04
+            {/* Feature 4 */}
+            <div className="lp-card">
+              <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: 'rgba(139, 92, 246, 0.12)', color: '#8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <Truck size={22} />
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 8px 0' }}>
-                Copiloto Logístico IA
-              </h4>
-              <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.55, margin: 0 }}>
-                A través del agente conectado con n8n y Google Gemini, puedes consultar por texto cualquier categoría, rotación o recomendación de compras con memoria continua de 1 hora.
+              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: '0 0 8px 0' }}>Gestión de Proveedores</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Directorio unificado con información fiscal, condiciones comerciales, tiempos de entrega y catálogo de artículos suministrados.
+              </p>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="lp-card">
+              <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: 'rgba(236, 72, 153, 0.12)', color: '#EC4899', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <FileText size={22} />
+              </div>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: '0 0 8px 0' }}>Reportes Ejecutivos PDF</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Generación de documentos PDF oficiales con estado de valorización, balances temporales de entradas y salidas, listos para auditorías.
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="lp-card">
+              <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: 'rgba(6, 182, 212, 0.12)', color: '#06B6D4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                <ShieldCheck size={22} />
+              </div>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, margin: '0 0 8px 0' }}>Gobernanza & Roles (RBAC)</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Permisos granulares estrictos: Administrador (auditoría y usuarios), Gerente (gestión y compras) y Operador (movimientos y conteos).
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Módulos y Capacidades del Sistema */}
+      {/* 7. StockPilot Intelligence (AI Spotlight Section) */}
       <section
-        id="modulos"
+        id="inteligencia"
         style={{
           padding: '80px 24px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-          backgroundColor: 'rgba(15, 23, 42, 0.3)'
-        }}
-      >
-        <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 50px' }}>
-            <span style={{ color: '#F59E0B', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Módulos Integrados
-            </span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-              Todo lo Necesario para la Gestión de Almacén
-            </h2>
-            <p style={{ color: '#94A3B8', fontSize: '16px', lineHeight: 1.6, marginTop: '12px' }}>
-              Diseñado con arquitectura modular que garantiza velocidad, orden y control estricto de accesos.
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '20px'
-            }}
-          >
-            {/* Module 1 */}
-            <div style={{ padding: '22px', backgroundColor: '#0F172A', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <Package size={22} style={{ color: '#3B82F6', marginBottom: '12px' }} />
-              <h4 style={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 700, margin: '0 0 6px' }}>Catálogo de Productos</h4>
-              <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.5, margin: 0 }}>
-                Control detallado con precio de compra, venta, margen comercial, marcas, imágenes y stock de seguridad.
-              </p>
-            </div>
-
-            {/* Module 2 */}
-            <div style={{ padding: '22px', backgroundColor: '#0F172A', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <Layers size={22} style={{ color: '#F59E0B', marginBottom: '12px' }} />
-              <h4 style={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 700, margin: '0 0 6px' }}>Familias Taxonómicas</h4>
-              <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.5, margin: 0 }}>
-                Clasificación por familias arancelarias con vista espaciosa de tabla y cuadrícula de tarjetas interactivas.
-              </p>
-            </div>
-
-            {/* Module 3 */}
-            <div style={{ padding: '22px', backgroundColor: '#0F172A', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <Activity size={22} style={{ color: '#10B981', marginBottom: '12px' }} />
-              <h4 style={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 700, margin: '0 0 6px' }}>Trazabilidad & Kardex</h4>
-              <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.5, margin: 0 }}>
-                Bitácora exhaustiva de entradas, salidas y ajustes manuales para auditorías contables y operativas.
-              </p>
-            </div>
-
-            {/* Module 4 */}
-            <div style={{ padding: '22px', backgroundColor: '#0F172A', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <Truck size={22} style={{ color: '#8B5CF6', marginBottom: '12px' }} />
-              <h4 style={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 700, margin: '0 0 6px' }}>Gestión de Proveedores</h4>
-              <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.5, margin: 0 }}>
-                Directorio unificado de suplidores con datos de contacto, condiciones comerciales y plazos de entrega.
-              </p>
-            </div>
-
-            {/* Module 5 */}
-            <div style={{ padding: '22px', backgroundColor: '#0F172A', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <FileText size={22} style={{ color: '#EC4899', marginBottom: '12px' }} />
-              <h4 style={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 700, margin: '0 0 6px' }}>Reportes Ejecutivos PDF</h4>
-              <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.5, margin: 0 }}>
-                Generación y descarga de documentos PDF oficiales con estado actual de inventario, valorización y balance temporal.
-              </p>
-            </div>
-
-            {/* Module 6 */}
-            <div style={{ padding: '22px', backgroundColor: '#0F172A', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <ShieldCheck size={22} style={{ color: '#06B6D4', marginBottom: '12px' }} />
-              <h4 style={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 700, margin: '0 0 6px' }}>Seguridad RBAC</h4>
-              <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.5, margin: 0 }}>
-                Permisos granulares por rol: Administrador (acceso total), Gerente (operación y reportes) y Operador (consultas y movimientos).
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Asistente IA & n8n Highlight */}
-      <section
-        id="asistente-ia"
-        style={{
-          padding: '80px 24px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-          background: 'linear-gradient(180deg, rgba(10, 46, 91, 0.25) 0%, rgba(15, 23, 42, 0.8) 100%)'
+          background: isDark
+            ? 'linear-gradient(180deg, #070D17 0%, #0A1E3B 50%, #070D17 100%)'
+            : 'linear-gradient(180deg, #F1F5F9 0%, #EBF3FC 50%, #F1F5F9 100%)',
+          borderTop: '1px solid var(--lp-border)',
+          borderBottom: '1px solid var(--lp-border)',
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
         <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
@@ -824,94 +966,170 @@ export default function HomePage() {
               alignItems: 'center'
             }}
           >
+            {/* Left AI Information */}
             <div>
-              <span
+              <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '4px 10px',
-                  borderRadius: '16px',
+                  padding: '5px 12px',
+                  borderRadius: '20px',
                   backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                  color: '#34D399',
+                  color: '#10B981',
                   fontSize: '12px',
                   fontWeight: 700,
                   marginBottom: '16px'
                 }}
               >
-                <Sparkles size={14} /> Inteligencia Artificial Integrada
-              </span>
-              <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, margin: '0 0 16px 0' }}>
-                Un copiloto logístico que conoce tu inventario al detalle
+                <Sparkles size={14} /> StockPilot Intelligence Engine
+              </div>
+
+              <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, lineHeight: 1.2, margin: '0 0 16px 0' }}>
+                Tu copiloto logístico con memoria de 1 hora y análisis en tiempo real
               </h2>
-              <p style={{ color: '#94A3B8', fontSize: '15px', lineHeight: 1.6, margin: '0 0 24px 0' }}>
-                Olvídate de buscar en decenas de pestañas para responder preguntas operativas. Pregúntale a StockPilot IA como si fuera tu jefe de almacén:
+
+              <p style={{ color: 'var(--lp-text-muted)', fontSize: '15.5px', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+                Conectado directamente a tu base de datos de inventario a través de un webhook de <strong>n8n</strong> y el modelo <strong>Google Gemini 1.5 Flash</strong>. Responde preguntas complejas de negocio en lenguaje natural.
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#E2E8F0', fontSize: '14px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px' }}>
                   <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
-                  <span>"¿Qué productos de Farmacia y Salud tenemos en stock?"</span>
+                  <span>Detección taxonómica por categorías (ej. Farmacia, Tecnología, Ferretería).</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#E2E8F0', fontSize: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px' }}>
                   <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
-                  <span>"¿Cuáles son los 5 artículos con menor rotación este mes?"</span>
+                  <span>Memoria conversacional continua durante 60 minutos de sesión activa.</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#E2E8F0', fontSize: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px' }}>
                   <CheckCircle2 size={18} style={{ color: '#10B981', flexShrink: 0 }} />
-                  <span>"Genera la lista prioritaria de compras para la próxima semana"</span>
+                  <span>Generación automática de sugerencias y órdenes preventivas de compra.</span>
                 </div>
               </div>
 
-              <Button
-                variant="outline"
-                icon={<ArrowRight size={16} />}
-                onClick={() => navigate('/login')}
-                style={{ borderColor: '#38BDF8', color: '#38BDF8' }}
-              >
-                Probar Asistente IA en el Sistema
-              </Button>
+              <Link to="/login" className="lp-btn-primary" style={{ display: 'inline-flex' }}>
+                <Bot size={17} />
+                <span>Interactuar con el Asistente en Demo</span>
+              </Link>
             </div>
 
-            {/* Visual Chat Widget Illustration */}
+            {/* Right Interactive AI Simulator Box */}
             <div
+              className="lp-card"
               style={{
-                backgroundColor: '#0F172A',
-                border: '1px solid rgba(59, 130, 246, 0.25)',
-                borderRadius: '16px',
                 padding: '24px',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(16, 185, 129, 0.15)'
+                borderRadius: '16px',
+                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.35)',
+                border: '1px solid rgba(16, 185, 129, 0.3)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '14px', marginBottom: '16px' }}>
+              {/* Simulator Header */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingBottom: '14px',
+                  borderBottom: '1px solid var(--lp-border)',
+                  marginBottom: '16px'
+                }}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#10B981', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div
+                    style={{
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#10B981',
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 0 10px rgba(16, 185, 129, 0.4)'
+                    }}
+                  >
                     <Sparkles size={16} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>StockPilot IA</div>
-                    <div style={{ fontSize: '10.5px', color: '#38BDF8' }}>Memoria activa de 1 hora</div>
+                    <div style={{ fontSize: '13px', fontWeight: 700 }}>StockPilot IA</div>
+                    <div style={{ fontSize: '11px', color: '#10B981' }}>En línea • Gemini 1.5 Flash</div>
                   </div>
                 </div>
-                <span style={{ fontSize: '10px', backgroundColor: 'rgba(16, 185, 129, 0.2)', color: '#34D399', padding: '2px 6px', borderRadius: '10px', fontWeight: 600 }}>
-                  En línea
+
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontFamily: 'monospace',
+                    padding: '2px 8px',
+                    borderRadius: '6px',
+                    backgroundColor: 'rgba(30, 90, 242, 0.1)',
+                    color: 'var(--lp-primary)',
+                    fontWeight: 700
+                  }}
+                >
+                  n8n Webhook
                 </span>
               </div>
 
+              {/* Interactive Preset Chips */}
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                {aiDemoConversations.map((demo, idx) => (
+                  <button
+                    key={demo.tag}
+                    type="button"
+                    onClick={() => setActiveAiDemo(idx)}
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      padding: '4px 10px',
+                      borderRadius: '14px',
+                      border: '1px solid',
+                      borderColor: activeAiDemo === idx ? '#10B981' : 'var(--lp-border)',
+                      backgroundColor: activeAiDemo === idx ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+                      color: activeAiDemo === idx ? '#10B981' : 'var(--lp-text-muted)',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {demo.tag}
+                  </button>
+                ))}
+              </div>
+
+              {/* Chat Messages */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
-                <div style={{ alignSelf: 'flex-end', backgroundColor: '#1E5AF2', color: '#FFFFFF', padding: '8px 14px', borderRadius: '12px 12px 2px 12px', maxWidth: '85%' }}>
-                  dime la cantidad de productos asociados a farmacia y salud
+                <div
+                  style={{
+                    alignSelf: 'flex-end',
+                    backgroundColor: 'var(--lp-primary)',
+                    color: '#FFFFFF',
+                    padding: '10px 14px',
+                    borderRadius: '12px 12px 2px 12px',
+                    maxWidth: '85%',
+                    lineHeight: 1.45
+                  }}
+                >
+                  {aiDemoConversations[activeAiDemo].q}
                 </div>
 
-                <div style={{ alignSelf: 'flex-start', backgroundColor: '#1E293B', color: '#E2E8F0', padding: '12px 14px', borderRadius: '12px 12px 12px 2px', maxWidth: '95%', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontWeight: 600, color: '#34D399', marginBottom: '4px' }}>
-                    ✅ Respuesta Directa:
+                <div
+                  style={{
+                    alignSelf: 'flex-start',
+                    backgroundColor: 'var(--lp-surface-alt)',
+                    color: 'var(--lp-text)',
+                    padding: '12px 16px',
+                    borderRadius: '12px 12px 12px 2px',
+                    maxWidth: '95%',
+                    lineHeight: 1.55,
+                    border: '1px solid var(--lp-border)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', fontWeight: 700, fontSize: '11px', marginBottom: '4px' }}>
+                    <CheckCircle2 size={13} />
+                    <span>DIAGNÓSTICO EN TIEMPO REAL</span>
                   </div>
-                  En StockPilot hay <strong>EXACTAMENTE 2 productos</strong> asociados a la categoría <strong>Farmacia y Salud (FAR)</strong>:
-                  <ul style={{ margin: '8px 0 0 16px', padding: 0, fontSize: '12px', color: '#CBD5E1' }}>
-                    <li><code>FAR-GEL-1L</code>: Alcohol en Gel 1L (Stock: 22 u.)</li>
-                    <li><code>FAR-BOT-IND45</code>: Botiquín Industrial (Stock: 5 u.)</li>
-                  </ul>
+                  {aiDemoConversations[activeAiDemo].a}
                 </div>
               </div>
             </div>
@@ -919,86 +1137,311 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. Call to Action (CTA Final hacia Login) */}
+      {/* 8. Sectores y Tipos de Negocio */}
       <section
+        id="sectores"
         style={{
           padding: '80px 24px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-          background: 'linear-gradient(135deg, #0A2E5B 0%, #0F172A 100%)'
+          maxWidth: '1120px',
+          margin: '0 auto'
+        }}
+      >
+        <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 48px' }}>
+          <span style={{ color: 'var(--lp-primary)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            Taxonomía Universal
+          </span>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em' }}>
+            Adaptado a 7 Sectores Empresariales Clave
+          </h2>
+          <p style={{ color: 'var(--lp-text-muted)', fontSize: '16px', lineHeight: 1.6, marginTop: '12px' }}>
+            StockPilot no es genérico: cuenta con taxonomía especializada y códigos arancelarios precargados para los principales rubros económicos.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '16px'
+          }}
+        >
+          {/* TEC */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#1E5AF2' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(30, 90, 242, 0.12)', color: '#1E5AF2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Laptop size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Tecnología & Cómputo</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[TEC] • SAC HS 8471</div>
+            </div>
+          </div>
+
+          {/* FER */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#F59E0B' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(245, 158, 11, 0.12)', color: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Hammer size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Ferretería & Construcción</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[FER] • SAC HS 8205</div>
+            </div>
+          </div>
+
+          {/* ALI */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#10B981' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(16, 185, 129, 0.12)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Coffee size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Alimentos & Bebidas</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[ALI] • SAC HS 2101</div>
+            </div>
+          </div>
+
+          {/* FAR */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#EF4444' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(239, 68, 68, 0.12)', color: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <HeartPulse size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Farmacia & Salud</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[FAR] • SAC HS 3004</div>
+            </div>
+          </div>
+
+          {/* OFI */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#8B5CF6' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(139, 92, 246, 0.12)', color: '#8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <FileText size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Oficina & Papelería</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[OFI] • SAC HS 4820</div>
+            </div>
+          </div>
+
+          {/* TEX */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#6366F1' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(99, 102, 241, 0.12)', color: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Shirt size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Textil & Uniformes</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[TEX] • SAC HS 6203</div>
+            </div>
+          </div>
+
+          {/* AUT */}
+          <div className="lp-sector-card" style={{ '--sector-color': '#06B6D4' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'rgba(6, 182, 212, 0.12)', color: '#06B6D4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Car size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '14.5px' }}>Repuestos Automotrices</div>
+              <div style={{ fontSize: '11.5px', color: 'var(--lp-text-muted)', fontFamily: 'monospace' }}>[AUT] • SAC HS 8708</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. Beneficios de Operación (Why Us) */}
+      <section
+        id="beneficios"
+        style={{
+          padding: '80px 24px',
+          backgroundColor: 'var(--lp-surface-alt)',
+          borderTop: '1px solid var(--lp-border)'
+        }}
+      >
+        <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 48px' }}>
+            <span style={{ color: '#10B981', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Impacto Medible
+            </span>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em' }}>
+              Resultados Tangibles para tu Negocio
+            </h2>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '24px'
+            }}
+          >
+            <div className="lp-card">
+              <div style={{ fontSize: '28px', fontWeight: 800, color: 'var(--lp-primary)', marginBottom: '8px' }}>-85%</div>
+              <h4 style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 6px 0' }}>Tiempo en Auditorías Físicas</h4>
+              <p style={{ fontSize: '13px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                El Kardex automatizado registra cada movimiento al instante, reduciendo drásticamente las horas invertidas en cierres de mes.
+              </p>
+            </div>
+
+            <div className="lp-card">
+              <div style={{ fontSize: '28px', fontWeight: 800, color: '#10B981', marginBottom: '8px' }}>0%</div>
+              <h4 style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 6px 0' }}>Quiebres de Stock Imprevistos</h4>
+              <p style={{ fontSize: '13px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Las alertas tempranas por SKU garantizan que nunca te quedes sin tus productos de mayor rotación y margen comercial.
+              </p>
+            </div>
+
+            <div className="lp-card">
+              <div style={{ fontSize: '28px', fontWeight: 800, color: '#F59E0B', marginBottom: '8px' }}>100%</div>
+              <h4 style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 6px 0' }}>Trazabilidad Operativa</h4>
+              <p style={{ fontSize: '13px', color: 'var(--lp-text-muted)', lineHeight: 1.55, margin: 0 }}>
+                Saber con certeza quién recibió la mercancía, quién autorizó una salida y cuándo se efectuó cada ajuste de almacén.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. Call to Action (CTA Final) */}
+      <section
+        style={{
+          padding: '90px 24px',
+          background: isDark
+            ? 'linear-gradient(135deg, #0A2E5B 0%, #0F172A 100%)'
+            : 'linear-gradient(135deg, #EBF3FC 0%, #F8FAFC 100%)',
+          borderTop: '1px solid var(--lp-border)',
+          position: 'relative'
         }}
       >
         <div
           style={{
-            maxWidth: '920px',
+            maxWidth: '940px',
             margin: '0 auto',
             textAlign: 'center',
-            backgroundColor: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(59, 130, 246, 0.3)',
-            borderRadius: '20px',
+            backgroundColor: isDark ? 'rgba(15, 23, 42, 0.85)' : '#FFFFFF',
+            border: '1px solid var(--lp-border)',
+            borderRadius: '24px',
             padding: '48px 32px',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(16, 185, 129, 0.15)'
+            boxShadow: '0 30px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(30, 90, 242, 0.2)'
           }}
         >
           <div style={{ display: 'inline-flex', marginBottom: '16px' }}>
-            <LogoIsotype size={48} variant="dark" />
+            <LogoIsotype size={48} variant={isDark ? 'dark' : 'light'} />
           </div>
 
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: '0 0 16px 0' }}>
-            ¿Listo para tomar el control de tu inventario?
+          <h2 style={{ fontSize: 'clamp(28px, 4.5vw, 42px)', fontWeight: 800, letterSpacing: '-0.025em', margin: '0 0 16px 0' }}>
+            Tu inventario puede hacer mucho más.
           </h2>
 
-          <p style={{ color: '#94A3B8', fontSize: '16px', lineHeight: 1.6, maxWidth: '640px', margin: '0 auto 32px' }}>
-            Accede al sistema con tus credenciales de usuario o explora la demostración con roles preconfigurados de administrador, gerencia y bodega.
+          <p style={{ color: 'var(--lp-text-muted)', fontSize: '16.5px', lineHeight: 1.6, maxWidth: '640px', margin: '0 auto 32px' }}>
+            Accede al sistema con tus credenciales corporativas o experimenta la plataforma con las cuentas demo de evaluación académica.
           </p>
 
-          <Button
-            variant="primary"
-            size="lg"
-            icon={<LogIn size={20} />}
-            onClick={() => navigate('/login')}
-            style={{
-              backgroundColor: '#10B981',
-              borderColor: '#10B981',
-              color: '#FFFFFF',
-              fontSize: '16px',
-              fontWeight: 700,
-              padding: '16px 36px',
-              borderRadius: '10px',
-              boxShadow: '0 8px 25px rgba(16, 185, 129, 0.45)',
-              transition: 'transform 0.2s, box-shadow 0.2s'
-            }}
-          >
-            {isAuthenticated ? 'Ingresar a mi Dashboard' : 'Iniciar Sesión en StockPilot'}
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '36px' }}>
+            <Link
+              to="/login"
+              className="lp-btn-primary"
+              style={{
+                fontSize: '16px',
+                padding: '16px 36px',
+                background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.45)'
+              }}
+            >
+              <LogIn size={18} />
+              <span>{isAuthenticated ? 'Ingresar a mi Dashboard' : 'Iniciar Sesión en StockPilot'}</span>
+            </Link>
+          </div>
 
-          {/* Quick Demo Credentials Reminder */}
+          {/* Quick Copy Demo Credentials */}
           <div
             style={{
-              marginTop: '32px',
-              padding: '14px 20px',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              padding: '18px 20px',
+              backgroundColor: 'var(--lp-surface-alt)',
+              borderRadius: '12px',
+              border: '1px solid var(--lp-border)',
               display: 'inline-flex',
               flexDirection: 'column',
-              gap: '4px',
-              fontSize: '12px',
-              color: '#94A3B8'
+              gap: '10px',
+              maxWidth: '680px',
+              width: '100%',
+              textAlign: 'left'
             }}
           >
-            <span style={{ fontWeight: 600, color: '#E2E8F0' }}>Credenciales de Demostración:</span>
-            <span>Admin: <code>admin@stockpilot.com</code> • Password: <code>Admin123!</code></span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--lp-text)' }}>
+                🔑 Cuentas Demo para Evaluación Académica:
+              </span>
+              <span style={{ fontSize: '11px', color: 'var(--lp-text-muted)' }}>Haz clic para copiar</span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '8px' }}>
+              <button
+                type="button"
+                onClick={() => copyCredentials('admin@stockpilot.com', 'Admin123!', 'admin')}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--lp-border)',
+                  backgroundColor: 'var(--lp-surface)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  color: 'var(--lp-text)',
+                  fontSize: '11.5px'
+                }}
+              >
+                <span><strong>Admin:</strong> admin@...</span>
+                {copiedRole === 'admin' ? <Check size={14} style={{ color: '#10B981' }} /> : <Copy size={14} style={{ color: 'var(--lp-text-muted)' }} />}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => copyCredentials('manager@stockpilot.com', 'Manager123!', 'manager')}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--lp-border)',
+                  backgroundColor: 'var(--lp-surface)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  color: 'var(--lp-text)',
+                  fontSize: '11.5px'
+                }}
+              >
+                <span><strong>Gerente:</strong> manager@...</span>
+                {copiedRole === 'manager' ? <Check size={14} style={{ color: '#10B981' }} /> : <Copy size={14} style={{ color: 'var(--lp-text-muted)' }} />}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => copyCredentials('employee@stockpilot.com', 'Employee123!', 'employee')}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--lp-border)',
+                  backgroundColor: 'var(--lp-surface)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  color: 'var(--lp-text)',
+                  fontSize: '11.5px'
+                }}
+              >
+                <span><strong>Operador:</strong> employee@...</span>
+                {copiedRole === 'employee' ? <Check size={14} style={{ color: '#10B981' }} /> : <Copy size={14} style={{ color: 'var(--lp-text-muted)' }} />}
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 9. Footer */}
+      {/* 11. Footer */}
       <footer
         style={{
-          backgroundColor: '#070D17',
-          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-          padding: '40px 24px 30px',
-          color: '#64748B',
+          backgroundColor: isDark ? '#070D17' : '#0A1E3B',
+          color: '#94A3B8',
+          padding: '48px 24px 32px',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           fontSize: '13px'
         }}
       >
@@ -1007,34 +1450,77 @@ export default function HomePage() {
             maxWidth: '1120px',
             margin: '0 auto',
             display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '20px'
+            flexDirection: 'column',
+            gap: '32px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <LogoIsotype size={24} variant="dark" />
-            <span>© {new Date().getFullYear()} StockPilot. Plataforma Integral de Control de Inventarios.</span>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: '24px'
+            }}
+          >
+            <div style={{ maxWidth: '380px' }}>
+              <LogoFull variant="dark" size={32} />
+              <p style={{ marginTop: '12px', fontSize: '13px', lineHeight: 1.5, color: '#64748B' }}>
+                StockPilot es la suite empresarial para el control logístico, codificación taxonómica SAC/HS, kardex de movimientos y asistencia predictiva impulsada por IA.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontWeight: 700, color: '#FFFFFF', marginBottom: '10px' }}>Navegación</div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <li><a href="#proposito" style={{ color: '#94A3B8', textDecoration: 'none' }}>Propósito</a></li>
+                  <li><a href="#caracteristicas" style={{ color: '#94A3B8', textDecoration: 'none' }}>Plataforma</a></li>
+                  <li><a href="#inteligencia" style={{ color: '#94A3B8', textDecoration: 'none' }}>Copiloto IA</a></li>
+                  <li><a href="#sectores" style={{ color: '#94A3B8', textDecoration: 'none' }}>Sectores</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <div style={{ fontWeight: 700, color: '#FFFFFF', marginBottom: '10px' }}>Acceso al Sistema</div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <li><Link to="/login" style={{ color: '#94A3B8', textDecoration: 'none' }}>Iniciar Sesión</Link></li>
+                  <li><Link to="/register" style={{ color: '#94A3B8', textDecoration: 'none' }}>Registrar Empresa</Link></li>
+                  <li><Link to="/dashboard" style={{ color: '#38BDF8', textDecoration: 'none' }}>Panel Dashboard</Link></li>
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <Link to="/login" style={{ color: '#94A3B8', textDecoration: 'none' }}>
-              Iniciar Sesión
-            </Link>
-            <Link to="/register" style={{ color: '#94A3B8', textDecoration: 'none' }}>
-              Registrarse
-            </Link>
-            <a
-              href="#top"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              style={{ color: '#38BDF8', textDecoration: 'none' }}
-            >
-              Volver arriba ↑
-            </a>
+          <div
+            style={{
+              paddingTop: '20px',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '12px',
+              color: '#64748B'
+            }}
+          >
+            <span>© {new Date().getFullYear()} StockPilot Inc. FWD Academy Project • Todos los derechos reservados.</span>
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <span>React 18 + Vite</span>
+              <span>•</span>
+              <span>n8n + Gemini Flash</span>
+              <span>•</span>
+              <a
+                href="#top"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                style={{ color: '#38BDF8', textDecoration: 'none', fontWeight: 600 }}
+              >
+                Volver arriba ↑
+              </a>
+            </div>
           </div>
         </div>
       </footer>

@@ -150,49 +150,47 @@ export default function DashboardPage() {
 
       {/* Live Dollar Exchange Rate Interactive Ticker Banner */}
       <div
-        className="sp-card"
         style={{
-          padding: '12px 20px',
+          backgroundColor: 'var(--bg-surface)',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-md)',
+          padding: '12px 18px',
           marginBottom: 'var(--space-lg)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '12px',
-          borderRadius: 'var(--radius-lg)'
+          boxShadow: 'var(--shadow-sm)'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             style={{
               width: '36px',
               height: '36px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--color-primary-green-light)',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
               color: 'var(--color-primary-green)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid rgba(16, 185, 129, 0.2)'
+              justifyContent: 'center'
             }}
           >
-            <DollarSign size={18} />
+            <DollarSign size={20} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="font-heading" style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.01em' }}>
-                Tipo de Cambio Oficial (USD)
-              </span>
-              <span className="badge badge-success" style={{ fontSize: '10px', padding: '1px 7px' }}>
-                <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'currentColor', display: 'inline-block' }} />
+              <strong style={{ fontSize: '13px', color: 'var(--text-main)' }}>Tipo de Cambio Oficial (USD)</strong>
+              <span className="badge badge-success" style={{ fontSize: '10px', padding: '1px 6px' }}>
                 API En Vivo
               </span>
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '3px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-              <span>🇨🇷 <strong className="font-mono">₡{exchangeRates?.rates?.CRC ? exchangeRates.rates.CRC.toFixed(2) : '452.34'}</strong> CRC</span>
-              <span>🇪🇺 <strong className="font-mono">€{exchangeRates?.rates?.EUR ? exchangeRates.rates.EUR.toFixed(4) : '0.8800'}</strong> EUR</span>
-              <span>🇲🇽 <strong className="font-mono">${exchangeRates?.rates?.MXN ? exchangeRates.rates.MXN.toFixed(2) : '17.47'}</strong> MXN</span>
-              <span>🇨🇴 <strong className="font-mono">${exchangeRates?.rates?.COP ? Math.round(exchangeRates.rates.COP).toLocaleString('es-CR') : '4,150'}</strong> COP</span>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px', display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              <span>🇨🇷 <strong>₡{exchangeRates?.rates?.CRC ? exchangeRates.rates.CRC.toFixed(2) : '452.34'}</strong> CRC</span>
+              <span>🇪🇺 <strong>€{exchangeRates?.rates?.EUR ? exchangeRates.rates.EUR.toFixed(4) : '0.8800'}</strong> EUR</span>
+              <span>🇲🇽 <strong>${exchangeRates?.rates?.MXN ? exchangeRates.rates.MXN.toFixed(2) : '17.47'}</strong> MXN</span>
+              <span>🇨🇴 <strong>${exchangeRates?.rates?.COP ? Math.round(exchangeRates.rates.COP).toLocaleString('es-CR') : '4,150'}</strong> COP</span>
             </div>
           </div>
         </div>
@@ -203,7 +201,7 @@ export default function DashboardPage() {
           icon={<Globe size={14} />}
           onClick={() => setExchangeModalOpen(true)}
         >
-          Conversor Multidivisa
+          Consultar / Conversor de Monedas
         </Button>
       </div>
 
@@ -211,49 +209,45 @@ export default function DashboardPage() {
       <div
         className="sp-card"
         style={{
-          background: 'linear-gradient(135deg, rgba(15, 82, 186, 0.05) 0%, rgba(16, 185, 129, 0.09) 100%)',
-          borderColor: 'rgba(16, 185, 129, 0.28)',
+          background: 'linear-gradient(135deg, rgba(11, 77, 155, 0.08) 0%, rgba(16, 185, 129, 0.12) 100%)',
+          borderColor: 'rgba(16, 185, 129, 0.3)',
           marginBottom: 'var(--space-lg)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '16px',
-          borderRadius: 'var(--radius-lg)'
+          gap: '16px'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div
             style={{
-              width: '44px',
-              height: '44px',
+              width: '48px',
+              height: '48px',
               borderRadius: 'var(--radius-md)',
-              background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+              backgroundColor: '#10B981',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flexShrink: 0,
-              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+              flexShrink: 0
             }}
           >
-            <Sparkles size={22} />
+            <Sparkles size={24} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h3 className="font-heading" style={{ fontSize: '16px', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                StockPilot IA · Copiloto de Cadena de Suministro
-              </h3>
+              <h3 style={{ fontSize: '17px', fontWeight: 700 }}>StockPilot IA · Asistente Logístico</h3>
               <span className="badge badge-success">Activo</span>
             </div>
-            <p className="text-secondary" style={{ marginTop: '3px', maxWidth: '640px', fontSize: '13px' }}>
+            <p className="text-secondary" style={{ marginTop: '2px', maxWidth: '640px' }}>
               Analiza riesgos de quiebre de stock, genera sugerencias de pedidos a distribuidores y diagnostica productos de baja rotación en lenguaje natural.
             </p>
           </div>
         </div>
         <Button
           variant="success"
-          icon={<Sparkles size={15} />}
+          icon={<Sparkles size={16} />}
           onClick={() => navigate('/asistente-ia')}
         >
           Consultar al Asistente

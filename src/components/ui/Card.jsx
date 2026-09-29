@@ -11,18 +11,10 @@ export default function Card({
   return (
     <div className={`sp-card ${className}`} style={style}>
       {(title || actions) && (
-        <div className="sp-card-header" style={{ marginBottom: '16px', paddingBottom: '12px' }}>
+        <div className="sp-card-header">
           <div>
-            {title && (
-              <h3 className="font-heading" style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                {title}
-              </h3>
-            )}
-            {subtitle && (
-              <p className="text-secondary" style={{ marginTop: '2px', fontSize: '12px' }}>
-                {subtitle}
-              </p>
-            )}
+            {title && <h3 style={{ fontSize: '16px', fontWeight: 600 }}>{title}</h3>}
+            {subtitle && <p className="text-secondary" style={{ marginTop: '2px' }}>{subtitle}</p>}
           </div>
           {actions && <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>{actions}</div>}
         </div>

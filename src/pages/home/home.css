@@ -1,0 +1,710 @@
+/**
+ * StockPilot Home Landing Page Stylesheet
+ * Exclusively scoped to .stockpilot-landing to ensure zero side-effects
+ * on any other page or shared component.
+ */
+
+/* Container and Base Theme Support */
+.stockpilot-landing {
+  --lp-primary: #1E5AF2;
+  --lp-primary-hover: #1748C6;
+  --lp-primary-glow: rgba(30, 90, 242, 0.25);
+  --lp-accent: #10B981;
+  --lp-accent-glow: rgba(16, 185, 129, 0.25);
+  --lp-dark-navy: #0A2E5B;
+  --lp-bg: var(--bg-app);
+  --lp-surface: var(--bg-surface);
+  --lp-surface-alt: var(--bg-surface-alt);
+  --lp-border: var(--border-color);
+  --lp-text: var(--text-main);
+  --lp-text-muted: var(--text-muted);
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  background-color: var(--lp-bg);
+  color: var(--lp-text);
+  font-family: var(--font-base, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+}
+
+/* Background Grids and Ambient Lights */
+.lp-bg-ambient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 900px;
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(30, 90, 242, 0.2), transparent 70%),
+    radial-gradient(circle 400px at 85% 15%, rgba(16, 185, 129, 0.12), transparent 70%),
+    radial-gradient(circle 350px at 15% 25%, rgba(59, 130, 246, 0.1), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme='light'] .lp-bg-ambient {
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(30, 90, 242, 0.1), transparent 70%),
+    radial-gradient(circle 400px at 85% 15%, rgba(16, 185, 129, 0.08), transparent 70%),
+    radial-gradient(circle 350px at 15% 25%, rgba(59, 130, 246, 0.06), transparent 70%);
+}
+
+.lp-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme='light'] .lp-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+/* Animations */
+@keyframes lpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lpFloatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes lpPulseDot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes lpGlowBreath {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* Animation Helper Classes */
+.lp-animate-fade {
+  animation: lpFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.lp-float-slow {
+  animation: lpFloatSubtle 6s ease-in-out infinite;
+}
+
+.lp-float-delayed {
+  animation: lpFloatSubtle 7s ease-in-out 1.5s infinite;
+}
+
+.lp-pulse {
+  animation: lpPulseDot 2s ease-in-out infinite;
+}
+
+/* Navigation */
+.lp-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 14px 24px;
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s ease;
+}
+
+[data-theme='light'] .lp-navbar {
+  background-color: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.lp-nav-link {
+  color: var(--lp-text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.lp-nav-link:hover {
+  color: var(--lp-text);
+}
+
+.lp-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--lp-primary);
+  transition: width 0.2s ease;
+}
+
+.lp-nav-link:hover::after {
+  width: 100%;
+}
+
+/* Hero Pill Badge */
+.lp-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(30, 90, 242, 0.1);
+  border: 1px solid rgba(30, 90, 242, 0.3);
+  color: #3B82F6;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(30, 90, 242, 0.15);
+  margin-bottom: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.lp-badge-pill:hover {
+  transform: translateY(-1px);
+  border-color: rgba(30, 90, 242, 0.5);
+}
+
+/* Typography Gradient */
+.lp-hero-title {
+  font-size: clamp(34px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  margin: 0 auto 24px;
+  color: var(--lp-text);
+}
+
+[data-theme='dark'] .lp-hero-title-gradient {
+  background: linear-gradient(180deg, #FFFFFF 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .lp-hero-title-gradient {
+  background: linear-gradient(180deg, #0A2E5B 0%, #0F172A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Primary Hero Buttons */
+.lp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #FFFFFF !important;
+  background: linear-gradient(135deg, #1E5AF2 0%, #0B4D9B 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(30, 90, 242, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lp-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -4px rgba(30, 90, 242, 0.6);
+  background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+}
+
+.lp-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lp-text) !important;
+  background-color: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.lp-btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--lp-primary);
+  background-color: var(--lp-surface-alt);
+}
+
+/* Dashboard Mockup Display */
+.lp-mockup-wrapper {
+  position: relative;
+  max-width: 1140px;
+  margin: 0 auto;
+  border-radius: 18px;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  box-shadow: 
+    0 30px 80px -20px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(30, 90, 242, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lp-mockup-wrapper:hover {
+  box-shadow: 
+    0 36px 90px -20px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(16, 185, 129, 0.3);
+}
+
+/* Feature Cards Grid */
+.lp-card {
+  background-color: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 14px;
+  padding: 26px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.lp-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(30, 90, 242, 0.4);
+  box-shadow: 0 18px 36px -8px rgba(0, 0, 0, 0.15), 0 0 20px rgba(30, 90, 242, 0.08);
+}
+
+[data-theme='dark'] .lp-card:hover {
+  box-shadow: 0 18px 36px -8px rgba(0, 0, 0, 0.5), 0 0 24px rgba(30, 90, 242, 0.18);
+}
+
+/* Interactive Tabs */
+.lp-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--lp-text-muted);
+  transition: all 0.2s ease;
+}
+
+.lp-tab-btn.active {
+  background-color: var(--lp-surface);
+  color: var(--lp-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='dark'] .lp-tab-btn.active {
+  background-color: #1E293B;
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Industry / Sector Pills */
+.lp-sector-card {
+  background-color: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.lp-sector-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--sector-color, var(--lp-primary));
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   BANNER PUBLICITARIO PREMIUM CON MOVIMIENTO & ANIMACIÓN
+   ========================================================================== */
+
+/* 1. Ticker Publicitario Continuo (Marquee Infinito) */
+.lp-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(90deg, #0A2E5B 0%, #1E5AF2 50%, #0A2E5B 100%);
+  color: #FFFFFF;
+  padding: 12px 0;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(30, 90, 242, 0.25);
+  display: flex;
+  user-select: none;
+}
+
+[data-theme="light"] .lp-marquee-container {
+  background: linear-gradient(90deg, #0A2E5B 0%, #1E5AF2 50%, #0B4D9B 100%);
+}
+
+.lp-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  white-space: nowrap;
+  animation: lpMarqueeScroll 28s linear infinite;
+  will-change: transform;
+}
+
+.lp-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.lp-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.lp-marquee-item:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.03);
+}
+
+.lp-marquee-item-highlight {
+  background: linear-gradient(135deg, #10B981, #059669);
+  border-color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+@keyframes lpMarqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* 2. Banner Publicitario Interactivo con Efectos de Movimiento */
+.lp-ad-banner-section {
+  padding: 40px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lp-ad-banner-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 36px 40px;
+  background: var(--lp-surface);
+  overflow: hidden;
+  box-shadow: 0 20px 50px -10px rgba(30, 90, 242, 0.2);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  align-items: center;
+  gap: 36px;
+  isolation: isolate;
+}
+
+/* Borde animado con gradiente giratorio continuo */
+.lp-ad-banner-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  padding: 2px;
+  background: linear-gradient(60deg, #1E5AF2, #10B981, #8B5CF6, #F59E0B, #1E5AF2);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: lpAnimatedBorder 6s ease infinite;
+  z-index: -1;
+}
+
+@keyframes lpAnimatedBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Shimmer de luz que recorre el fondo del banner */
+.lp-ad-shimmer-bg {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(30, 90, 242, 0.08) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  animation: lpShimmerMove 7s infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .lp-ad-shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.15) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes lpShimmerMove {
+  0% {
+    left: -100%;
+  }
+  30% {
+    left: 200%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* Pulso animado de la insignia de oferta */
+.lp-ad-badge-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 14px;
+}
+
+[data-theme="dark"] .lp-ad-badge-pulse {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+}
+
+.lp-ad-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #EF4444;
+  position: relative;
+}
+
+.lp-ad-beacon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #EF4444;
+  animation: lpBeaconWave 1.8s infinite ease-out;
+}
+
+@keyframes lpBeaconWave {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Botón con reflejo luminoso animado */
+.lp-ad-cta-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1E5AF2 0%, #0A2E5B 100%);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  padding: 13px 26px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(30, 90, 242, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.lp-ad-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(30, 90, 242, 0.45);
+}
+
+.lp-ad-cta-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: lpButtonShine 3.5s infinite;
+}
+
+@keyframes lpButtonShine {
+  0% {
+    left: -80%;
+  }
+  25% {
+    left: 140%;
+  }
+  100% {
+    left: 140%;
+  }
+}
+
+/* Mini tarjeta interactiva lateral del banner */
+.lp-ad-metric-box {
+  background: var(--lp-surface-alt);
+  border: 1px solid var(--lp-border);
+  border-radius: 16px;
+  padding: 22px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.lp-ad-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lp-text);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+  .landing-nav-links {
+    display: none !important;
+  }
+  
+  .lp-ad-banner-card {
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .lp-btn-primary, .lp-btn-secondary {
+    width: 100%;
+  }
+  
+  .lp-ad-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .lp-badge-pill {
+    font-size: 11.5px;
+    padding: 5px 12px;
+  }
+  
+  .lp-ad-banner-section {
+    padding: 24px 16px;
+  }
+}
+
+/* Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .lp-float-slow,
+  .lp-float-delayed,
+  .lp-pulse,
+  .lp-animate-fade,
+  .lp-marquee-track,
+  .lp-ad-banner-card::before,
+  .lp-ad-shimmer-bg,
+  .lp-ad-beacon::after,
+  .lp-ad-cta-btn::after {
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  .lp-card:hover,
+  .lp-btn-primary:hover,
+  .lp-btn-secondary:hover,
+  .lp-sector-card:hover,
+  .lp-marquee-item:hover,
+  .lp-ad-cta-btn:hover {
+    transform: none !important;
+  }
+}
+
