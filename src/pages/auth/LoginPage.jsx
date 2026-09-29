@@ -7,7 +7,7 @@ import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import LogoFull from '../../assets/brand/LogoFull';
 import Modal from '../../components/ui/Modal';
-import { LogIn, KeyRound, Mail, Sparkles } from 'lucide-react';
+import { LogIn, KeyRound, Mail, Sparkles, ArrowLeft, Home } from 'lucide-react';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -75,24 +75,50 @@ export default function LoginPage() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-surface)',
-        border: '1px solid var(--border-color)',
-        borderRadius: 'var(--radius-xl)',
-        padding: '36px 32px',
-        boxShadow: 'var(--shadow-lg)'
-      }}
-    >
+    <div>
+      {/* Return to Home Action */}
+      <div style={{ marginBottom: '20px' }}>
+        <Link
+          to="/"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: 'var(--text-secondary)',
+            textDecoration: 'none',
+            fontSize: '13px',
+            fontWeight: 600,
+            padding: '7px 14px',
+            borderRadius: 'var(--radius-sm)',
+            backgroundColor: 'var(--bg-surface-alt)',
+            border: '1px solid var(--border-color)',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-primary-blue)';
+            e.currentTarget.style.borderColor = 'var(--color-primary-blue)';
+            e.currentTarget.style.backgroundColor = 'var(--color-primary-blue-light)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--text-secondary)';
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+            e.currentTarget.style.backgroundColor = 'var(--bg-surface-alt)';
+          }}
+          title="Regresar a la página de bienvenida e información del proyecto"
+        >
+          <ArrowLeft size={16} /> Volver al Inicio (Home)
+        </Link>
+      </div>
+
       <div style={{ marginBottom: '28px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', marginBottom: '14px' }}>
-          <LogoFull size={36} showTagline={true} />
+        <div style={{ display: 'inline-block', marginBottom: '16px' }}>
+          <LogoFull size={38} showTagline={true} />
         </div>
-        <h2 className="font-heading" style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-main)' }}>
           Iniciar Sesión
         </h2>
-        <p className="text-secondary" style={{ marginTop: '4px', fontSize: '13px' }}>
-          Plataforma de gestión de inventarios y cadena de suministro
+        <p className="text-secondary" style={{ marginTop: '4px' }}>
+          Accede a tu plataforma de inventario inteligente
         </p>
       </div>
 

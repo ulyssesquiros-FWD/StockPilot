@@ -28,7 +28,7 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/');
   };
 
   const navItems = [
@@ -76,15 +76,11 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
           top: 0,
           left: 0,
           zIndex: 999,
-          backgroundColor: theme === 'dark' ? '#070A12' : '#091122',
-          background: theme === 'dark'
-            ? 'linear-gradient(180deg, #090E1A 0%, #060912 100%)'
-            : 'linear-gradient(180deg, #0B152B 0%, #080E1E 100%)',
+          backgroundColor: theme === 'dark' ? '#0F172A' : '#0A2E5B',
           color: '#FFFFFF',
           display: 'flex',
           flexDirection: 'column',
-          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
-          boxShadow: '4px 0 24px -4px rgba(0, 0, 0, 0.25)',
+          borderRight: '1px solid rgba(255, 255, 255, 0.1)',
           transition: 'transform var(--transition-normal)',
           transform: isOpen || window.innerWidth > 768 ? 'translateX(0)' : 'translateX(-100%)'
         }}
@@ -98,10 +94,10 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.07)'
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
           }}
         >
-          <LogoFull variant="dark" size={30} showTagline={false} />
+          <LogoFull variant="dark" size={32} showTagline={false} />
           <button
             type="button"
             className="mobile-only btn-icon btn-ghost"
@@ -117,11 +113,11 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
         <nav
           style={{
             flex: 1,
-            padding: '16px 10px',
+            padding: '16px 12px',
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: '3px'
+            gap: '4px'
           }}
         >
           {filteredNavItems.map(item => {
@@ -138,38 +134,36 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '11px',
-                    padding: '8px 12px',
+                    gap: '12px',
+                    padding: '10px 14px',
                     borderRadius: 'var(--radius-md)',
                     color: '#34D399',
-                    backgroundColor: 'rgba(16, 185, 129, 0.09)',
-                    border: '1px solid rgba(16, 185, 129, 0.22)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
                     fontWeight: 600,
-                    fontSize: '13px',
+                    fontSize: '14px',
                     width: '100%',
                     textAlign: 'left',
                     cursor: 'pointer',
-                    transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
-                    margin: '4px 0'
+                    transition: 'all 0.15s ease'
                   }}
                   title="Abrir Asistente IA en la página actual"
                   aria-label="Abrir asistente de IA en la página actual"
                 >
                   <span style={{ display: 'flex', alignItems: 'center' }}>{item.icon}</span>
-                  <span style={{ flex: 1, letterSpacing: '-0.01em' }}>{item.label}</span>
+                  <span style={{ flex: 1 }}>{item.label}</span>
                   <span
                     style={{
-                      background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                      backgroundColor: '#10B981',
                       color: '#FFFFFF',
-                      fontSize: '9.5px',
+                      fontSize: '10px',
                       fontWeight: 700,
                       padding: '2px 6px',
-                      borderRadius: '4px',
-                      letterSpacing: '0.04em',
+                      borderRadius: '6px',
                       textTransform: 'uppercase'
                     }}
                   >
-                    AI Agent
+                    Copilot
                   </span>
                 </button>
               );
@@ -185,30 +179,28 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
                 style={({ isActive }) => ({
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '11px',
-                  padding: '8px 12px',
+                  gap: '12px',
+                  padding: '10px 14px',
                   borderRadius: 'var(--radius-md)',
                   color: isActive ? '#FFFFFF' : '#94A3B8',
-                  backgroundColor: isActive ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                  border: isActive ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid transparent',
+                  backgroundColor: isActive ? 'var(--color-primary-blue)' : 'transparent',
                   fontWeight: isActive ? 600 : 500,
-                  fontSize: '13px',
-                  letterSpacing: '-0.01em',
+                  fontSize: '14px',
                   textDecoration: 'none',
-                  transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
+                  transition: 'all 0.15s ease'
                 })}
               >
-                <span style={{ display: 'flex', alignItems: 'center', opacity: 0.9 }}>{item.icon}</span>
+                <span style={{ display: 'flex', alignItems: 'center' }}>{item.icon}</span>
                 <span style={{ flex: 1 }}>{item.label}</span>
                 {item.badge && (
                   <span
                     style={{
                       backgroundColor: 'var(--color-danger-red)',
                       color: '#FFFFFF',
-                      fontSize: '10.5px',
+                      fontSize: '11px',
                       fontWeight: 700,
-                      padding: '1px 6px',
-                      borderRadius: 'var(--radius-full)'
+                      padding: '2px 7px',
+                      borderRadius: '10px'
                     }}
                   >
                     {item.badge}
@@ -217,12 +209,12 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
                 {item.highlight && (
                   <span
                     style={{
-                      backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                      backgroundColor: 'rgba(16, 185, 129, 0.25)',
                       color: '#34D399',
-                      fontSize: '9.5px',
+                      fontSize: '10px',
                       fontWeight: 700,
-                      padding: '2px 5px',
-                      borderRadius: '4px',
+                      padding: '2px 6px',
+                      borderRadius: '6px',
                       textTransform: 'uppercase'
                     }}
                   >
@@ -237,26 +229,25 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
         {/* User Info & Logout Footer */}
         <div
           style={{
-            padding: '14px 16px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.07)',
+            padding: '16px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '10px',
-            backgroundColor: 'rgba(0, 0, 0, 0.15)'
+            gap: '10px'
           }}
         >
           <div
             onClick={() => navigate('/configuracion')}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', cursor: 'pointer', flex: 1 }}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', cursor: 'pointer' }}
             title="Ver perfil y configuración"
           >
-            <Avatar src={user?.avatar} name={user?.name || 'Usuario'} size={34} role={user?.role} />
+            <Avatar src={user?.avatar} name={user?.name || 'Usuario'} size={36} role={user?.role} />
             <div style={{ overflow: 'hidden' }}>
               <div style={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                 {user?.name || 'Usuario'}
               </div>
-              <div style={{ fontSize: '11px', color: '#64748B', textTransform: 'capitalize' }}>
+              <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'capitalize' }}>
                 {user?.role === 'admin' ? 'Administrador' : user?.role === 'manager' ? 'Encargado' : 'Empleado'}
               </div>
             </div>
@@ -267,9 +258,9 @@ export default function Sidebar({ isOpen, onClose, alertCount = 0, onOpenAI }) {
             className="btn-icon btn-ghost"
             title="Cerrar sesión"
             aria-label="Cerrar sesión"
-            style={{ color: '#F87171', padding: '6px', borderRadius: 'var(--radius-sm)' }}
+            style={{ color: '#EF4444', padding: '8px', borderRadius: 'var(--radius-sm)' }}
           >
-            <LogOut size={16} />
+            <LogOut size={18} />
           </button>
         </div>
       </aside>

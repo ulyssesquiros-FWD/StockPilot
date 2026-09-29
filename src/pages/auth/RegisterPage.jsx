@@ -7,7 +7,7 @@ import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
 import Button from '../../components/ui/Button';
 import LogoFull from '../../assets/brand/LogoFull';
-import { UserPlus, User, Mail, Lock, Building, Store } from 'lucide-react';
+import { UserPlus, User, Mail, Lock, Building, Store, ArrowLeft } from 'lucide-react';
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -110,6 +110,40 @@ export default function RegisterPage() {
 
   return (
     <div>
+      {/* Return to Home Action */}
+      <div style={{ marginBottom: '20px' }}>
+        <Link
+          to="/"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: 'var(--text-secondary)',
+            textDecoration: 'none',
+            fontSize: '13px',
+            fontWeight: 600,
+            padding: '7px 14px',
+            borderRadius: 'var(--radius-sm)',
+            backgroundColor: 'var(--bg-surface-alt)',
+            border: '1px solid var(--border-color)',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-primary-blue)';
+            e.currentTarget.style.borderColor = 'var(--color-primary-blue)';
+            e.currentTarget.style.backgroundColor = 'var(--color-primary-blue-light)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--text-secondary)';
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+            e.currentTarget.style.backgroundColor = 'var(--bg-surface-alt)';
+          }}
+          title="Regresar a la página de bienvenida e información del proyecto"
+        >
+          <ArrowLeft size={16} /> Volver al Inicio (Home)
+        </Link>
+      </div>
+
       <div style={{ marginBottom: '24px', textAlign: 'center' }}>
         <div style={{ display: 'inline-block', marginBottom: '16px' }}>
           <LogoFull size={38} showTagline={true} />
