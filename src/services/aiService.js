@@ -13,7 +13,7 @@ export const aiService = {
   /**
    * Send a query to the AI assistant with full inventory context
    */
-  async askAssistant(prompt, context = {}) {
+  async askAssistant(prompt, context = {}, sessionId = null) {
     const { products = [], movements = [], alerts = [], categories = [] } = context;
 
     // Try n8n webhook first
@@ -25,6 +25,7 @@ export const aiService = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          sessionId,
           prompt,
           context: {
             products,

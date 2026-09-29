@@ -13,11 +13,12 @@ import {
   X,
   Maximize2,
   Minimize2,
-  ChevronDown
+  ChevronDown,
+  Clock
 } from 'lucide-react';
 
 export default function AIChatWidget({ isOpen, onClose }) {
-  const { messages, loading, sendMessage, clearChat } = useAI();
+  const { messages, loading, sendMessage, clearChat, remainingMinutes } = useAI();
   const [inputPrompt, setInputPrompt] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
   const navigate = useNavigate();
@@ -142,8 +143,12 @@ export default function AIChatWidget({ isOpen, onClose }) {
                 En línea
               </span>
             </div>
-            <div style={{ fontSize: '11px', color: '#94A3B8' }}>
-              Copiloto Logístico en Vivo
+            <div style={{ fontSize: '11px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>Copiloto Logístico</span>
+              <span>•</span>
+              <span style={{ color: '#38BDF8', display: 'flex', alignItems: 'center', gap: '3px' }} title="El historial conversacional y la memoria contextual se preservan activamente por 1 hora">
+                <Clock size={11} /> Historial 1h ({remainingMinutes}m)
+              </span>
             </div>
           </div>
         </div>

@@ -3,10 +3,10 @@ import useAI from '../../hooks/useAI';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import LogoIsotype from '../../assets/brand/LogoIsotype';
-import { Sparkles, Send, Trash2, Bot, User, Zap, RefreshCw } from 'lucide-react';
+import { Sparkles, Send, Trash2, Bot, User, Zap, RefreshCw, Clock } from 'lucide-react';
 
 export default function AIAssistantPage() {
-  const { messages, loading, error, sendMessage, clearChat } = useAI();
+  const { messages, loading, error, sendMessage, clearChat, remainingMinutes } = useAI();
   const [inputPrompt, setInputPrompt] = useState('');
   const chatBottomRef = useRef(null);
 
@@ -39,9 +39,25 @@ export default function AIAssistantPage() {
             <span className="badge badge-success" style={{ gap: '4px' }}>
               <Sparkles size={12} /> Copiloto Logístico
             </span>
+            <span
+              className="badge"
+              style={{
+                gap: '5px',
+                backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                color: 'var(--primary-600)',
+                border: '1px solid rgba(37, 99, 235, 0.2)',
+                fontWeight: 600,
+                fontSize: '0.75rem',
+                padding: '4px 10px',
+                borderRadius: '16px'
+              }}
+              title="El historial conversacional y la memoria de contexto se conservan de forma continua durante al menos 1 hora desde la última interacción."
+            >
+              <Clock size={12} /> Historial Activo ({remainingMinutes} min)
+            </span>
           </div>
           <p className="text-secondary">
-            Asistente inteligente con análisis predictivo de existencias y webhook n8n
+            Asistente inteligente con memoria contextual por 1 hora y análisis predictivo de existencias
           </p>
         </div>
         <div className="page-header-actions">

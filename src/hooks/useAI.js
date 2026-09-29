@@ -1,24 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import aiService from '../services/aiService';
 import productService from '../services/productService';
 import movementService from '../services/movementService';
 import alertService from '../services/alertService';
 import categoryService from '../services/categoryService';
+import {
+  getActiveSession,
+  saveSession,
+  clearSession,
+  getRemainingMinutes
+} from '../utils/aiHistoryStorage';
 
 export default function useAI() {
-  const [messages, setMessages] = useState([
-    {
-      id: 'welcome-1',
-      sender: 'assistant',
-      text: '¡Hola! Soy **StockPilot IA**, tu copiloto logístico inteligente. Puedo ayudarte con diagnósticos de existencias, recomendaciones de compra, productos en riesgo de agotamiento y optimización de rotación. ¿Qué deseas consultar hoy?',
-      timestamp: new Date().toISOString()
-    }
-  ]);
+  const [session, setSession] = useState(() => getActiveSession());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [remainingMinutes, setRemainingMinutes] = useState(() =>
+    getRemainingMinutes(session.lastActivity)
+  );
 
-  const sendMessage = async (userPrompt) => {
+  // Sync state with storage updates (e.g. across widget <-> page navigation or tabs)
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setSession({
+          sessionId: e.detail.sessionId,
+          messages: e.detail.messages,
+          lastActivity: e.detail.lastActivity
+        });
+        setRemainingMinutes(getRemainingMinutes(e.detail.lastActivity));
+      }
+    };
+
+    window.addEventListener('stockpilot:ai-history-update', handleUpdate);
+
+    // Refresh remaining minutes every 60 seconds
+    const interval = setInterval(() => {
+      const active = getActiveSession();
+      setRemainingMinutes(getRemainingMinutes(active.lastActivity));
+    }, 60000);
+
+    return () => {
+      window.removeEventListener('stockpilot:ai-history-update', handleUpdate);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const sendMessage = useCallback(async (userPrompt) => {
     if (!userPrompt || !userPrompt.trim()) return;
+
+    // Verify session hasn't expired before sending
+    const currentSession = getActiveSession();
 
     const userMsg = {
       id: `user-${Date.now()}`,
@@ -27,7 +59,15 @@ export default function useAI() {
       timestamp: new Date().toISOString()
     };
 
-    setMessages(prev => [...prev, userMsg]);
+    const messagesWithUser = [...currentSession.messages, userMsg];
+    saveSession(currentSession.sessionId, messagesWithUser);
+    setSession({
+      ...currentSession,
+      messages: messagesWithUser,
+      lastActivity: Date.now()
+    });
+    setRemainingMinutes(60);
+
     setLoading(true);
     setError(null);
 
@@ -40,12 +80,16 @@ export default function useAI() {
         categoryService.getAll().catch(() => [])
       ]);
 
-      const result = await aiService.askAssistant(userPrompt, {
-        products,
-        movements,
-        alerts,
-        categories
-      });
+      const result = await aiService.askAssistant(
+        userPrompt,
+        {
+          products,
+          movements,
+          alerts,
+          categories
+        },
+        currentSession.sessionId
+      );
 
       const aiMsg = {
         id: `ai-${Date.now()}`,
@@ -56,7 +100,15 @@ export default function useAI() {
         timestamp: result.timestamp
       };
 
-      setMessages(prev => [...prev, aiMsg]);
+      const finalMessages = [...messagesWithUser, aiMsg];
+      saveSession(currentSession.sessionId, finalMessages);
+      setSession({
+        ...currentSession,
+        messages: finalMessages,
+        lastActivity: Date.now()
+      });
+      setRemainingMinutes(60);
+
       return result;
     } catch (err) {
       setError(err.message || 'Error al comunicarse con el asistente');
@@ -66,25 +118,29 @@ export default function useAI() {
         text: 'Lo siento, ocurrió un problema al procesar tu solicitud. Por favor intenta de nuevo.',
         timestamp: new Date().toISOString()
       };
-      setMessages(prev => [...prev, errorMsg]);
+      const messagesWithError = [...messagesWithUser, errorMsg];
+      saveSession(currentSession.sessionId, messagesWithError);
+      setSession({
+        ...currentSession,
+        messages: messagesWithError,
+        lastActivity: Date.now()
+      });
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const clearChat = () => {
-    setMessages([
-      {
-        id: 'welcome-reset',
-        sender: 'assistant',
-        text: 'Conversación reiniciada. ¿En qué puedo asistirte con el inventario?',
-        timestamp: new Date().toISOString()
-      }
-    ]);
-  };
+  const clearChat = useCallback(() => {
+    const fresh = clearSession();
+    setSession(fresh);
+    setRemainingMinutes(60);
+  }, []);
 
   return {
-    messages,
+    messages: session.messages,
+    sessionId: session.sessionId,
+    lastActivity: session.lastActivity,
+    remainingMinutes,
     loading,
     error,
     sendMessage,
