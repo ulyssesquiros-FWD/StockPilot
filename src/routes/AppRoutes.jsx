@@ -7,6 +7,9 @@ import RoleRoute from './RoleRoute';
 import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 
+// Public Pages
+import HomePage from '../pages/home/HomePage';
+
 // Auth Pages
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
@@ -30,8 +33,8 @@ import NotFoundPage from '../pages/NotFoundPage';
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Root redirection to dashboard (will trigger login if unauthenticated) */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      {/* Public Home Landing Page */}
+      <Route path="/" element={<HomePage />} />
 
       {/* Public Routes with AuthLayout */}
       <Route element={<AuthLayout />}>

@@ -1,5 +1,6 @@
 export const ROUTES = {
   // Public
+  HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
   NOT_FOUND: '/404',
